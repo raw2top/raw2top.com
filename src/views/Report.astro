@@ -4,10 +4,15 @@ import type { Lang } from '../i18n/utils';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const DSA = 'https://eur-lex.europa.eu/eli/reg/2022/2065/oj';
+const EMAIL = 'raw2top@gmail.com';
+const mail = (subject: string, body: string) =>
+  `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 const c = {
   en: { title: 'Report a problem', eyebrow: 'Report', h: 'Report a problem with a bot',
     sub: 'If a bot listed here is broken, unsafe, or you think it breaks the law or someone’s rights, tell me. Every report is read by a person.',
-    chH: 'Where to send it', ch: '[TODO: GitHub issue link or email]',
+    chH: 'Where to send it', ch: 'Email me at', btn: 'Write a report',
+    subject: 'Report: <bot name>',
+    body: 'Bot page or template link:\n\nWhat is wrong:\n\nWhy (what makes it broken, unsafe or illegal):\n\nYour name and email (so I can reply):\n\nI believe in good faith that this report is accurate and complete. [yes/no]\n',
     incH: 'What to include',
     inc: ['The link to the bot page on raw2top (or its template link).', 'What is wrong, and why. Be as precise as you can.', 'Your name and email, so I can reply (not needed if you report child sexual abuse material).', 'A short statement that you believe the report is accurate and complete, in good faith.'],
     afterH: 'What happens next',
@@ -19,7 +24,9 @@ const c = {
     other: 'For problems with the Grok Bot app itself, contact its maker. raw2top is not affiliated with SpaceXSI.' },
   es: { title: 'Avisar de un problema', eyebrow: 'Avisar', h: 'Avisar de un problema con un bot',
     sub: 'Si un bot de esta web no funciona, no es seguro o crees que incumple la ley o los derechos de alguien, cuéntamelo. Una persona lee cada aviso.',
-    chH: 'Dónde enviarlo', ch: '[TODO: enlace a GitHub Issues o email]',
+    chH: 'Dónde enviarlo', ch: 'Escríbeme a', btn: 'Escribir un aviso',
+    subject: 'Aviso: <nombre del bot>',
+    body: 'Enlace a la página del bot o a la plantilla:\n\nQué pasa:\n\nPor qué (qué lo hace fallar, inseguro o ilegal):\n\nTu nombre y tu email (para poder responderte):\n\nCreo de buena fe que este aviso es exacto y completo. [sí/no]\n',
     incH: 'Qué incluir',
     inc: ['El enlace a la página del bot en raw2top (o su enlace de plantilla).', 'Qué pasa y por qué. Cuanto más concreto, mejor.', 'Tu nombre y tu email, para poder responderte (no hace falta si avisas de material de abuso sexual infantil).', 'Una frase que diga que crees de buena fe que el aviso es exacto y completo.'],
     afterH: 'Qué pasa después',
@@ -36,7 +43,7 @@ const c = {
     <p class="eyebrow">{c.eyebrow}</p>
     <h1>{c.h}</h1>
     <p class="muted sub">{c.sub}</p>
-    <div class="channel card"><h2>{c.chH}</h2><p class="mono todo">{c.ch}</p></div>
+    <div class="channel card"><h2>{c.chH}</h2><p class="addr">{c.ch} <a class="mono" href={`mailto:${EMAIL}`}>{EMAIL}</a></p><a class="btn btn-p" href={mail(c.subject, c.body)}>{c.btn} ✉</a></div>
     <div class="cols">
       <div class="card"><h2>{c.incH}</h2><ol>{c.inc.map((x) => <li class="muted">{x}</li>)}</ol></div>
       <div class="card"><h2>{c.afterH}</h2><ol>{c.after.map((x) => <li class="muted">{x}</li>)}</ol></div>
@@ -52,7 +59,8 @@ const c = {
   .sub { font-size: 18px; max-width: 640px; }
   h2 { font-size: 20px; margin-bottom: 10px; }
   .channel { margin-top: 32px; border-color: rgba(198,255,61,.4); }
-  .todo { color: var(--warn); }
+  .addr { margin-bottom: 16px; color: var(--muted); }
+  .addr a { color: var(--lime); }
   .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px; }
   ol { margin: 0; padding-left: 20px; display: grid; gap: 8px; font-size: 15px; }
   .rem { margin-top: 18px; }
