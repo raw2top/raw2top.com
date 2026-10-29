@@ -20,7 +20,7 @@ const c = {
       ['03', 'Date and version', 'The test date, the app version and the platform I used.'],
       ['04', 'Import check', 'How many skills the preview showed and how many actually arrived.'],
     ],
-    impH: 'Why the import check?',
+    vizA: 'preview', vizB: 'arrived', impH: 'Why the import check?',
     impP: 'Since August 2026, users have reported that some skills shown in a template’s preview don’t arrive on the imported bot, and the import gives no warning. So every test card shows both numbers: skills in the preview and skills that arrived.',
     impNote: 'Tests expire after 30 days or when the template changes. Then the card says “stale” until I test it again.',
     nextEyebrow: 'Roadmap', nextH: 'What’s next', nextSub: 'No dates yet. Things get added when they are ready.',
@@ -47,7 +47,7 @@ const c = {
       ['03', 'Fecha y versión', 'La fecha de la prueba, la versión de la app y la plataforma.'],
       ['04', 'Comprobación de importación', 'Cuántas skills mostraba la vista previa y cuántas llegaron de verdad.'],
     ],
-    impH: '¿Por qué comprobar la importación?',
+    vizA: 'vista previa', vizB: 'llegaron', impH: '¿Por qué comprobar la importación?',
     impP: 'Desde agosto de 2026, varios usuarios cuentan que algunas skills de la vista previa de una plantilla no llegan al bot importado, y la importación no avisa. Por eso cada ficha muestra los dos números: skills en la vista previa y skills que llegaron.',
     impNote: 'Las pruebas caducan a los 30 días o cuando cambia la plantilla. Entonces la ficha dice «caducada» hasta que la repita.',
     nextEyebrow: 'Próximamente', nextH: 'Lo que viene', nextSub: 'Sin fechas. Cada cosa llega cuando está lista.',
@@ -84,7 +84,7 @@ const c = {
     </ol>
     <div class="imp card">
       <div class="imp-viz mono" aria-hidden="true">
-        <div><span class="muted">preview</span><b>[n]</b></div><span class="arrow">→</span><div><span class="muted">arrived</span><b class="lime">[n]</b></div>
+        <div><span class="muted">{c.vizA}</span><b>[n]</b></div><span class="arrow">→</span><div><span class="muted">{c.vizB}</span><b class="lime">[n]</b></div>
       </div>
       <div><h3>{c.impH}</h3><p class="muted">{c.impP}</p><p class="small mono">{c.impNote}</p></div>
     </div>
