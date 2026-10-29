@@ -2,6 +2,9 @@
 import Base from '../layouts/Base.astro';
 import BotsGrid from '../components/BotsGrid.astro';
 import { type Lang, localize } from '../i18n/utils';
+import { Image } from 'astro:assets';
+import avatar from '../assets/raw2top-avatar.jpg';
+const FORUM = 'https://forum.cursor.com/t/grok-bot-templates-preview-shows-skills-but-the-export-ships-skills-skills-are-never-delivered/169911';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const L = (p: string) => localize(p, lang);
@@ -21,7 +24,7 @@ const c = {
       ['04', 'Import check', 'How many skills the preview showed and how many actually arrived.'],
     ],
     vizA: 'preview', vizB: 'arrived', impH: 'Why the import check?',
-    impP: 'Since August 2026, users have reported that some skills shown in a template’s preview don’t arrive on the imported bot, and the import gives no warning. So every test card shows both numbers: skills in the preview and skills that arrived.',
+    impP1: 'Since August 2026, users have reported that some skills shown in a template’s preview don’t arrive on the imported bot, and the import gives no warning', impLink: 'see the forum thread, confirmed by staff', impP2: '. So every test card shows both numbers: skills in the preview and skills that arrived.',
     impNote: 'Tests expire after 30 days or when the template changes. Then the card says “stale” until I test it again.',
     nextEyebrow: 'Roadmap', nextH: 'What’s next', nextSub: 'No dates yet. Things get added when they are ready.',
     next: [
@@ -30,7 +33,7 @@ const c = {
       ['Test log', 'A public history of every re-test and what changed.'],
     ],
     aboutEyebrow: 'About', aboutH: 'Built by Sergio Domínguez',
-    aboutP: 'raw2top is where I publish the bot templates I build, and the tests behind them. Only my own bots, only real results.',
+    aboutP: "I'm Sergio, a beta player from Spain who builds bots and makes content about Grok Bot. raw2top is where I publish my own bot templates, each one with a public test card so you know what it really does before you add it.", alt: "Sergio's avatar: illustrated hooded figure with green goggles",
     aboutCta: 'More about me',
   },
   es: {
@@ -48,7 +51,7 @@ const c = {
       ['04', 'Comprobación de importación', 'Cuántas skills mostraba la vista previa y cuántas llegaron de verdad.'],
     ],
     vizA: 'vista previa', vizB: 'llegaron', impH: '¿Por qué comprobar la importación?',
-    impP: 'Desde agosto de 2026, varios usuarios cuentan que algunas skills de la vista previa de una plantilla no llegan al bot importado, y la importación no avisa. Por eso cada ficha muestra los dos números: skills en la vista previa y skills que llegaron.',
+    impP1: 'Desde agosto de 2026, varios usuarios cuentan que algunas skills de la vista previa de una plantilla no llegan al bot importado, y la importación no avisa', impLink: 'mira el hilo del foro, confirmado por el equipo', impP2: '. Por eso cada ficha muestra los dos números: skills en la vista previa y skills que llegaron.',
     impNote: 'Las pruebas caducan a los 30 días o cuando cambia la plantilla. Entonces la ficha dice «caducada» hasta que la repita.',
     nextEyebrow: 'Próximamente', nextH: 'Lo que viene', nextSub: 'Sin fechas. Cada cosa llega cuando está lista.',
     next: [
@@ -57,7 +60,7 @@ const c = {
       ['Registro de pruebas', 'Un historial público de cada nueva prueba y de lo que cambió.'],
     ],
     aboutEyebrow: 'Sobre mí', aboutH: 'Hecho por Sergio Domínguez',
-    aboutP: 'En raw2top publico las plantillas de bots que creo y las pruebas que hay detrás. Solo bots míos y solo resultados reales.',
+    aboutP: 'Soy Sergio, un beta player de España que crea bots y hace contenido sobre Grok Bot. raw2top es donde publico mis propias plantillas, cada una con su ficha de prueba pública para que sepas lo que hace de verdad antes de añadirla.', alt: 'Avatar de Sergio: figura ilustrada con capucha y gafas verdes',
     aboutCta: 'Más sobre mí',
   },
 }[lang];
@@ -86,7 +89,7 @@ const c = {
       <div class="imp-viz mono" aria-hidden="true">
         <div><span class="muted">{c.vizA}</span><b>[n]</b></div><span class="arrow">→</span><div><span class="muted">{c.vizB}</span><b class="lime">[n]</b></div>
       </div>
-      <div><h3>{c.impH}</h3><p class="muted">{c.impP}</p><p class="small mono">{c.impNote}</p></div>
+      <div><h3>{c.impH}</h3><p class="muted">{c.impP1} (<a href={FORUM} rel="noopener" hreflang="en">{c.impLink} ↗</a>){c.impP2}</p><p class="small mono">{c.impNote}</p></div>
     </div>
   </section>
 
@@ -99,7 +102,7 @@ const c = {
 
   <section class="section wrap" aria-labelledby="about-h">
     <div class="about card">
-      <div><p class="eyebrow">{c.aboutEyebrow}</p><h2 id="about-h">{c.aboutH}</h2><p class="muted">{c.aboutP}</p></div>
+      <div class="about-l"><Image src={avatar} alt={c.alt} width={96} height={96} densities={[1, 2]} class="av" /><div><p class="eyebrow">{c.aboutEyebrow}</p><h2 id="about-h">{c.aboutH}</h2><p class="muted">{c.aboutP}</p></div></div>
       <a class="btn btn-s" href={L('/about/')}>{c.aboutCta} →</a>
     </div>
   </section>
@@ -129,7 +132,10 @@ const c = {
   .next { list-style: none; padding: 0; margin: 0; }
   .about { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 32px; flex-wrap: wrap; }
   .about h2 { font-size: clamp(26px, 3vw, 34px); margin: 6px 0 10px; }
-  .about p.muted { max-width: 560px; }
+  .about p.muted { max-width: 600px; }
+  .about-l { display: flex; gap: 22px; align-items: flex-start; }
+  .av { width: 96px; height: 96px; border-radius: 50%; border: 1px solid var(--line); flex: none; }
+  @media (max-width: 520px) { .about-l { flex-direction: column; } .av { width: 72px; height: 72px; } }
   @media (max-width: 960px) { .steps { grid-template-columns: 1fr 1fr; } .imp { grid-template-columns: 1fr; } }
   @media (max-width: 520px) { .steps { grid-template-columns: 1fr; } .hero-grid { margin-top: 40px; } }
 </style>

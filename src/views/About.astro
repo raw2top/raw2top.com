@@ -1,39 +1,43 @@
 ---
 import Base from '../layouts/Base.astro';
 import { type Lang, localize } from '../i18n/utils';
+import { Image } from 'astro:assets';
+import avatar from '../assets/raw2top-avatar.jpg';
+const X_URL = 'https://x.com/raw2top';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const c = {
-  en: { title: 'About', eyebrow: 'About', h: 'Hi, I’m Sergio.', photo: '[TODO Sergio: photo]', photoAlt: 'Photo placeholder',
-    bio: '[TODO Sergio: 2–3 sentences about who you are and why you build bots.]',
+  en: { title: 'About', eyebrow: 'About', h: 'Hi there.', alt: "Sergio's avatar: illustrated hooded figure with green goggles",
+    bio: "I'm Sergio, a beta player from Spain who builds bots and makes content about Grok Bot. raw2top is where I publish my own bot templates, each one with a public test card so you know what it really does before you add it.", xLabel: 'Follow on X', 
     whyH: 'What raw2top is',
     why: 'raw2top is my personal portfolio of bot templates for Grok Bot. I only publish bots I built myself, and each one comes with a dated test card. Later I plan to add courses and more templates.',
     rulesH: 'House rules',
     rules: ['Only my own bots.', 'Every result is a real run, with its date and app version.', 'If a test fails, the card says so.', 'Not affiliated with SpaceXSI.'],
-    findH: 'Find me', find: '[TODO Sergio: X profile link and any other links]', report: 'Found a problem with a bot?', reportCta: 'Report it' },
-  es: { title: 'Sobre mí', eyebrow: 'Sobre mí', h: 'Hola, soy Sergio.', photo: '[TODO Sergio: foto]', photoAlt: 'Hueco para la foto',
-    bio: '[TODO Sergio: 2 o 3 frases sobre quién eres y por qué creas bots.]',
+    findH: 'Find me', report: 'Found a problem with a bot?', reportCta: 'Report it' },
+  es: { title: 'Sobre mí', eyebrow: 'Sobre mí', h: 'Hola.', alt: 'Avatar de Sergio: figura ilustrada con capucha y gafas verdes',
+    bio: 'Soy Sergio, un beta player de España que crea bots y hace contenido sobre Grok Bot. raw2top es donde publico mis propias plantillas, cada una con su ficha de prueba pública para que sepas lo que hace de verdad antes de añadirla.', xLabel: 'Sígueme en X', 
     whyH: 'Qué es raw2top',
     why: 'raw2top es mi portfolio personal de plantillas de bots para Grok Bot. Solo publico bots creados por mí, y cada uno lleva una ficha de prueba con fecha. Más adelante quiero añadir cursos y más plantillas.',
     rulesH: 'Reglas de la casa',
     rules: ['Solo bots míos.', 'Cada resultado es una ejecución real, con fecha y versión de la app.', 'Si una prueba falla, la ficha lo dice.', 'Sin relación con SpaceXSI.'],
-    findH: 'Dónde encontrarme', find: '[TODO Sergio: enlace a tu perfil de X y otros enlaces]', report: '¿Has encontrado un problema en un bot?', reportCta: 'Avísame' },
+    findH: 'Dónde encontrarme', report: '¿Has encontrado un problema en un bot?', reportCta: 'Avísame' },
 }[lang];
 ---
 <Base title={c.title}>
   <section class="wrap page">
     <div class="top">
-      <div class="photo card" role="img" aria-label={c.photoAlt}><span class="mono todo">{c.photo}</span></div>
+      <Image src={avatar} alt={c.alt} width={200} height={200} densities={[1, 2]} class="photo" loading="eager" />
       <div>
         <p class="eyebrow">{c.eyebrow}</p>
         <h1>{c.h}</h1>
-        <p class="todo-text mono">{c.bio}</p>
+        <p class="bio">{c.bio}</p>
+        <p class="x"><a href={X_URL} rel="me noopener">@raw2top</a> <span class="muted">· {c.xLabel} ↗</span></p>
       </div>
     </div>
     <div class="cols">
       <div class="card"><h2>{c.whyH}</h2><p class="muted">{c.why}</p></div>
       <div class="card"><h2>{c.rulesH}</h2><ul>{c.rules.map((r) => <li class="muted">{r}</li>)}</ul></div>
-      <div class="card"><h2>{c.findH}</h2><p class="todo-text mono">{c.find}</p>
+      <div class="card"><h2>{c.findH}</h2><p><a href={X_URL} rel="me noopener">x.com/raw2top ↗</a></p>
         <p class="muted rep">{c.report} <a href={localize('/report/', lang)}>{c.reportCta} →</a></p></div>
     </div>
   </section>
@@ -41,14 +45,15 @@ const c = {
 <style>
   .page { padding-top: 40px; padding-bottom: 40px; }
   .top { display: grid; grid-template-columns: 200px 1fr; gap: 32px; align-items: center; }
-  .photo { aspect-ratio: 1; border-style: dashed; display: grid; place-items: center; text-align: center; padding: 12px; }
-  .todo { font-size: 12px; color: var(--warn); }
+  .photo { width: 200px; height: 200px; border-radius: 50%; border: 1px solid var(--line); box-shadow: 0 0 0 6px rgba(198,255,61,.08); }
+  .bio { font-size: 19px; max-width: 640px; }
+  .x { margin-top: 14px; font-family: var(--mono); font-size: 14px; }
+  .x a { color: var(--lime); }
   h1 { font-size: clamp(40px, 6vw, 64px); margin: 8px 0 14px; }
-  .todo-text { color: var(--warn); font-size: 14px; max-width: 620px; }
   .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 48px; }
   .cols h2 { font-size: 20px; margin-bottom: 10px; }
   .cols ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
   .rep { margin-top: 18px; font-size: 14px; }
   @media (max-width: 860px) { .cols { grid-template-columns: 1fr; } }
-  @media (max-width: 520px) { .top { grid-template-columns: 1fr; } .photo { width: 140px; } }
+  @media (max-width: 520px) { .top { grid-template-columns: 1fr; } .photo { width: 140px; height: 140px; } }
 </style>
