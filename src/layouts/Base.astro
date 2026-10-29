@@ -39,7 +39,7 @@ const other: Lang = lang === 'en' ? 'es' : 'en';
   <a class="skip" href="#main">{t('skip')}</a>
   <div class="bg" aria-hidden="true"><div class="glow" id="glow"></div><div class="glow2"></div><div class="noise"></div></div>
   <header class="wrap nav">
-    <a href={localize('/', lang)} class="logo" aria-label={t('nav.home')}>raw2top<span aria-hidden="true">_</span></a>
+    <a href={localize('/', lang)} class="logo">raw2top<span aria-hidden="true">_</span></a>
     <div class="right">
       <nav aria-label={t('nav.main')}>
         <ul>
@@ -50,7 +50,7 @@ const other: Lang = lang === 'en' ? 'es' : 'en';
       </nav>
       <div class="lang" role="group" aria-label={t('lang.switch')}>
         <span class="on" aria-current="true" lang={lang}>{lang.toUpperCase()}</span>
-        <a href={localize(path, other)} hreflang={other} lang={other} aria-label={languages[other]}>{other.toUpperCase()}</a>
+        <a href={localize(path, other)} hreflang={other} lang={other} title={languages[other]}>{other.toUpperCase()}</a>
       </div>
     </div>
   </header>
