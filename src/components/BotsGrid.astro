@@ -1,0 +1,14 @@
+---
+import BotCard from './BotCard.astro';
+import ComingSoon from './ComingSoon.astro';
+import { shownBots, comingSoonCount } from '../lib/bots';
+import type { Lang } from '../i18n/utils';
+interface Props { lang: Lang; limit?: number; }
+const { lang, limit } = Astro.props;
+const bots = limit ? shownBots.slice(0, limit) : shownBots;
+const start = bots.length;
+---
+<div class="grid">
+  {bots.map((b) => <BotCard bot={b} lang={lang} />)}
+  {Array.from({ length: comingSoonCount }, (_, i) => <ComingSoon n={start + i + 1} lang={lang} />)}
+</div>

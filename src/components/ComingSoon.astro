@@ -1,0 +1,16 @@
+---
+import type { Lang } from '../i18n/utils';
+import { useT } from '../i18n/ui';
+interface Props { n: number; lang: Lang; }
+const { n, lang } = Astro.props;
+const t = useT(lang);
+---
+<div class="card ghost" role="note" aria-label={`${t('soon.slot')} ${n}: ${t('soon.title')}`}>
+  <p class="eyebrow">{t('soon.slot')} {String(n).padStart(2, '0')}</p>
+  <p class="t">{t('soon.title')}</p>
+  <p class="s">{t('soon.sub')}</p>
+</div>
+<style>
+  .t { font-size: 19px; font-weight: 500; color: var(--text); opacity: .8; margin-top: 8px; }
+  .s { font-size: 13px; }
+</style>

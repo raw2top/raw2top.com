@@ -1,0 +1,61 @@
+---
+import Base from '../layouts/Base.astro';
+import type { Lang } from '../i18n/utils';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const DSA = 'https://eur-lex.europa.eu/eli/reg/2022/2065/oj';
+const c = {
+  en: { title: 'Report a problem', eyebrow: 'Report', h: 'Report a problem with a bot',
+    sub: 'If a bot listed here is broken, unsafe, or you think it breaks the law or someone’s rights, tell me. Every report is read by a person.',
+    chH: 'Where to send it', ch: '[TODO: GitHub issue link or email]',
+    incH: 'What to include',
+    inc: ['The link to the bot page on raw2top (or its template link).', 'What is wrong, and why. Be as precise as you can.', 'Your name and email, so I can reply (not needed if you report child sexual abuse material).', 'A short statement that you believe the report is accurate and complete, in good faith.'],
+    afterH: 'What happens next',
+    after: ['I confirm I received your report.', 'I check it and decide, without undue delay.', 'I tell you what I decided and how you can respond.'],
+    remH: 'Every removal is explained',
+    rem: 'If I remove a bot, hide it, or change its test card because of a report, I publish or send a clear statement of reasons: what was done, why, what facts it is based on, and how to contest it.',
+    legal: 'This channel follows the notice-and-action rules of the EU Digital Services Act: Article 16 (notices) and Article 17 (statement of reasons).',
+    law: 'Read the regulation (EUR-Lex)',
+    other: 'For problems with the Grok Bot app itself, contact its maker. raw2top is not affiliated with SpaceXSI.' },
+  es: { title: 'Avisar de un problema', eyebrow: 'Avisar', h: 'Avisar de un problema con un bot',
+    sub: 'Si un bot de esta web no funciona, no es seguro o crees que incumple la ley o los derechos de alguien, cuéntamelo. Una persona lee cada aviso.',
+    chH: 'Dónde enviarlo', ch: '[TODO: enlace a GitHub Issues o email]',
+    incH: 'Qué incluir',
+    inc: ['El enlace a la página del bot en raw2top (o su enlace de plantilla).', 'Qué pasa y por qué. Cuanto más concreto, mejor.', 'Tu nombre y tu email, para poder responderte (no hace falta si avisas de material de abuso sexual infantil).', 'Una frase que diga que crees de buena fe que el aviso es exacto y completo.'],
+    afterH: 'Qué pasa después',
+    after: ['Te confirmo que he recibido el aviso.', 'Lo reviso y decido sin retrasos indebidos.', 'Te digo qué he decidido y cómo puedes responder.'],
+    remH: 'Cada retirada se explica',
+    rem: 'Si retiro un bot, lo oculto o cambio su ficha de prueba por un aviso, publico o envío una explicación clara: qué hice, por qué, en qué hechos me baso y cómo puedes recurrirlo.',
+    legal: 'Este canal sigue las normas de notificación y acción de la Ley de Servicios Digitales de la UE: artículo 16 (notificaciones) y artículo 17 (motivación).',
+    law: 'Leer el reglamento (EUR-Lex)',
+    other: 'Para problemas con la propia app Grok Bot, contacta con quien la hace. raw2top no tiene relación con SpaceXSI.' },
+}[lang];
+---
+<Base title={c.title}>
+  <section class="wrap page">
+    <p class="eyebrow">{c.eyebrow}</p>
+    <h1>{c.h}</h1>
+    <p class="muted sub">{c.sub}</p>
+    <div class="channel card"><h2>{c.chH}</h2><p class="mono todo">{c.ch}</p></div>
+    <div class="cols">
+      <div class="card"><h2>{c.incH}</h2><ol>{c.inc.map((x) => <li class="muted">{x}</li>)}</ol></div>
+      <div class="card"><h2>{c.afterH}</h2><ol>{c.after.map((x) => <li class="muted">{x}</li>)}</ol></div>
+    </div>
+    <div class="card rem"><h2>{c.remH}</h2><p class="muted">{c.rem}</p></div>
+    <p class="legal mono muted">{c.legal} <a href={DSA} rel="noopener">{c.law} ↗</a></p>
+    <p class="legal mono muted">{c.other}</p>
+  </section>
+</Base>
+<style>
+  .page { padding-top: 40px; padding-bottom: 40px; max-width: 900px; }
+  h1 { font-size: clamp(36px, 5.4vw, 58px); margin: 8px 0 14px; }
+  .sub { font-size: 18px; max-width: 640px; }
+  h2 { font-size: 20px; margin-bottom: 10px; }
+  .channel { margin-top: 32px; border-color: rgba(198,255,61,.4); }
+  .todo { color: var(--warn); }
+  .cols { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 18px; }
+  ol { margin: 0; padding-left: 20px; display: grid; gap: 8px; font-size: 15px; }
+  .rem { margin-top: 18px; }
+  .legal { font-size: 12.5px; margin-top: 20px; }
+  @media (max-width: 760px) { .cols { grid-template-columns: 1fr; } }
+</style>

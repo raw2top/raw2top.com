@@ -1,0 +1,115 @@
+---
+import '../styles/global.css';
+import { getLang, localize, unlocalize, languages, type Lang } from '../i18n/utils';
+import { useT } from '../i18n/ui';
+interface Props { title: string; description?: string; }
+const lang: Lang = getLang(Astro.currentLocale);
+const t = useT(lang);
+const { title, description = t('meta.desc') } = Astro.props;
+const fullTitle = title === 'home' ? t('meta.home') : `${title} · raw2top`;
+const path = unlocalize(Astro.url.pathname);
+const links = [
+  { href: '/bots/', label: t('nav.bots') },
+  { href: '/about/', label: t('nav.about') },
+  { href: '/report/', label: t('nav.report') },
+];
+const canonical = new URL(localize(path, lang), Astro.site);
+const alternates = (Object.keys(languages) as Lang[]).map((l) => ({ l, href: new URL(localize(path, l), Astro.site).href }));
+const other: Lang = lang === 'en' ? 'es' : 'en';
+---
+<!doctype html>
+<html lang={lang}>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description} />
+  <link rel="canonical" href={canonical} />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="theme-color" content="#0A0B0F" />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description} />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content={canonical} />
+  <meta property="og:locale" content={lang === 'es' ? 'es_ES' : 'en_US'} />
+  {alternates.map((a) => <link rel="alternate" hreflang={a.l} href={a.href} />)}
+  <link rel="alternate" hreflang="x-default" href={alternates[0].href} />
+</head>
+<body>
+  <a class="skip" href="#main">{t('skip')}</a>
+  <div class="bg" aria-hidden="true"><div class="glow" id="glow"></div><div class="glow2"></div><div class="noise"></div></div>
+  <header class="wrap nav">
+    <a href={localize('/', lang)} class="logo" aria-label={t('nav.home')}>raw2top<span aria-hidden="true">_</span></a>
+    <div class="right">
+      <nav aria-label={t('nav.main')}>
+        <ul>
+          {links.map((l) => (
+            <li><a href={localize(l.href, lang)} aria-current={path.startsWith(l.href) ? 'page' : undefined}>{l.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+      <div class="lang" role="group" aria-label={t('lang.switch')}>
+        <span class="on" aria-current="true" lang={lang}>{lang.toUpperCase()}</span>
+        <a href={localize(path, other)} hreflang={other} lang={other} aria-label={languages[other]}>{other.toUpperCase()}</a>
+      </div>
+    </div>
+  </header>
+  <main id="main"><slot /></main>
+  <footer class="wrap foot">
+    <div>
+      <span class="logo small">raw2top<span aria-hidden="true">_</span></span>
+      <p class="muted">{t('foot.tag')}</p>
+    </div>
+    <ul>
+      <li><a href={localize('/bots/', lang)}>{t('nav.bots')}</a></li>
+      <li><a href={localize('/about/', lang)}>{t('nav.about')}</a></li>
+      <li><a href={localize('/report/', lang)}>{t('foot.report')}</a></li>
+    </ul>
+    <p class="legal mono">{t('foot.legal')} © {new Date().getFullYear()} raw2top</p>
+  </footer>
+  <script>
+    // Slow cursor-follow glow + card edge light. Off for reduced motion and touch.
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const fine = window.matchMedia('(pointer: fine)').matches;
+    if (!reduce && fine) {
+      const glow = document.getElementById('glow');
+      let raf = 0;
+      window.addEventListener('pointermove', (e) => {
+        cancelAnimationFrame(raf);
+        raf = requestAnimationFrame(() => {
+          glow?.style.setProperty('--gx', `${e.clientX - 450}px`);
+          glow?.style.setProperty('--gy', `${e.clientY - 450}px`);
+        });
+      }, { passive: true });
+      document.querySelectorAll<HTMLElement>('.card').forEach((c) => {
+        c.addEventListener('pointermove', (e) => {
+          const r = c.getBoundingClientRect();
+          c.style.setProperty('--mx', `${e.clientX - r.left}px`);
+          c.style.setProperty('--my', `${e.clientY - r.top}px`);
+        });
+      });
+    }
+  </script>
+</body>
+</html>
+<style>
+  .nav { display: flex; justify-content: space-between; align-items: center; height: 84px; position: relative; z-index: 2; }
+  .logo { font-weight: 700; font-size: 20px; letter-spacing: -0.02em; text-decoration: none; color: var(--text); }
+  .logo span { color: var(--lime); }
+  .logo.small { font-size: 17px; }
+  .right { display: flex; align-items: center; gap: 26px; }
+  .lang { display: flex; font-family: var(--mono); font-size: 12px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .lang > * { padding: 5px 9px; text-decoration: none; color: var(--muted); }
+  .lang .on { background: var(--panel); color: var(--lime); }
+  .lang a:hover { color: var(--text); }
+  nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; }
+  nav a { color: var(--muted); text-decoration: none; font-size: 15px; padding: 6px 0; }
+  nav a:hover, nav a[aria-current='page'] { color: var(--text); }
+  nav a[aria-current='page'] { box-shadow: inset 0 -2px 0 var(--lime); }
+  .foot { position: relative; z-index: 1; border-top: 1px solid var(--line); padding: 36px 0 44px; margin-top: 40px; display: grid; grid-template-columns: 1fr auto; gap: 20px 40px; }
+  .foot p { font-size: 14px; margin-top: 6px; }
+  .foot ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 22px; font-size: 14px; }
+  .foot ul a { color: var(--muted); }
+  .legal { grid-column: 1 / -1; font-size: 12px; color: var(--muted); }
+  @media (max-width: 600px) { nav ul { gap: 14px; } nav a { font-size: 14px; } .right { gap: 14px; } .foot { grid-template-columns: 1fr; } .foot ul { flex-wrap: wrap; } }
+</style>

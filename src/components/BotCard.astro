@@ -1,0 +1,35 @@
+---
+import { type Bot, statusOf } from '../lib/bots';
+import { type Lang, tx, localize } from '../i18n/utils';
+import { useT } from '../i18n/ui';
+interface Props { bot: Bot; lang: Lang; }
+const { bot, lang } = Astro.props;
+const t = useT(lang);
+const status = statusOf(bot);
+const run = bot.tested;
+---
+<article class="card bot">
+  <p class="eyebrow">{bot.isExample ? t('card.example') : t(`status.${status}`)}</p>
+  <h3><a href={localize(`/bots/${bot.slug}/`, lang)} class="stretch">{bot.name}</a></h3>
+  <p class="muted one">{tx(bot.oneLiner, lang)}</p>
+  {run && (
+    <dl class="meta mono">
+      <dt>{t('card.result')}</dt><dd class={bot.isExample ? '' : `r-${run.result}`}>{bot.isExample ? (lang === 'es' ? '[funcionó / en parte / falló]' : '[worked / partly / failed]') : t(`result.${run.result}`)}</dd>
+      <dt>{t('card.tested')}</dt><dd>{run.date}</dd>
+      <dt>{t('card.app')}</dt><dd>{run.appVersion}</dd>
+      <dt>{t('card.skills')}</dt><dd>{run.skillsArrived}/{run.skillsPreview} {t('card.arrived')}</dd>
+    </dl>
+  )}
+  <p class="access mono">{t(`access.${bot.access}`)}</p>
+</article>
+<style>
+  .bot { display: flex; flex-direction: column; gap: 8px; min-height: 200px; }
+  h3 { font-size: 21px; margin-top: 4px; }
+  h3 a { text-decoration: none; }
+  .stretch::after { content: ''; position: absolute; inset: 0; border-radius: inherit; }
+  .one { font-size: 14px; }
+  .meta { display: grid; grid-template-columns: auto 1fr; gap: 4px 16px; font-size: 12.5px; margin: 8px 0 0; color: var(--muted); }
+  .meta dd { margin: 0; color: var(--text); }
+  .r-worked { color: var(--lime) !important; } .r-partly { color: var(--warn) !important; } .r-failed { color: var(--bad) !important; }
+  .access { margin-top: auto; font-size: 11.5px; color: var(--muted); border-top: 1px solid var(--line); padding-top: 10px; }
+</style>

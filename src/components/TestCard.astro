@@ -1,0 +1,51 @@
+---
+import { type Bot, statusOf, STALE_DAYS } from '../lib/bots';
+import { type Lang, tx } from '../i18n/utils';
+import { useT } from '../i18n/ui';
+interface Props { bot: Bot; lang: Lang; }
+const { bot, lang } = Astro.props;
+const t = useT(lang);
+const status = statusOf(bot);
+const run = bot.tested;
+const skillsOk = run && typeof run.skillsPreview === 'number' && run.skillsPreview === run.skillsArrived;
+---
+<section class="test card" aria-labelledby="test-h">
+  <div class="head">
+    <h2 id="test-h">{t('test.title')}</h2>
+    <span class={`badge s-${bot.isExample ? 'Example' : status}`}>{bot.isExample ? t('card.example') : t(`status.${status}`)}</span>
+  </div>
+  {run ? (
+    <dl class="mono">
+      <div><dt>{t('test.date')}</dt><dd>{run.date}</dd></div>
+      <div><dt>{t('test.app')}</dt><dd>{run.appVersion}</dd></div>
+      <div><dt>{t('test.platform')}</dt><dd>{run.platform}</dd></div>
+      <div class="wide"><dt>{t('test.task')}</dt><dd>{tx(run.task, lang)}</dd></div>
+      <div><dt>{t('test.result')}</dt><dd class={bot.isExample ? '' : `r-${run.result}`}>{bot.isExample ? (lang === 'es' ? '[funcionó / en parte / falló]' : '[worked / partly / failed]') : t(`result.${run.result}`)}</dd></div>
+      <div class="wide"><dt>{t('test.evidence')}</dt><dd>{tx(run.evidence, lang)}</dd></div>
+      <div class="wide imp"><dt>{t('test.import')}</dt>
+        <dd>{t('test.preview')} <b>{run.skillsPreview}</b> → {t('test.arrived')} <b class={skillsOk ? 'r-worked' : ''}>{run.skillsArrived}</b> · {t('test.routines')}: <b>{run.routinesArrived}</b></dd></div>
+    </dl>
+  ) : (
+    <p class="muted">{t('test.none')}</p>
+  )}
+  <p class="note muted">{t('test.note', { days: STALE_DAYS })}</p>
+</section>
+<style>
+  .test { padding: 26px; }
+  .head { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; margin-bottom: 18px; }
+  h2 { font-size: 22px; }
+  .badge { font-family: var(--mono); font-size: 12.5px; padding: 6px 12px; border-radius: 99px; border: 1px solid var(--line); }
+  .s-Tested { color: var(--lime); border-color: rgba(198,255,61,.5); background: rgba(198,255,61,.07); }
+  .s-Tested-stale { color: var(--warn); border-color: rgba(255,194,75,.5); }
+  .s-Listed { color: var(--muted); }
+  .s-Example { color: var(--warn); border-style: dashed; }
+  dl { display: grid; grid-template-columns: repeat(3, 1fr); margin: 0; font-size: 13.5px; }
+  dl > div { padding: 12px 12px 12px 0; border-top: 1px solid var(--line); }
+  dl > .wide { grid-column: 1 / -1; }
+  dt { color: var(--muted); font-size: 11.5px; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 4px; }
+  dd { margin: 0; overflow-wrap: anywhere; }
+  .imp dd b { color: var(--text); }
+  .r-worked { color: var(--lime) !important; } .r-partly { color: var(--warn); } .r-failed { color: var(--bad); }
+  .note { font-size: 13px; margin-top: 16px; }
+  @media (max-width: 600px) { dl { grid-template-columns: 1fr 1fr; } }
+</style>

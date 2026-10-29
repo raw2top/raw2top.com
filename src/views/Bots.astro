@@ -1,0 +1,33 @@
+---
+import Base from '../layouts/Base.astro';
+import BotsGrid from '../components/BotsGrid.astro';
+import { realBots } from '../lib/bots';
+import type { Lang } from '../i18n/utils';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const c = {
+  en: { title: 'Bots', eyebrow: 'The lab', h: 'Bots', sub: 'My own templates for Grok Bot. Open one to see its test card and add it to your app.',
+    empty: 'No bots published yet. The first ones are in the lab. The example card shows the format.',
+    legend: 'Status: Tested = test card under 30 days old · Stale = older, waiting for a re-test · Listed = published, not tested yet.' },
+  es: { title: 'Bots', eyebrow: 'El laboratorio', h: 'Bots', sub: 'Mis propias plantillas para Grok Bot. Abre una para ver su ficha de prueba y añadirla a tu app.',
+    empty: 'Todavía no hay bots publicados. Los primeros están en el laboratorio. La tarjeta de ejemplo enseña el formato.',
+    legend: 'Estado: Probado = ficha de menos de 30 días · Caducado = más antigua, pendiente de repetir · En la lista = publicado, aún sin probar.' },
+}[lang];
+---
+<Base title={c.title}>
+  <section class="wrap page">
+    <p class="eyebrow">{c.eyebrow}</p>
+    <h1>{c.h}</h1>
+    <p class="muted sub">{c.sub}</p>
+    {realBots.length === 0 && <p class="empty mono">{c.empty}</p>}
+    <BotsGrid lang={lang} />
+    <p class="legend mono muted">{c.legend}</p>
+  </section>
+</Base>
+<style>
+  .page { padding-top: 40px; padding-bottom: 40px; }
+  h1 { font-size: clamp(40px, 6vw, 64px); margin: 8px 0 12px; }
+  .sub { max-width: 620px; font-size: 18px; }
+  .empty { margin: 28px 0 18px; font-size: 13px; color: var(--muted); border-left: 2px solid var(--lime); padding-left: 12px; }
+  .legend { font-size: 12px; margin-top: 22px; }
+</style>

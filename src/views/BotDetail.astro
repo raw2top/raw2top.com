@@ -1,0 +1,58 @@
+---
+import Base from '../layouts/Base.astro';
+import TestCard from '../components/TestCard.astro';
+import { type Bot } from '../lib/bots';
+import { type Lang, tx, localize } from '../i18n/utils';
+import { useT } from '../i18n/ui';
+interface Props { lang: Lang; bot: Bot; }
+const { lang, bot } = Astro.props;
+const t = useT(lang);
+const c = {
+  en: { back: '← All bots', add: 'Add to Grok Bot', noLink: 'Example only · no template link', access: 'Access level', connectors: 'Connectors it asks for',
+    exampleNote: 'This is a placeholder page that shows the layout. It is not a real bot and has no template link.',
+    safety: 'Adding a template creates a copy in your own account. Check the connectors and access level before you add it.' },
+  es: { back: '← Todos los bots', add: 'Añadir a Grok Bot', noLink: 'Solo ejemplo · sin enlace', access: 'Nivel de acceso', connectors: 'Conectores que pide',
+    exampleNote: 'Esta es una página de marcador para enseñar el diseño. No es un bot real y no tiene enlace a plantilla.',
+    safety: 'Al añadir una plantilla se crea una copia en tu propia cuenta. Revisa los conectores y el nivel de acceso antes de añadirla.' },
+}[lang];
+---
+<Base title={bot.name} description={tx(bot.oneLiner, lang)}>
+  <article class="wrap page">
+    <a class="back" href={localize('/bots/', lang)}>{c.back}</a>
+    {bot.isExample && <p class="eyebrow ex">{t('card.example')}</p>}
+    <h1>{bot.name}</h1>
+    <p class="one">{tx(bot.oneLiner, lang)}</p>
+    {bot.description && <p class="muted desc">{tx(bot.description, lang)}</p>}
+    {bot.isExample && <p class="note mono" role="note">{c.exampleNote}</p>}
+    <div class="actions">
+      {bot.templateUrl
+        ? <a class="btn btn-p" href={bot.templateUrl} rel="noopener" target="_blank">{c.add} ↗</a>
+        : <span class="btn" aria-disabled="true">{c.noLink}</span>}
+    </div>
+    <div class="layout">
+      <TestCard bot={bot} lang={lang} />
+      <aside class="card side">
+        <h2 class="eyebrow">{c.access}</h2><p>{t(`access.${bot.access}`)}</p>
+        <h2 class="eyebrow">{c.connectors}</h2>
+        <ul>{bot.connectors.length ? bot.connectors.map((x) => <li class="mono">{x}</li>) : <li class="mono">—</li>}</ul>
+        <p class="muted small">{c.safety}</p>
+      </aside>
+    </div>
+  </article>
+</Base>
+<style>
+  .page { padding-top: 32px; padding-bottom: 40px; }
+  .back { color: var(--muted); text-decoration: none; font-size: 14px; }
+  .ex { margin-top: 26px; color: var(--warn); }
+  h1 { font-size: clamp(38px, 6vw, 60px); margin: 10px 0 12px; }
+  .one { font-size: 19px; max-width: 680px; }
+  .desc { max-width: 680px; margin-top: 10px; }
+  .note { margin-top: 16px; font-size: 12.5px; color: var(--warn); border-left: 2px solid var(--warn); padding-left: 12px; max-width: 680px; }
+  .actions { margin: 26px 0 34px; }
+  .layout { display: grid; grid-template-columns: 1fr 300px; gap: 18px; align-items: start; }
+  .side h2 { font-size: 11.5px; margin: 0 0 6px; font-weight: 400; }
+  .side p, .side ul { margin: 0 0 18px; }
+  .side ul { padding: 0; list-style: none; font-size: 13.5px; }
+  .small { font-size: 13px; margin: 0 !important; }
+  @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+</style>

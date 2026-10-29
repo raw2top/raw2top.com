@@ -1,0 +1,135 @@
+---
+import Base from '../layouts/Base.astro';
+import BotsGrid from '../components/BotsGrid.astro';
+import { type Lang, localize } from '../i18n/utils';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const L = (p: string) => localize(p, lang);
+const c = {
+  en: {
+    pill: 'Templates for Grok Bot · tested, dated, honest',
+    h1a: 'From raw idea', h1b: 'to', h1c: 'tested bot.',
+    sub: 'My own bot templates. Each one ships with a public test card: what I ran, what happened, on which app version, and which skills made it through the import.',
+    cta1: 'Browse bots', cta2: 'How I test',
+    botsEyebrow: 'The lab', botsH: 'Bots', botsAll: 'All bots →',
+    howEyebrow: 'Method', howH: 'How I test',
+    howSub: 'Every bot page has a test card with the same four parts. Same format every time, so you can compare bots at a glance.',
+    steps: [
+      ['01', 'One real task', 'I pick one concrete task the bot is meant to do and run it.'],
+      ['02', 'A clear result', 'Worked, partly worked or failed, plus one line of evidence.'],
+      ['03', 'Date and version', 'The test date, the app version and the platform I used.'],
+      ['04', 'Import check', 'How many skills the preview showed and how many actually arrived.'],
+    ],
+    impH: 'Why the import check?',
+    impP: 'Since August 2026, users have reported that some skills shown in a template’s preview don’t arrive on the imported bot, and the import gives no warning. So every test card shows both numbers: skills in the preview and skills that arrived.',
+    impNote: 'Tests expire after 30 days or when the template changes. Then the card says “stale” until I test it again.',
+    nextEyebrow: 'Roadmap', nextH: 'What’s next', nextSub: 'No dates yet. Things get added when they are ready.',
+    next: [
+      ['More templates', 'New bots, each with its own test card.'],
+      ['Courses', 'Step-by-step guides on building and testing bots.'],
+      ['Test log', 'A public history of every re-test and what changed.'],
+    ],
+    aboutEyebrow: 'About', aboutH: 'Built by Sergio Domínguez',
+    aboutP: 'raw2top is where I publish the bot templates I build, and the tests behind them. Only my own bots, only real results.',
+    aboutCta: 'More about me',
+  },
+  es: {
+    pill: 'Plantillas para Grok Bot · probadas, con fecha, honestas',
+    h1a: 'De la idea en bruto', h1b: 'al', h1c: 'bot probado.',
+    sub: 'Mis propias plantillas de bots. Cada una lleva una ficha de prueba pública: qué ejecuté, qué pasó, en qué versión de la app y qué skills llegaron al importarla.',
+    cta1: 'Ver los bots', cta2: 'Cómo pruebo',
+    botsEyebrow: 'El laboratorio', botsH: 'Bots', botsAll: 'Todos los bots →',
+    howEyebrow: 'Método', howH: 'Cómo pruebo',
+    howSub: 'Cada página de bot tiene una ficha de prueba con las mismas cuatro partes. Siempre el mismo formato, para comparar bots de un vistazo.',
+    steps: [
+      ['01', 'Una tarea real', 'Elijo una tarea concreta que el bot debería hacer y la ejecuto.'],
+      ['02', 'Un resultado claro', 'Funcionó, funcionó en parte o falló, con una línea de prueba.'],
+      ['03', 'Fecha y versión', 'La fecha de la prueba, la versión de la app y la plataforma.'],
+      ['04', 'Comprobación de importación', 'Cuántas skills mostraba la vista previa y cuántas llegaron de verdad.'],
+    ],
+    impH: '¿Por qué comprobar la importación?',
+    impP: 'Desde agosto de 2026, varios usuarios cuentan que algunas skills de la vista previa de una plantilla no llegan al bot importado, y la importación no avisa. Por eso cada ficha muestra los dos números: skills en la vista previa y skills que llegaron.',
+    impNote: 'Las pruebas caducan a los 30 días o cuando cambia la plantilla. Entonces la ficha dice «caducada» hasta que la repita.',
+    nextEyebrow: 'Próximamente', nextH: 'Lo que viene', nextSub: 'Sin fechas. Cada cosa llega cuando está lista.',
+    next: [
+      ['Más plantillas', 'Bots nuevos, cada uno con su ficha de prueba.'],
+      ['Cursos', 'Guías paso a paso para crear y probar bots.'],
+      ['Registro de pruebas', 'Un historial público de cada nueva prueba y de lo que cambió.'],
+    ],
+    aboutEyebrow: 'Sobre mí', aboutH: 'Hecho por Sergio Domínguez',
+    aboutP: 'En raw2top publico las plantillas de bots que creo y las pruebas que hay detrás. Solo bots míos y solo resultados reales.',
+    aboutCta: 'Más sobre mí',
+  },
+}[lang];
+---
+<Base title="home">
+  <section class="hero wrap">
+    <p class="pill"><span class="dot" aria-hidden="true"></span>{c.pill}</p>
+    <h1>{c.h1a}<br />{c.h1b} <span class="g">{c.h1c}</span></h1>
+    <p class="sub">{c.sub}</p>
+    <div class="cta">
+      <a class="btn btn-p" href={L('/bots/')}>{c.cta1}</a>
+      <a class="btn btn-s" href="#how">{c.cta2} →</a>
+    </div>
+    <div class="hero-grid"><BotsGrid lang={lang} limit={3} /></div>
+  </section>
+
+  <section class="section wrap" id="how" aria-labelledby="how-h">
+    <div class="section-head"><div><p class="eyebrow">{c.howEyebrow}</p><h2 id="how-h">{c.howH}</h2></div></div>
+    <p class="lead muted">{c.howSub}</p>
+    <ol class="steps">
+      {c.steps.map(([n, h, p]) => (
+        <li class="card"><span class="mono n">{n}</span><h3>{h}</h3><p class="muted">{p}</p></li>
+      ))}
+    </ol>
+    <div class="imp card">
+      <div class="imp-viz mono" aria-hidden="true">
+        <div><span class="muted">preview</span><b>[n]</b></div><span class="arrow">→</span><div><span class="muted">arrived</span><b class="lime">[n]</b></div>
+      </div>
+      <div><h3>{c.impH}</h3><p class="muted">{c.impP}</p><p class="small mono">{c.impNote}</p></div>
+    </div>
+  </section>
+
+  <section class="section wrap" aria-labelledby="next-h">
+    <div class="section-head"><div><p class="eyebrow">{c.nextEyebrow}</p><h2 id="next-h">{c.nextH}</h2></div><p class="muted">{c.nextSub}</p></div>
+    <ul class="grid next">
+      {c.next.map(([h, p]) => <li class="card"><h3>{h}</h3><p class="muted">{p}</p></li>)}
+    </ul>
+  </section>
+
+  <section class="section wrap" aria-labelledby="about-h">
+    <div class="about card">
+      <div><p class="eyebrow">{c.aboutEyebrow}</p><h2 id="about-h">{c.aboutH}</h2><p class="muted">{c.aboutP}</p></div>
+      <a class="btn btn-s" href={L('/about/')}>{c.aboutCta} →</a>
+    </div>
+  </section>
+</Base>
+<style>
+  .hero { text-align: center; padding-top: 28px; }
+  .pill { display: inline-flex; gap: 8px; align-items: center; padding: 7px 14px; border: 1px solid var(--line); border-radius: 99px; font-family: var(--mono); font-size: 12px; color: var(--muted); background: rgba(18,20,27,.7); }
+  .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 12px var(--lime); animation: pulse 2.4s ease-in-out infinite; }
+  @keyframes pulse { 50% { opacity: .4; } }
+  h1 { font-size: clamp(40px, 7.4vw, 84px); line-height: 1; letter-spacing: -0.045em; font-weight: 700; margin-top: 22px; }
+  .g { background: linear-gradient(90deg, var(--lime), var(--cyan) 50%, var(--violet)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .sub { font-size: clamp(16px, 2vw, 19px); color: var(--muted); max-width: 640px; margin: 22px auto 0; }
+  .cta { display: flex; gap: 12px; justify-content: center; margin-top: 30px; flex-wrap: wrap; }
+  .hero-grid { margin-top: 52px; text-align: left; }
+  .lead { max-width: 640px; margin-bottom: 28px; }
+  .steps { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+  .steps h3, .next h3 { font-size: 19px; margin: 10px 0 6px; }
+  .steps p, .next p { font-size: 14.5px; }
+  .n { color: var(--lime); font-size: 13px; }
+  .imp { margin-top: 18px; display: grid; grid-template-columns: 300px 1fr; gap: 32px; align-items: center; padding: 28px; }
+  .imp h3 { font-size: 22px; margin-bottom: 8px; }
+  .imp-viz { display: flex; align-items: center; justify-content: center; gap: 16px; padding: 22px; border: 1px dashed var(--line); border-radius: 12px; }
+  .imp-viz div { display: flex; flex-direction: column; align-items: center; gap: 4px; font-size: 12px; }
+  .imp-viz b { font-size: 28px; font-weight: 500; color: var(--text); }
+  .imp-viz .lime { color: var(--lime); } .arrow { font-size: 24px; color: var(--muted); }
+  .small { font-size: 12.5px; color: var(--muted); margin-top: 12px; }
+  .next { list-style: none; padding: 0; margin: 0; }
+  .about { display: flex; justify-content: space-between; align-items: center; gap: 24px; padding: 32px; flex-wrap: wrap; }
+  .about h2 { font-size: clamp(26px, 3vw, 34px); margin: 6px 0 10px; }
+  .about p.muted { max-width: 560px; }
+  @media (max-width: 960px) { .steps { grid-template-columns: 1fr 1fr; } .imp { grid-template-columns: 1fr; } }
+  @media (max-width: 520px) { .steps { grid-template-columns: 1fr; } .hero-grid { margin-top: 40px; } }
+</style>

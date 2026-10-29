@@ -1,0 +1,10 @@
+---
+import View from '../../views/BotDetail.astro';
+import { realBots, exampleBot, type Bot } from '../../lib/bots';
+export function getStaticPaths() {
+  const all = [...realBots, ...(exampleBot ? [exampleBot] : [])];
+  return all.map((bot) => ({ params: { slug: bot.slug }, props: { bot } }));
+}
+const { bot } = Astro.props as { bot: Bot };
+---
+<View lang="en" bot={bot} />
