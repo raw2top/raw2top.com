@@ -1,0 +1,35 @@
+---
+// The scroll landing (Video Lab v2) is a self-contained HTML document kept as-is in src/landing/landing.html.
+// This wrapper fills the per-language head (lang, title, description, canonical, hreflang) and serves it raw.
+import raw from '../landing/landing.html?raw';
+interface Props { lang: 'en' | 'es'; }
+const { lang } = Astro.props;
+const META = {
+  en: { title: 'raw2top · Tested bots, dated and honest',
+        desc: "raw2top is where Sergio Domínguez publishes his own bots for Grok Bot. Every bot is tested on a real task, dated, versioned, and honest about what it can't do." },
+  es: { title: 'raw2top · Bots probados, con fecha y honestos',
+        desc: 'raw2top es donde Sergio Domínguez publica sus propios bots para Grok Bot. Cada bot se prueba en una tarea real, con fecha y versión, y dice claramente lo que no sabe hacer.' },
+}[lang];
+const site = Astro.site!.href.replace(/\/$/, '');
+const url = { en: `${site}/`, es: `${site}/es/` };
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+const head = [
+  `<link rel="canonical" href="${url[lang]}">`,
+  `<link rel="alternate" hreflang="en" href="${url.en}">`,
+  `<link rel="alternate" hreflang="es" href="${url.es}">`,
+  `<link rel="alternate" hreflang="x-default" href="${url.en}">`,
+  `<meta name="theme-color" content="#0a0b0f">`,
+  `<meta property="og:title" content="${esc(META.title)}">`,
+  `<meta property="og:description" content="${esc(META.desc)}">`,
+  `<meta property="og:type" content="website">`,
+  `<meta property="og:url" content="${url[lang]}">`,
+  `<meta property="og:image" content="${site}/landing/assets/plate-01.jpg">`,
+  `<meta property="og:locale" content="${lang === 'es' ? 'es_ES' : 'en_US'}">`,
+].join('\n');
+const html = raw
+  .replace('%%LANG%%', lang)
+  .replace('%%TITLE%%', esc(META.title))
+  .replace('%%DESC%%', esc(META.desc))
+  .replace('%%HEADMETA%%', head);
+---
+<Fragment set:html={html} />
