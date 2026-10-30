@@ -254,12 +254,13 @@ html.rec *{transition:none!important}
 
   <section class="scene" id="s6">
     <h2 class="h" data-t="s6.h"></h2>
-    <form id="form" autocomplete="off">
+    <form id="form" method="post" enctype="text/plain" action="mailto:raw2top@gmail.com">
       <div class="hd mono"><span data-t="s6.hd"></span><span>v0.1</span></div>
       <label class="mono"><span data-t="s6.l1"></span><input name="name" data-ph="s6.p1"></label>
       <label class="mono"><span data-t="s6.l2"></span><input name="email" type="email" data-ph="s6.p2"></label>
       <label class="mono"><span data-t="s6.l3"></span><textarea name="task" rows="3" required data-ph="s6.p3"></textarea></label>
       <button class="btn" type="submit" id="send" data-t="s6.send"></button>
+      <p class="mono fine"><span data-t="s6.fine"></span> <a href="mailto:raw2top@gmail.com">raw2top@gmail.com</a><br><span data-t="s6.legal"></span></p>
     </form>
     <div class="board"><div class="led" id="led"></div><button class="btn" id="back" type="button" data-t="s6.back"></button></div>
   </section>
@@ -293,7 +294,7 @@ const DICT={
   's6.h':'Your next bot<br><em>starts here.</em>','s6.hd':'Test card · new bot',
   's6.l1':'01 · Name','s6.l2':'02 · Email','s6.l3':'03 · What should it do?',
   's6.p1':'Your name','s6.p2':'you@domain.com','s6.p3':'One real task…',
-  's6.send':'Run test →','s6.sent':'Queued ✓','s6.back':'Back to boot ↑',
+  's6.send':'Run test →','s6.sent':'Email ready ✓','s6.back':'Back to boot ↑',
   's6.fine':'Opens your email app, addressed to','s6.legal':'Not affiliated with SpaceXSI. “Grok Bot” is used only to describe compatibility.',
   'mail.subject':'New bot idea','mail.name':'Name','mail.email':'Email','mail.task':'What should it do',
   'nav.bots':'Bots','nav.about':'About','nav.report':'Report',
@@ -322,7 +323,7 @@ const DICT={
   's6.h':'Tu próximo bot<br><em>empieza aquí.</em>','s6.hd':'Ficha de prueba · bot nuevo',
   's6.l1':'01 · Nombre','s6.l2':'02 · Email','s6.l3':'03 · ¿Qué debe hacer?',
   's6.p1':'Tu nombre','s6.p2':'tu@dominio.com','s6.p3':'Una tarea real…',
-  's6.send':'Lanzar prueba →','s6.sent':'En cola ✓','s6.back':'Volver al inicio ↑',
+  's6.send':'Lanzar prueba →','s6.sent':'Email listo ✓','s6.back':'Volver al inicio ↑',
   's6.fine':'Abre tu app de correo, con destino','s6.legal':'Sin relación con SpaceXSI. «Grok Bot» solo se usa para indicar compatibilidad.',
   'mail.subject':'Idea de bot nuevo','mail.name':'Nombre','mail.email':'Email','mail.task':'Qué debe hacer',
   'nav.bots':'Bots','nav.about':'Sobre mí','nav.report':'Avisar',
@@ -672,7 +673,7 @@ const maxScroll=()=>document.documentElement.scrollHeight-innerHeight;
 function scrollToP(p){scrollTo({top:p*maxScroll(),behavior:RM?'auto':'smooth'})}
 tabs.forEach((b,j)=>b.addEventListener('click',()=>{const s=SEG.find(s=>s.h===4);scrollToP(s.p0+(.12+(j+.5)/4*.74)*(s.p1-s.p0))}));
 flips.forEach(f=>f.addEventListener('click',e=>{if(e.target.closest('a'))return;f.classList.toggle('flipped')}));
-form.addEventListener('submit',e=>{e.preventDefault();$('#send').textContent=T['s6.sent']});
+form.addEventListener('submit',e=>{e.preventDefault();const f=new FormData(form),nm=(f.get('name')||'').trim(),em=(f.get('email')||'').trim(),tk=(f.get('task')||'').trim();const subject=T['mail.subject']+(nm?' · '+nm:''),body=T['mail.name']+': '+nm+'\n'+T['mail.email']+': '+em+'\n\n'+T['mail.task']+':\n'+tk+'\n';location.href='mailto:raw2top@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);$('#send').textContent=T['s6.sent']});
 $('#back').addEventListener('click',()=>scrollTo({top:0,behavior:RM?'auto':'smooth'}));
 $('#logo').addEventListener('click',e=>{e.preventDefault();scrollTo({top:0,behavior:RM?'auto':'smooth'})});
 
