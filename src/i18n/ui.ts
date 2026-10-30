@@ -30,7 +30,7 @@ export const ui = {
     'meta.home': 'raw2top · Plantillas de bots probadas',
     'skip': 'Saltar al contenido',
     'nav.main': 'Principal',
-    'nav.bots': 'Bots', 'nav.about': 'Sobre mí', 'nav.report': 'Avisar',
+    'nav.bots': 'Bots', 'nav.about': 'Sobre mí', 'nav.report': 'Aviso',
     'nav.home': 'Inicio de raw2top',
     'lang.switch': 'Idioma',
     'foot.tag': 'Plantillas de bots para Grok Bot, creadas y probadas por Sergio Domínguez.',

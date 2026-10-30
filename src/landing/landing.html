@@ -45,18 +45,27 @@ html.rec #fakecur{display:block}
 .logo b{color:var(--lime)}
 .chip{display:inline-flex;align-items:center;gap:.5em;padding:.55em .9em;border:1px solid var(--line);border-radius:999px;background:rgba(18,20,27,.86);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
 #idx{color:var(--muted)}#idx em{color:var(--text);font-style:normal}
-#lang{padding:.3em}
 #bar .r{display:flex;align-items:center;gap:clamp(6px,.8vw,12px)}
 #links{padding:.3em .4em;gap:0}
 #links a{color:var(--muted);text-decoration:none;padding:.35em .6em;border-radius:999px}
 #links a:hover,#links a:focus-visible{color:var(--text)}
 form .fine{color:var(--muted);font-size:11px;line-height:1.45;letter-spacing:.02em;text-transform:none}
 form .fine a{color:var(--lime)}
-#lang button{display:inline-flex;align-items:center;background:transparent;border:0;font:inherit;line-height:0;padding:.42em .62em;border-radius:999px;cursor:pointer;opacity:.55;transition:opacity .15s,background .15s}
-#lang button:hover,#lang button:focus-visible{opacity:1}
-#lang button:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
-#lang button[aria-pressed=true]{background:var(--lime);opacity:1}
-#lang .flag{display:block;width:20px;height:14px;border-radius:3px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.18)}
+/* language dropdown: current flag as the main button, vertical menu drops down */
+#lang{position:relative;z-index:60}
+#langBtn{gap:.55em;padding:.62em .8em .62em .72em;min-height:36px;color:var(--muted);font:inherit;line-height:0;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:border-color .15s,color .15s}
+#langBtn .cur{display:inline-flex}#langBtn .cur[hidden]{display:none}
+#langBtn:hover,#langBtn:focus-visible,#lang.open #langBtn{border-color:var(--lime);color:var(--lime)}
+#langBtn:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+#lang .caret{width:10px;height:6px;transition:transform .15s}
+#lang.open .caret{transform:rotate(180deg)}
+#langMenu{position:absolute;top:calc(100% + 6px);right:0;flex-direction:column;gap:4px;padding:4px;border-radius:18px;background:rgba(18,20,27,.96);box-shadow:0 12px 30px rgba(0,0,0,.5)}
+#langMenu[hidden]{display:none}
+#langMenu button{display:flex;align-items:center;justify-content:center;min-width:46px;min-height:36px;padding:8px 12px;background:transparent;border:0;font:inherit;line-height:0;border-radius:999px;cursor:pointer;opacity:.7;-webkit-tap-highlight-color:transparent;transition:opacity .15s,background .15s}
+#langMenu button:hover,#langMenu button:focus-visible{opacity:1;background:var(--panel-2)}
+#langMenu button:focus-visible{outline:2px solid var(--lime);outline-offset:0}
+#langMenu button[aria-current=true]{background:var(--lime);opacity:1}
+#lang .flag{display:block;width:22px;height:15px;border-radius:3px;overflow:hidden;box-shadow:0 0 0 1px rgba(255,255,255,.18)}
 #lang .flag svg{display:block;width:100%;height:100%}
 #prog{position:absolute;z-index:30;left:0;bottom:0;height:2px;width:100%;transform-origin:0 50%;background:var(--lime);transform:scaleX(0)}
 #load{position:absolute;z-index:29;left:0;bottom:0;height:2px;width:100%;transform-origin:0 50%;background:var(--line);transform:scaleX(0);transition:opacity .6s}
@@ -226,8 +235,9 @@ html.rec *{transition:none!important}
     </div>
     <div class="r">
     <nav class="chip mono" id="links" aria-label="Main"><a data-p="/bots/" data-t="nav.bots" href="/bots/">Bots</a><a data-p="/about/" data-t="nav.about" href="/about/">About</a><a data-p="/report/" data-t="nav.report" href="/report/">Report</a></nav>
-    <div class="chip mono" id="lang" role="group" aria-label="Language">
-      <button type="button" data-l="en" lang="en" aria-pressed="true" aria-label="English" title="English"><span class="flag" aria-hidden="true"><svg viewBox="0 0 38 20" preserveAspectRatio="xMidYMid slice" focusable="false"><path fill="#B22234" d="M0 0h38v20H0z"/><path fill="#fff" d="M0 1.538h38v1.538H0zM0 4.615h38v1.538H0zM0 7.692h38v1.538H0zM0 10.769h38v1.538H0zM0 13.846h38v1.538H0zM0 16.923h38v1.538H0z"/><path fill="#3C3B6E" d="M0 0h15.2v10.769H0z"/><g fill="#fff"><circle cx="1.6" cy="1.5" r=".55"/><circle cx="4.6" cy="1.5" r=".55"/><circle cx="7.6" cy="1.5" r=".55"/><circle cx="10.6" cy="1.5" r=".55"/><circle cx="13.6" cy="1.5" r=".55"/><circle cx="3.1" cy="4.1" r=".55"/><circle cx="6.1" cy="4.1" r=".55"/><circle cx="9.1" cy="4.1" r=".55"/><circle cx="12.1" cy="4.1" r=".55"/><circle cx="1.6" cy="6.7" r=".55"/><circle cx="4.6" cy="6.7" r=".55"/><circle cx="7.6" cy="6.7" r=".55"/><circle cx="10.6" cy="6.7" r=".55"/><circle cx="13.6" cy="6.7" r=".55"/><circle cx="3.1" cy="9.3" r=".55"/><circle cx="6.1" cy="9.3" r=".55"/><circle cx="9.1" cy="9.3" r=".55"/><circle cx="12.1" cy="9.3" r=".55"/></g></svg></span></button><button type="button" data-l="es" lang="es" aria-pressed="false" aria-label="Español" title="Español"><span class="flag" aria-hidden="true"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" focusable="false"><path fill="#AA151B" d="M0 0h30v20H0z"/><path fill="#F1BF00" d="M0 5h30v10H0z"/></svg></span></button>
+    <div id="lang" class="lang-dd">
+      <button type="button" class="chip" id="langBtn" aria-haspopup="true" aria-expanded="false" aria-controls="langMenu" aria-label="Language: English" title="English"><span class="cur" data-cur="en"><span class="flag" aria-hidden="true"><svg viewBox="0 0 38 20" preserveAspectRatio="xMidYMid slice" focusable="false"><path fill="#B22234" d="M0 0h38v20H0z"/><path fill="#fff" d="M0 1.538h38v1.538H0zM0 4.615h38v1.538H0zM0 7.692h38v1.538H0zM0 10.769h38v1.538H0zM0 13.846h38v1.538H0zM0 16.923h38v1.538H0z"/><path fill="#3C3B6E" d="M0 0h15.2v10.769H0z"/><g fill="#fff"><circle cx="1.6" cy="1.5" r=".55"/><circle cx="4.6" cy="1.5" r=".55"/><circle cx="7.6" cy="1.5" r=".55"/><circle cx="10.6" cy="1.5" r=".55"/><circle cx="13.6" cy="1.5" r=".55"/><circle cx="3.1" cy="4.1" r=".55"/><circle cx="6.1" cy="4.1" r=".55"/><circle cx="9.1" cy="4.1" r=".55"/><circle cx="12.1" cy="4.1" r=".55"/><circle cx="1.6" cy="6.7" r=".55"/><circle cx="4.6" cy="6.7" r=".55"/><circle cx="7.6" cy="6.7" r=".55"/><circle cx="10.6" cy="6.7" r=".55"/><circle cx="13.6" cy="6.7" r=".55"/><circle cx="3.1" cy="9.3" r=".55"/><circle cx="6.1" cy="9.3" r=".55"/><circle cx="9.1" cy="9.3" r=".55"/><circle cx="12.1" cy="9.3" r=".55"/></g></svg></span></span><span class="cur" data-cur="es" hidden><span class="flag" aria-hidden="true"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" focusable="false"><path fill="#AA151B" d="M0 0h30v20H0z"/><path fill="#F1BF00" d="M0 5h30v10H0z"/></svg></span></span><svg class="caret" viewBox="0 0 10 6" aria-hidden="true" focusable="false"><path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
+      <div class="chip" id="langMenu" role="menu" aria-labelledby="langBtn" hidden><button type="button" role="menuitem" tabindex="-1" data-l="en" lang="en" aria-current="true" aria-label="English" title="English"><span class="flag" aria-hidden="true"><svg viewBox="0 0 38 20" preserveAspectRatio="xMidYMid slice" focusable="false"><path fill="#B22234" d="M0 0h38v20H0z"/><path fill="#fff" d="M0 1.538h38v1.538H0zM0 4.615h38v1.538H0zM0 7.692h38v1.538H0zM0 10.769h38v1.538H0zM0 13.846h38v1.538H0zM0 16.923h38v1.538H0z"/><path fill="#3C3B6E" d="M0 0h15.2v10.769H0z"/><g fill="#fff"><circle cx="1.6" cy="1.5" r=".55"/><circle cx="4.6" cy="1.5" r=".55"/><circle cx="7.6" cy="1.5" r=".55"/><circle cx="10.6" cy="1.5" r=".55"/><circle cx="13.6" cy="1.5" r=".55"/><circle cx="3.1" cy="4.1" r=".55"/><circle cx="6.1" cy="4.1" r=".55"/><circle cx="9.1" cy="4.1" r=".55"/><circle cx="12.1" cy="4.1" r=".55"/><circle cx="1.6" cy="6.7" r=".55"/><circle cx="4.6" cy="6.7" r=".55"/><circle cx="7.6" cy="6.7" r=".55"/><circle cx="10.6" cy="6.7" r=".55"/><circle cx="13.6" cy="6.7" r=".55"/><circle cx="3.1" cy="9.3" r=".55"/><circle cx="6.1" cy="9.3" r=".55"/><circle cx="9.1" cy="9.3" r=".55"/><circle cx="12.1" cy="9.3" r=".55"/></g></svg></span></button><button type="button" role="menuitem" tabindex="-1" data-l="es" lang="es" aria-label="Español" title="Español"><span class="flag" aria-hidden="true"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" focusable="false"><path fill="#AA151B" d="M0 0h30v20H0z"/><path fill="#F1BF00" d="M0 5h30v10H0z"/></svg></span></button></div>
     </div>
     </div>
   </header>
@@ -356,7 +366,7 @@ const DICT={
   's6.send':'Lanzar prueba →','s6.sent':'Email listo ✓','s6.back':'Volver al inicio ↑',
   's6.fine':'Abre tu app de correo, con destino','s6.legal':'Sin relación con SpaceXSI. «Grok Bot» solo se usa para indicar compatibilidad.',
   'mail.subject':'Idea de bot nuevo','mail.name':'Nombre','mail.email':'Email','mail.task':'Qué debe hacer',
-  'nav.bots':'Bots','nav.about':'Sobre mí','nav.report':'Avisar',
+  'nav.bots':'Bots','nav.about':'Sobre mí','nav.report':'Aviso',
   'led.run':'Ejecutando pruebas…','led.pass':'Pruebas superadas'
  }
 };
@@ -402,8 +412,9 @@ function setLang(l,save){
   if(!matchMedia('(hover:hover)').matches) $('#s4lab').textContent=T['s4.labt'];
   mani.innerHTML=T.mani.map(s=>`<span>${s}</span>`).join('');
   rowsEl.innerHTML=T.rows.map((s,j)=>`<div><span class="ck">✓</span><span class="n">0${j+1}</span>${s}</div>`).join('');
-  $$('#lang button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.l===LANG));
-  $('#lang').setAttribute('aria-label',LANG==='es'?'Idioma':'Language');
+  $$('#langMenu [data-l]').forEach(b=>b.dataset.l===LANG?b.setAttribute('aria-current','true'):b.removeAttribute('aria-current'));
+  $$('#langBtn .cur').forEach(c=>c.hidden=c.dataset.cur!==LANG);
+  {const nm=LANG==='es'?'Español':'English'; $('#langBtn').setAttribute('aria-label',(LANG==='es'?'Idioma: ':'Language: ')+nm); $('#langBtn').title=nm;}
   $$('#links a,#seeScout').forEach(a=>a.href=(LANG==='es'?'/es':'')+a.dataset.p);
   $('#links').setAttribute('aria-label',LANG==='es'?'Principal':'Main');
   requestAnimationFrame(stack);
@@ -411,7 +422,26 @@ function setLang(l,save){
   if(save) try{localStorage.setItem('raw2top-lang',LANG)}catch(e){}
   lastKey=''; update(P,TT,true);
 }
-$$('#lang button').forEach(b=>b.addEventListener('click',()=>setLang(b.dataset.l,true)));
+/* language dropdown (tap/click/keyboard; closes on outside tap, Escape, Tab out) */
+{
+  const dd=$('#lang'), btn=$('#langBtn'), menu=$('#langMenu'), items=$$('#langMenu [data-l]');
+  const isOpen=()=>btn.getAttribute('aria-expanded')==='true';
+  const open=f=>{menu.hidden=false;btn.setAttribute('aria-expanded','true');dd.classList.add('open');
+    if(f){const cur=Math.max(0,items.findIndex(b=>b.getAttribute('aria-current')==='true'));items[f==='first'?0:f==='last'?items.length-1:cur].focus()}};
+  const close=re=>{if(!isOpen())return;menu.hidden=true;btn.setAttribute('aria-expanded','false');dd.classList.remove('open');if(re)btn.focus()};
+  btn.addEventListener('click',e=>{e.stopPropagation();isOpen()?close():open(e.detail===0?'current':null)});
+  btn.addEventListener('keydown',e=>{if(e.key==='ArrowDown'){e.preventDefault();open('current')}else if(e.key==='ArrowUp'){e.preventDefault();open('last')}});
+  menu.addEventListener('keydown',e=>{const i=items.indexOf(document.activeElement);
+    if(e.key==='ArrowDown'){e.preventDefault();items[(i+1)%items.length].focus()}
+    else if(e.key==='ArrowUp'){e.preventDefault();items[(i-1+items.length)%items.length].focus()}
+    else if(e.key==='Home'){e.preventDefault();items[0].focus()}
+    else if(e.key==='End'){e.preventDefault();items[items.length-1].focus()}
+    else if(e.key==='Tab')close()});
+  items.forEach(b=>b.addEventListener('click',()=>{const kb=document.activeElement===b&&b.matches(':focus-visible');close(kb);setLang(b.dataset.l,true)}));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape'&&isOpen()){e.preventDefault();close(true)}});
+  document.addEventListener('pointerdown',e=>{if(isOpen()&&!dd.contains(e.target))close()});
+  document.addEventListener('focusin',e=>{if(isOpen()&&!dd.contains(e.target))close()});
+}
 
 /* ---------- canvas frame sequence ---------- */
 // phones/tablets/save-data: 1280px, every 2nd frame (46 per clip, ~6.2 MB, black already lifted to the brand bg),
