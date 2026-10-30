@@ -4,7 +4,7 @@
 - `bots` (array of Bot): Sergio's own templates only.
 - `example` (Bot, optional): placeholder, never listed as real. Currently absent.
 
-The /bots/ collection page reads `src/data/landing-bots.json` (TCG Scout: no dated test yet, so its test sheet shows "pending").
+The /bots/ collection page reads `src/data/landing-bots.json` (TCG Scout: `tested` = { date (YYYY-MM-DD), rating (0–5), appVersion, skills: { en: [], es: [] } }; a null field shows "— pending"; skills render as a SEE/VER bubble; status Tested/Stale is computed from the date at build time).
 
 ## Bot
 | field | type | notes |

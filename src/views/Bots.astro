@@ -3,19 +3,25 @@
 // Copy: src/i18n/botsPage.ts. Bot facts: src/data/landing-bots.json (nothing invented here).
 import Base from '../layouts/Base.astro';
 import landing from '../data/landing-bots.json';
-import { SLOTS } from '../lib/bots';
+import { SLOTS, STALE_DAYS } from '../lib/bots';
 import { bp } from '../i18n/botsPage';
 import { localize, type Lang } from '../i18n/utils';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const t = bp(lang);
 const pad = (n: number) => String(n).padStart(2, '0');
+const MON = { en: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], es: ['ene','feb','mar','abr','may','jun','jul','ago','sept','oct','nov','dic'] };
+const fmtDate = (iso: string) => { const [y, m, d] = iso.split('-').map(Number); const mo = (MON as any)[lang][m - 1];
+  return lang === 'es' ? `${d} ${mo} ${y}` : `${mo} ${d}, ${y}`; };
 const total = Math.max(SLOTS, landing.bots.length);
 const bots = landing.bots.map((b: any) => {
   const features: string[] = b.features[lang] ?? b.features.en;
   // features[0] is the games line ("Magic · One Piece · Lorcana & more"); the rest are the card's moves.
   const games = features[0].split(' · ').flatMap((g) => g.split(/ (?=(?:& more|y más)$)/));
-  const status = b.tested ? (b.tested.stale ? 'Tested-stale' : 'Tested') : 'Listed';
+  const tst = b.tested;
+  // Stale = dated test older than STALE_DAYS, computed at build time (same rule as src/lib/bots.ts).
+  const age = tst?.date ? (Date.now() - Date.parse(tst.date + 'T00:00:00Z')) / 86_400_000 : NaN;
+  const status = tst ? (age > STALE_DAYS ? 'Tested-stale' : 'Tested') : 'Listed';
   return {
     ...b, games, moves: features.slice(1), status,
     statusLabel: t(`st.${status}` as any),
@@ -23,6 +29,11 @@ const bots = landing.bots.map((b: any) => {
     type: b.type?.[lang] ?? b.type?.en, kind: b.kind?.[lang] ?? b.kind?.en,
     access: b.access?.[lang] ?? b.access?.en,
     serial: `RAW-0${b.number}`,
+    result: typeof tst?.rating === 'number' ? `${tst.rating.toLocaleString(lang === 'es' ? 'es-ES' : 'en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}/5` : null,
+    testedOn: tst?.date ? fmtDate(tst.date) : null,
+    app: tst?.appVersion ?? null,
+    skills: (tst?.skills?.[lang] ?? tst?.skills?.en ?? null) as string[] | null,
+    note: !tst ? t('back.note') : (tst.skills ? null : t('back.noteSkills')),
     detail: localize(`/bots/${b.slug}/`, lang),
   };
 });
@@ -64,19 +75,20 @@ const dot = (s: string) => (s === 'Tested' ? 'd-tested' : s === 'Tested-stale' ?
             <article class="face back" aria-hidden="true">
               <div class="bh"><div><div class="bl">{t('back.lab')}</div><h3>{b.name}</h3></div><span class="badge"><i class={dot(b.status)}></i><span>{b.statusLabel}</span></span></div>
               <dl>
-                <dt>{t('back.result')}</dt><dd class="pend">{t('pending')}</dd>
-                <dt>{t('back.tested')}</dt><dd class="pend">{t('pending')}</dd>
-                <dt>{t('back.app')}</dt><dd class="pend">{t('pending')}</dd>
-                <dt>{t('back.skills')}</dt><dd class="pend">{t('pending')}</dd>
+                <dt>{t('back.result')}</dt>{b.result ? <dd>{b.result}</dd> : <dd class="pend">{t('pending')}</dd>}
+                <dt>{t('back.tested')}</dt>{b.testedOn ? <dd><time datetime={b.tested.date}>{b.testedOn}</time></dd> : <dd class="pend">{t('pending')}</dd>}
+                <dt>{t('back.app')}</dt>{b.app ? <dd>{b.app}</dd> : <dd class="pend">{t('pending')}</dd>}
+                <dt>{t('back.skills')}</dt>{b.skills?.length ? <dd><button type="button" class="skb" aria-expanded="false" aria-controls={`sk-${b.slug}`} aria-label={t('back.seeAl', { n: b.skills.length })} tabindex="-1">{t('back.see')}</button></dd> : <dd class="pend">{t('pending')}</dd>}
                 <dt>{t('back.access')}</dt>{b.access ? <dd>{b.access}</dd> : <dd class="pend">{t('pending')}</dd>}
               </dl>
-              <p class="note">{t('back.note')}</p>
+              {b.note && <p class="note">{b.note}</p>}
               <div class="games"><span class="gl">{t('gamesL')}</span>{b.games.map((g: string) => <span>{g}</span>)}</div>
               <div class="btns">
                 <a class="bbtn" href={b.templateUrl} target="_blank" rel="noopener" tabindex="-1">{t('back.open')}</a>
                 <a class="bbtn sec" href={b.detail} tabindex="-1">{t('back.card')}</a>
               </div>
               <div class="serial"><span>{b.serial}</span><span>{t('back.flip')}</span></div>
+              {b.skills?.length && <div class="sbub" id={`sk-${b.slug}`} role="group" aria-labelledby={`skh-${b.slug}`} hidden><b id={`skh-${b.slug}`}>{t('back.skills')} · {b.skills.length}</b><ul>{b.skills.map((k: string) => <li>{k}</li>)}</ul></div>}
             </article>
           </div>
         </div>
@@ -186,6 +198,26 @@ h1{font-family:var(--sans);font-weight:700;letter-spacing:-.045em;line-height:.9
 .back dt{color:var(--muted);text-transform:uppercase;padding-right:4cqw}
 .back dd{text-align:right}
 .pend{color:#6c7285}
+/* Skills: SEE/VER opens a speech bubble inside the back face (same look as the landing's Tested/Dated/Honest bubbles) */
+.skb{font:inherit;font-size:max(9px,3cqw);letter-spacing:.1em;text-transform:uppercase;color:var(--lime);background:rgba(198,255,61,.08);border:1px solid var(--lime);
+  border-radius:999px;padding:.35em .9em;margin:-.4em 0;cursor:pointer;line-height:1.2;transition:background .15s,color .15s}
+.skb:hover,.skb[aria-expanded=true]{background:var(--lime);color:#0A0B0F}
+.skb:focus-visible{outline:2px solid var(--text);outline-offset:3px}
+.sbub{position:absolute;z-index:5;left:0;top:0;width:min(300px,calc(100% - 8cqw));padding:12px 14px 13px;border-radius:14px;
+  background:#12141b;border:1px solid var(--lime);color:var(--text);
+  box-shadow:0 0 0 1px rgba(124,92,255,.25),0 0 28px rgba(198,255,61,.18),0 18px 50px rgba(124,92,255,.32);
+  font-family:var(--sans);font-size:max(12px,3.9cqw);line-height:1.35;letter-spacing:0;text-transform:none;transform-origin:var(--tx,50%) 100%}
+.sbub.below{transform-origin:var(--tx,50%) 0}
+.sbub[hidden]{display:none}
+.sbub b{display:block;font-family:var(--mono);font-weight:500;font-size:max(10px,3.4cqw);letter-spacing:.08em;text-transform:uppercase;color:var(--lime);margin-bottom:5px}
+.sbub ul{list-style:none;margin:0;padding:0}
+.sbub li{padding:3px 0;display:flex;gap:7px}
+.sbub li::before{content:"→";color:var(--lime)}
+.sbub::after{content:"";position:absolute;top:100%;left:var(--tx,50%);width:12px;height:12px;margin:-6px 0 0 -6px;background:inherit;border:solid var(--lime);border-width:0 1px 1px 0;transform:rotate(45deg)}
+.sbub.below::after{top:0;border-width:1px 0 0 1px}
+.sbub.pop{animation:sbpop .22s cubic-bezier(.2,.9,.3,1.25)}
+@keyframes sbpop{from{opacity:0;transform:translateY(6px) scale(.9)}to{opacity:1;transform:none}}
+@media (prefers-reduced-motion:reduce){.sbub.pop{animation:none}.skb{transition:none}}
 .note{margin:4cqw 0 0;color:var(--muted);font-size:max(10px,3.5cqw);line-height:1.4;border-left:2px solid var(--lime);padding-left:3cqw}
 .games{margin:4cqw 0 3.4cqw;display:flex;flex-wrap:wrap;gap:1.1cqw}
 .games .gl{width:100%;font-family:var(--mono);font-size:max(9px,2.9cqw);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.4cqw}
@@ -305,11 +337,11 @@ if (root) {
   function syncA11y(S: Slot) {
     const front = S.el.querySelector('.front'), back = S.el.querySelector('.back');
     front?.setAttribute('aria-hidden', String(S.flipped)); back?.setAttribute('aria-hidden', String(!S.flipped));
-    back?.querySelectorAll('a').forEach((a) => (a.tabIndex = S.flipped ? 0 : -1));
+    back?.querySelectorAll<HTMLElement>('a, .skb').forEach((a) => (a.tabIndex = S.flipped ? 0 : -1));
     S.el.setAttribute('aria-label', (S.flipped ? S.el.dataset.alBack : S.el.dataset.alFront) || '');
     S.el.setAttribute('aria-pressed', String(S.flipped));
   }
-  function flip(S: Slot) { S.flipped = !S.flipped; S.tgt.flip = S.flipped ? 180 : 0; if (RM) S.s.flip = [S.tgt.flip, 0]; syncA11y(S); }
+  function flip(S: Slot) { skClose(); S.flipped = !S.flipped; S.tgt.flip = S.flipped ? 180 : 0; if (RM) S.s.flip = [S.tgt.flip, 0]; syncA11y(S); }
 
   // iOS 13+: motion access needs DeviceOrientationEvent.requestPermission() called synchronously inside a user gesture.
   // Ask on the first tap on a card (a click event, which is a gesture even when the touch started a pan elsewhere);
@@ -330,11 +362,46 @@ if (root) {
     S.el.addEventListener('click', (e) => {
       if (performance.now() < swallowClick) { e.preventDefault(); e.stopPropagation(); return; }
       askMotion();
-      if ((e.target as Element).closest('a')) return;
+      if (performance.now() < skEat) { skEat = 0; return; }
+      if ((e.target as Element).closest('a, .skb, .sbub')) return; // links, the Skills button and its bubble never flip the card
       flip(S);
     }, true);
     S.el.addEventListener('keydown', (e) => { if (e.target !== S.el) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(S); } });
   }
+
+  // Skills bubble: SEE/VER in the Skills row. One open at a time; tap again, tap outside or Esc closes.
+  // Positioned with offsets inside the back face (the face clips overflow and is 3D-transformed, so no client rects).
+  let skOpen: { btn: HTMLElement; bub: HTMLElement } | null = null, skEat = 0;
+  function skPlace() {
+    if (!skOpen) return;
+    const { btn, bub } = skOpen, face = bub.parentElement as HTMLElement, m = Math.round(face.clientWidth * .04), gap = 12;
+    let x = 0, y = 0; for (let n: HTMLElement | null = btn; n && n !== face; n = n.offsetParent as HTMLElement | null) { x += n.offsetLeft; y += n.offsetTop; }
+    const bw = bub.offsetWidth, bh = bub.offsetHeight, cx = x + btn.offsetWidth / 2;
+    const left = Math.min(Math.max(cx - bw / 2, m), face.clientWidth - m - bw);
+    const above = y - gap - bh >= m;
+    const top = above ? y - gap - bh : Math.min(y + btn.offsetHeight + gap, face.clientHeight - m - bh);
+    bub.classList.toggle('below', !above);
+    bub.style.left = left + 'px'; bub.style.top = top + 'px'; bub.style.setProperty('--tx', Math.min(Math.max(cx - left, 18), bw - 18) + 'px');
+  }
+  function skClose(focus = false) {
+    if (!skOpen) return; const { btn, bub } = skOpen; skOpen = null;
+    btn.setAttribute('aria-expanded', 'false'); bub.hidden = true; bub.classList.remove('pop'); if (focus) btn.focus();
+  }
+  function skShow(btn: HTMLElement) {
+    skClose(); const bub = document.getElementById(btn.getAttribute('aria-controls') || ''); if (!bub) return;
+    skOpen = { btn, bub }; btn.setAttribute('aria-expanded', 'true'); bub.hidden = false; skPlace();
+    bub.classList.remove('pop'); void bub.offsetWidth; if (!RM) bub.classList.add('pop');
+  }
+  root.querySelectorAll<HTMLElement>('.skb').forEach((btn) => btn.addEventListener('click', (e) => {
+    e.stopPropagation(); if (performance.now() < swallowClick) return; skOpen?.btn === btn ? skClose() : skShow(btn);
+  }));
+  document.addEventListener('pointerdown', (e) => {
+    const el = e.target as Element; if (!skOpen || el.closest('.skb, .sbub')) return;
+    if (el.closest('.slot.holo')) skEat = performance.now() + 700; // the tap that dismisses the bubble doesn't also flip the card
+    skClose();
+  }, true);
+  document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && skOpen) { e.preventDefault(); skClose(true); } });
+  addEventListener('resize', skPlace);
 
   // mouse / pen
   function pointAt(x: number, y: number) {
@@ -372,7 +439,7 @@ if (root) {
   }
   if (!RM) {
     slots.forEach((S) => S.el.addEventListener('pointerdown', (e) => {
-      if (e.pointerType !== 'touch' || TD.S) return;
+      if (e.pointerType !== 'touch' || TD.S || (e.target as Element).closest('.skb, .sbub')) return;
       Object.assign(TD, { S, id: e.pointerId, x0: e.clientX, y0: e.clientY, x: e.clientX, y: e.clientY, t0: nowT, moved: 0, drag: false, dead: false });
     }));
     addEventListener('pointermove', (e) => { if (e.pointerId === TD.id) touchMove(e.clientX, e.clientY); }, { passive: true });
