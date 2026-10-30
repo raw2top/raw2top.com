@@ -129,7 +129,7 @@ button.lc{border:0;font:inherit;text-align:left;cursor:pointer;-webkit-tap-highl
 .face.back{transform:rotateY(180deg);justify-content:space-between}
 .scout .front{background:linear-gradient(180deg,#000 0%,#000 46%,#173a80 64%,var(--scout) 100%);border:1px solid var(--scout);box-shadow:0 30px 80px rgba(61,139,255,.35)}
 .scout .front img{position:absolute;left:-6%;top:-6%;width:112%;-webkit-mask-image:linear-gradient(180deg,#000 66%,transparent 84%);mask-image:linear-gradient(180deg,#000 66%,transparent 84%)}
-.tag{position:absolute;top:clamp(12px,1.2vw,22px);left:clamp(12px,1.2vw,22px);background:var(--lime);color:#0a0b0f;padding:.35em .6em;border-radius:6px;font-weight:500}
+.tag{position:absolute;top:clamp(12px,1.2vw,22px);left:clamp(12px,1.2vw,22px);background:var(--lime);color:#0a0b0f;padding:.35em .6em;border-radius:6px;font-weight:500;white-space:nowrap}
 /* drop type tag (BOT, PROMPT, ...): top right, outlined so it doesn't compete with the lime status tag */
 .tag.ty{left:auto;right:clamp(12px,1.2vw,22px);background:rgba(10,11,15,.82);color:var(--lime);box-shadow:inset 0 0 0 1px rgba(198,255,61,.55);text-transform:uppercase}
 .face h3{position:relative;font-family:var(--sans);font-weight:700;font-size:clamp(22px,2.1vw,40px);letter-spacing:-.045em;line-height:1}
@@ -327,7 +327,7 @@ const DICT={
   's2.b3':'Honest about what it can\'t do: if a test fails, the card says so.',
   's3.lab':'Manifesto',
   mani:['We build drops that do','one real job.','Every drop is tested on','a real task, dated,','versioned, and honest','about what it can\'t do.'],
-  's4.lab':'The lab · hover a card','s4.labt':'The lab · tap a card','s4.h':'Drops','s4.live':'01 · Live',
+  's4.lab':'The lab · hover a card','s4.labt':'The lab · tap a card','s4.h':'Drops','s4.live':'01 · New',
   's4.desc':'Buyer and analyst of collectible trading cards: Magic, One Piece, Lorcana and more.',
   's4.see':'See drop →','s4.soon':'Coming soon','s4.next':'Next drop in the lab','s4.testing':'In testing','s4.colour':'Gets its own colour',
   's5.lab':'How we test','s5.h':'Every drop gets<br>a test card.',
@@ -341,7 +341,7 @@ const DICT={
   's6.l1':'01 · Name','s6.l2':'02 · Email','s6.l3':'03 · What do you need?',
   's6.p1':'Your name','s6.p2':'you@domain.com','s6.p3':'A bot, a prompt, a tool…',
   's6.send':'Send request →','s6.sent':'Email ready ✓','s6.back':'Back to boot ↑',
-  's6.fine':'Opens your email app, addressed to','s6.legal':'Not affiliated with SpaceXSI. “Grok Bot” is used only to describe compatibility.',
+  's6.fine':'Opens your email app, addressed to','s6.legal':'“Grok Bot” is mentioned only to describe compatibility. Not affiliated with SpaceXSI. © 2026 raw2top',
   'mail.subject':'Custom drop request','mail.name':'Name','mail.email':'Email','mail.task':'What I need',
   'ty.bot':'Bot','ty.prompt':'Prompt','ty.utility':'Tool','ty.content':'Content','ty.course':'Course',
   'nav.drops':'Drops','nav.about':'About us','nav.report':'Report',
@@ -359,7 +359,7 @@ const DICT={
   's2.b3':'Dice sin rodeos lo que no sabe hacer: si una prueba falla, la ficha lo dice.',
   's3.lab':'Manifiesto',
   mani:['Creamos drops que hacen','un trabajo real.','Cada drop se prueba','en una tarea real,','con fecha y versión,','y dice sin rodeos','lo que no sabe hacer.'],
-  's4.lab':'El laboratorio · pasa el cursor por una carta','s4.labt':'El laboratorio · toca una carta','s4.h':'Drops','s4.live':'01 · Activo',
+  's4.lab':'El laboratorio · pasa el cursor por una carta','s4.labt':'El laboratorio · toca una carta','s4.h':'Drops','s4.live':'01 · Nuevo',
   's4.desc':'Comprador y analista de cartas coleccionables: Magic, One Piece, Lorcana y más.',
   's4.see':'Ver drop →','s4.soon':'Próximamente','s4.next':'Próximo drop del laboratorio','s4.testing':'En pruebas','s4.colour':'Tendrá su propio color',
   's5.lab':'Cómo probamos','s5.h':'Cada drop tiene<br>su ficha de prueba.',
@@ -373,7 +373,7 @@ const DICT={
   's6.l1':'01 · Nombre','s6.l2':'02 · Email','s6.l3':'03 · ¿Qué necesitas?',
   's6.p1':'Tu nombre','s6.p2':'tu@dominio.com','s6.p3':'Un bot, un prompt, una utilidad…',
   's6.send':'Enviar encargo →','s6.sent':'Email listo ✓','s6.back':'Volver al inicio ↑',
-  's6.fine':'Abre tu app de correo, con destino','s6.legal':'Sin relación con SpaceXSI. «Grok Bot» solo se usa para indicar compatibilidad.',
+  's6.fine':'Abre tu app de correo, con destino','s6.legal':'«Grok Bot» se menciona solo para indicar compatibilidad. Sin afiliación con SpaceXSI. © 2026 raw2top',
   'mail.subject':'Encargo de drop a medida','mail.name':'Nombre','mail.email':'Email','mail.task':'Qué necesito',
   'ty.bot':'Bot','ty.prompt':'Prompt','ty.utility':'Utilidad','ty.content':'Contenido','ty.course':'Curso',
   'nav.drops':'Drops','nav.about':'Nosotros','nav.report':'Aviso',
