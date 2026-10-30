@@ -13,14 +13,16 @@ const c = {
     why: 'raw2top is a portfolio of AI drops: bots, prompts, tools, content, courses and more. We only publish our own work, and the team tests and keeps every drop up to date. Today it’s called AI; tomorrow, SI (superintelligence). We’re already building for that leap.',
     rulesH: 'House rules',
     rules: ['Only our own drops.', 'Every result is a real run, with its date and app version.', 'If a test fails, the card says so.', 'Not affiliated with SpaceXSI.'],
-    findH: 'Find us', report: 'Found a problem with a drop?', reportCta: 'Report it' },
+    findH: 'Find us', report: 'Found a problem with a drop?', reportCta: 'Report it',
+    disc: '“Grok Bot” is mentioned only to describe compatibility. Not affiliated with SpaceXSI. © 2026 raw2top' },
   es: { title: 'Nosotros', eyebrow: 'Nosotros', founderH: 'Sobre el fundador', h: 'Hola.', alt: 'Avatar de Sergio: figura ilustrada con capucha y gafas verdes',
     bio: 'Soy Sergio, un dev de IA con base en España. Creo bots, prompts, utilidades y contenido en el universo IA. raw2top es donde publico mis propios trabajos, cada uno con su ficha de prueba pública para que sepas lo que hace de verdad antes de añadirlo.', xLabel: 'Síguenos en X', 
     whyH: 'Qué es raw2top',
     why: 'raw2top es un portfolio de drops de IA: bots, prompts, utilidades, contenido, cursos y más. Solo publicamos trabajo propio, y el equipo prueba y mantiene al día cada drop. Hoy lo llamamos IA; mañana, SI (superinteligencia). Nosotros ya construimos para ese salto.',
     rulesH: 'Reglas de la casa',
     rules: ['Solo drops propios.', 'Cada resultado es una ejecución real, con fecha y versión de la app.', 'Si una prueba falla, la ficha lo dice.', 'Sin relación con SpaceXSI.'],
-    findH: 'Dónde encontrarnos', report: '¿Has encontrado un problema en un drop?', reportCta: 'Avísanos' },
+    findH: 'Dónde encontrarnos', report: '¿Has encontrado un problema en un drop?', reportCta: 'Avísanos',
+    disc: '«Grok Bot» se menciona solo para indicar compatibilidad. Sin afiliación con SpaceXSI. © 2026 raw2top' },
 }[lang];
 ---
 <Base title={c.title}>
@@ -41,6 +43,7 @@ const c = {
       <div class="card"><h2>{c.findH}</h2><p><a href={X_URL} rel="me noopener">x.com/raw2top ↗</a></p>
         <p class="muted rep">{c.report} <a href={localize('/report/', lang)}>{c.reportCta} →</a></p></div>
     </div>
+    <p class="disc mono">{c.disc}</p>
   </section>
 </Base>
 <style>
@@ -57,6 +60,7 @@ const c = {
   .cols h2 { font-size: 20px; margin-bottom: 10px; }
   .cols ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
   .rep { margin-top: 18px; font-size: 14px; }
+  .disc { margin-top: 40px; font-size: 11px; line-height: 1.5; color: var(--muted); opacity: .75; }
   @media (max-width: 860px) { .cols { grid-template-columns: 1fr; } }
   @media (max-width: 520px) { .top { grid-template-columns: 1fr; } .photo { width: 140px; height: 140px; } }
 </style>
