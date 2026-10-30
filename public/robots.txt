@@ -1,2 +1,4 @@
 User-agent: *
 Allow: /
+
+Sitemap: https://raw2top.com/sitemap.xml
