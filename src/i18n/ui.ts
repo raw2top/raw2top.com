@@ -2,11 +2,11 @@ import type { Lang } from './utils';
 
 export const ui = {
   en: {
-    'meta.desc': 'AI drops by raw2top: bots, prompts, tools, content and courses, with a dated, public test card.',
+    'meta.desc': 'AI drops by raw2top: bots, prompts, tools, content, courses and more, with a public test card.',
     'meta.home': 'raw2top · Tested bot templates',
     'skip': 'Skip to content',
     'nav.main': 'Main',
-    'nav.drops': 'Drops', 'nav.about': 'About', 'nav.report': 'Report',
+    'nav.drops': 'Drops', 'nav.about': 'About us', 'nav.report': 'Report',
     'nav.home': 'raw2top home',
     'lang.switch': 'Language',
     'foot.tag': 'AI drops: bots, prompts, tools, content and courses, built and tested by the raw2top team.',
@@ -26,11 +26,11 @@ export const ui = {
     'test.note': 'A test is valid for {days} days or until the template is updated. After that it shows as “stale” until I test it again. A test describes one run on one date; it is not a guarantee.',
   },
   es: {
-    'meta.desc': 'Drops de IA de raw2top: bots, prompts, utilidades, contenido y cursos, con ficha de prueba pública y fechada.',
+    'meta.desc': 'Drops de IA de raw2top: bots, prompts, utilidades, contenido, cursos y más, con ficha de prueba pública.',
     'meta.home': 'raw2top · Plantillas de bots probadas',
     'skip': 'Saltar al contenido',
     'nav.main': 'Principal',
-    'nav.drops': 'Drops', 'nav.about': 'Sobre mí', 'nav.report': 'Aviso',
+    'nav.drops': 'Drops', 'nav.about': 'Nosotros', 'nav.report': 'Aviso',
     'nav.home': 'Inicio de raw2top',
     'lang.switch': 'Idioma',
     'foot.tag': 'Drops de IA: bots, prompts, utilidades, contenido y cursos, creados y probados por el equipo de raw2top.',

@@ -6,9 +6,9 @@ interface Props { lang: 'en' | 'es'; }
 const { lang } = Astro.props;
 const META = {
   en: { title: 'raw2top · Tested bots, dated and honest',
-        desc: "raw2top is where the raw2top team publishes its AI drops: bots, prompts, tools, content and courses. Every testable drop is tried on a real task, dated, versioned, and honest about what it can't do." },
+        desc: "raw2top is where the raw2top team publishes its AI drops: bots, prompts, tools, content, courses and more. Every drop is tested and kept up to date by the team itself." },
   es: { title: 'raw2top · Bots probados, con fecha y honestos',
-        desc: 'raw2top es donde el equipo de raw2top publica sus drops de IA: bots, prompts, utilidades, contenido y cursos. Los drops que se pueden probar pasan por una tarea real, con fecha y versión, y dicen claramente lo que no saben hacer.' },
+        desc: 'raw2top es donde el equipo de raw2top publica sus drops de IA: bots, prompts, utilidades, contenido, cursos y más. Cada drop lo prueba y lo actualiza el propio equipo.' },
 }[lang];
 const site = Astro.site!.href.replace(/\/$/, '');
 const url = { en: `${site}/`, es: `${site}/es/` };

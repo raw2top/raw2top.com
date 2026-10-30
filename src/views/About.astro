@@ -7,35 +7,36 @@ const X_URL = 'https://x.com/raw2top';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const c = {
-  en: { title: 'About', eyebrow: 'About', h: 'Hi there.', alt: "Sergio's avatar: illustrated hooded figure with green goggles",
+  en: { title: 'About us', eyebrow: 'About us', founderH: 'About the founder', h: 'Hi there.', alt: "Sergio's avatar: illustrated hooded figure with green goggles",
     bio: "I'm Sergio, an AI dev based in Spain. I build bots, prompts, tools and content in the AI world. raw2top is where I publish my own work, each piece with a public test card so you know what it really does before you add it.", xLabel: 'Follow on X', 
     whyH: 'What raw2top is',
-    why: 'raw2top is my portfolio of AI drops: bots, prompts, tools, content and courses. I only publish things I made myself, and every drop that can be tested comes with a dated test card.',
+    why: 'raw2top is a portfolio of AI drops: bots, prompts, tools, content, courses and more. We only publish our own work, and the team tests and keeps every drop up to date.',
     rulesH: 'House rules',
-    rules: ['Only my own bots.', 'Every result is a real run, with its date and app version.', 'If a test fails, the card says so.', 'Not affiliated with SpaceXSI.'],
-    findH: 'Find me', report: 'Found a problem with a bot?', reportCta: 'Report it' },
-  es: { title: 'Sobre mí', eyebrow: 'Sobre mí', h: 'Hola.', alt: 'Avatar de Sergio: figura ilustrada con capucha y gafas verdes',
+    rules: ['Only our own drops.', 'Every result is a real run, with its date and app version.', 'If a test fails, the card says so.', 'Not affiliated with SpaceXSI.'],
+    findH: 'Find us', report: 'Found a problem with a drop?', reportCta: 'Report it' },
+  es: { title: 'Nosotros', eyebrow: 'Nosotros', founderH: 'Sobre el fundador', h: 'Hola.', alt: 'Avatar de Sergio: figura ilustrada con capucha y gafas verdes',
     bio: 'Soy Sergio, un dev de IA con base en España. Creo bots, prompts, utilidades y contenido en el universo IA. raw2top es donde publico mis propios trabajos, cada uno con su ficha de prueba pública para que sepas lo que hace de verdad antes de añadirlo.', xLabel: 'Sígueme en X', 
     whyH: 'Qué es raw2top',
-    why: 'raw2top es mi portfolio de drops de IA: bots, prompts, utilidades, contenido y cursos. Solo publico lo que hago yo, y cada drop que se puede probar lleva una ficha de prueba con fecha.',
+    why: 'raw2top es un portfolio de drops de IA: bots, prompts, utilidades, contenido, cursos y más. Solo publicamos trabajo propio, y el equipo prueba y mantiene al día cada drop.',
     rulesH: 'Reglas de la casa',
-    rules: ['Solo bots míos.', 'Cada resultado es una ejecución real, con fecha y versión de la app.', 'Si una prueba falla, la ficha lo dice.', 'Sin relación con SpaceXSI.'],
-    findH: 'Dónde encontrarme', report: '¿Has encontrado un problema en un bot?', reportCta: 'Avísame' },
+    rules: ['Solo drops propios.', 'Cada resultado es una ejecución real, con fecha y versión de la app.', 'Si una prueba falla, la ficha lo dice.', 'Sin relación con SpaceXSI.'],
+    findH: 'Dónde encontrarnos', report: '¿Has encontrado un problema en un drop?', reportCta: 'Avísanos' },
 }[lang];
 ---
 <Base title={c.title}>
   <section class="wrap page">
+    <p class="eyebrow">{c.eyebrow}</p>
+    <h1>{c.whyH}</h1>
+    <p class="lead">{c.why}</p>
     <div class="top">
       <Image src={avatar} alt={c.alt} width={200} height={200} densities={[1, 2]} class="photo" loading="eager" />
       <div>
-        <p class="eyebrow">{c.eyebrow}</p>
-        <h1>{c.h}</h1>
+        <h2 class="fh">{c.founderH}</h2>
         <p class="bio">{c.bio}</p>
         <p class="x"><a href={X_URL} rel="me noopener">@raw2top</a> <span class="muted">· {c.xLabel} ↗</span></p>
       </div>
     </div>
     <div class="cols">
-      <div class="card"><h2>{c.whyH}</h2><p class="muted">{c.why}</p></div>
       <div class="card"><h2>{c.rulesH}</h2><ul>{c.rules.map((r) => <li class="muted">{r}</li>)}</ul></div>
       <div class="card"><h2>{c.findH}</h2><p><a href={X_URL} rel="me noopener">x.com/raw2top ↗</a></p>
         <p class="muted rep">{c.report} <a href={localize('/report/', lang)}>{c.reportCta} →</a></p></div>
@@ -44,13 +45,15 @@ const c = {
 </Base>
 <style>
   .page { padding-top: 40px; padding-bottom: 40px; }
+  .lead { font-size: 21px; max-width: 720px; margin-bottom: 48px; }
+  .fh { font-size: 26px; margin-bottom: 12px; }
   .top { display: grid; grid-template-columns: 200px 1fr; gap: 32px; align-items: center; }
   .photo { width: 200px; height: 200px; border-radius: 50%; border: 1px solid var(--line); box-shadow: 0 0 0 6px rgba(198,255,61,.08); }
   .bio { font-size: 19px; max-width: 640px; }
   .x { margin-top: 14px; font-family: var(--mono); font-size: 14px; }
   .x a { color: var(--lime); }
   h1 { font-size: clamp(40px, 6vw, 64px); margin: 8px 0 14px; }
-  .cols { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; margin-top: 48px; }
+  .cols { display: grid; grid-template-columns: repeat(2, 1fr); gap: 18px; margin-top: 48px; }
   .cols h2 { font-size: 20px; margin-bottom: 10px; }
   .cols ul { margin: 0; padding-left: 18px; display: grid; gap: 6px; }
   .rep { margin-top: 18px; font-size: 14px; }
