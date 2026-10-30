@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import Flag from '../components/Flag.astro';
 import { getLang, localize, unlocalize, languages, type Lang } from '../i18n/utils';
 import { useT } from '../i18n/ui';
 interface Props { title: string; description?: string; }
@@ -49,8 +50,11 @@ const other: Lang = lang === 'en' ? 'es' : 'en';
         </ul>
       </nav>
       <div class="lang" role="group" aria-label={t('lang.switch')}>
-        <span class="on" aria-current="true" lang={lang}>{lang.toUpperCase()}</span>
-        <a href={localize(path, other)} hreflang={other} lang={other} title={languages[other]}>{other.toUpperCase()}</a>
+        {(['en', 'es'] as Lang[]).map((l) => l === lang ? (
+          <span class="on" aria-current="true" lang={l} title={languages[l]}><Flag lang={l} /><span class="sr-only">{languages[l]}</span></span>
+        ) : (
+          <a href={localize(path, l)} hreflang={l} lang={l} title={languages[l]} aria-label={languages[l]}><Flag lang={l} /></a>
+        ))}
       </div>
     </div>
   </header>
@@ -98,10 +102,13 @@ const other: Lang = lang === 'en' ? 'es' : 'en';
   .logo span { color: var(--lime); }
   .logo.small { font-size: 17px; }
   .right { display: flex; align-items: center; gap: 26px; }
-  .lang { display: flex; font-family: var(--mono); font-size: 12px; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
-  .lang > * { padding: 5px 9px; text-decoration: none; color: var(--muted); }
-  .lang .on { background: var(--panel); color: var(--lime); }
-  .lang a:hover { color: var(--text); }
+  .lang { display: flex; align-items: center; gap: 2px; padding: 3px; border: 1px solid var(--line); border-radius: 999px; }
+  .lang > * { display: inline-flex; align-items: center; padding: 5px 8px; border-radius: 999px; text-decoration: none; line-height: 0; }
+  .lang .on { background: var(--lime); }
+  .lang a { opacity: .55; transition: opacity .15s; }
+  .lang a:hover, .lang a:focus-visible { opacity: 1; }
+  .lang :global(.flag) { display: block; width: 22px; height: 15px; border-radius: 3px; overflow: hidden; box-shadow: 0 0 0 1px rgba(255,255,255,.18); }
+  .lang :global(.flag svg) { display: block; width: 100%; height: 100%; }
   nav ul { display: flex; gap: 28px; list-style: none; margin: 0; padding: 0; }
   nav a { color: var(--muted); text-decoration: none; font-size: 15px; padding: 6px 0; }
   nav a:hover, nav a[aria-current='page'] { color: var(--text); }
