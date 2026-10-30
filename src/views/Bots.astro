@@ -58,7 +58,7 @@ const dot = (s: string) => (s === 'Tested' ? 'd-tested' : s === 'Tested-stale' ?
     <h2 class="sr-only">{t('h1')}</h2>
     <div class="deck">
       {bots.map((b) => (
-        <div class="slot holo" tabindex="0" role="button" aria-roledescription="card" aria-pressed="false"
+        <div id={b.slug} class="slot holo" tabindex="0" role="button" aria-roledescription="card" aria-pressed="false"
           aria-label={t('cardAl', { name: b.name, status: b.statusLabel })}
           data-al-front={t('cardAl', { name: b.name, status: b.statusLabel })} data-al-back={t('cardAlBack', { name: b.name })}>
           <div class="shadow"></div>
@@ -135,7 +135,7 @@ h1{font-family:var(--sans);font-weight:700;letter-spacing:-.045em;line-height:.9
 .hint{color:#6c7285;text-align:center;margin:26px 0 0}
 
 .deck{margin:clamp(22px,3.4vh,48px) auto 0;display:grid;grid-template-columns:repeat(3,minmax(0,330px));justify-content:center;gap:clamp(20px,2.6vw,52px)}
-.slot{position:relative;aspect-ratio:63/88;perspective:1100px;container-type:inline-size;cursor:pointer;-webkit-tap-highlight-color:transparent;outline:none;touch-action:pan-y pinch-zoom;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.slot{position:relative;scroll-margin-top:96px;aspect-ratio:63/88;perspective:1100px;container-type:inline-size;cursor:pointer;-webkit-tap-highlight-color:transparent;outline:none;touch-action:pan-y pinch-zoom;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 .slot:focus-visible .card3d{outline:2px solid var(--lime);outline-offset:6px;border-radius:var(--r)}
 .shadow{position:absolute;left:8%;right:8%;bottom:-3%;height:12%;border-radius:50%;background:rgba(0,0,0,.75);filter:blur(18px);
   transform:translate(var(--sx,0px),var(--sy,0px)) scale(var(--ss,1));opacity:.8;pointer-events:none}
