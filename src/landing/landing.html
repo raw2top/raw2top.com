@@ -57,6 +57,15 @@ html.rec #fakecur{display:block}
 form .fine{color:var(--muted);font-size:11px;line-height:1.45;letter-spacing:.02em;text-transform:none}
 form .fine a{color:var(--lime)}
 #fstat.ok{color:var(--lime)}#fstat.err{color:#ff8a8a}
+/* inline field errors (replace the native validation bubble) */
+.ferr{color:#ff8a8a;font-size:11px;line-height:1.35;letter-spacing:.02em;text-transform:none}
+.ferr::before{content:"✕ "}
+#form label{align-content:start}
+#form input[aria-invalid=true],#form textarea[aria-invalid=true]{border-color:#ff6b6b;box-shadow:0 0 0 1px rgba(255,107,107,.35)}
+/* compatibility disclaimer: small print at the foot of the last scene's bottom bar */
+#s7 .board.board{padding-bottom:16px}#s7 .led{line-height:1}
+#s7 .legal7{position:absolute;left:clamp(16px,3.2vw,56px);right:clamp(16px,3.2vw,56px);bottom:4px;margin:0;font-size:9px;line-height:1.3;letter-spacing:.02em;text-transform:none;color:var(--muted);opacity:.7;pointer-events:none}
+@media (max-aspect-ratio:1/1){#s7 .board.board{padding-bottom:32px}}
 /* language dropdown: current flag as the main button, vertical menu drops down */
 #lang{position:relative;z-index:60}
 #langBtn{gap:.55em;padding:.62em .8em .62em .72em;min-height:36px;color:var(--muted);font:inherit;line-height:0;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:border-color .15s,color .15s}
@@ -363,14 +372,14 @@ html.rec *{transition:none!important}
     <h2 class="h" data-t="s6.h"></h2>
     <form id="form" method="post" enctype="text/plain" action="mailto:%%MAIL%%">
       <div class="hd mono"><span data-t="s6.hd"></span><span>v0.1</span></div>
-      <label class="mono"><span data-t="s6.l1"></span><input name="name" data-ph="s6.p1"></label>
-      <label class="mono"><span data-t="s6.l2"></span><input name="email" type="email" required data-ph="s6.p2"></label>
-      <label class="mono"><span data-t="s6.l3"></span><textarea name="task" rows="3" required data-ph="s6.p3"></textarea></label>
+      <label class="mono"><span data-t="s6.l1"></span><input name="name" aria-describedby="e-name" data-ph="s6.p1"><span class="ferr" id="e-name" role="alert" hidden></span></label>
+      <label class="mono"><span data-t="s6.l2"></span><input name="email" type="email" required aria-describedby="e-email" data-ph="s6.p2"><span class="ferr" id="e-email" role="alert" hidden></span></label>
+      <label class="mono"><span data-t="s6.l3"></span><textarea name="task" rows="3" required aria-describedby="e-task" data-ph="s6.p3"></textarea><span class="ferr" id="e-task" role="alert" hidden></span></label>
       <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
       <button class="btn" type="submit" id="send" data-t="s6.send"></button>
-      <p class="mono fine"><span id="fstat" role="status" aria-live="polite"></span><span id="ffine" data-t="s6.fine"></span> <a id="mailTo" href="mailto:%%MAIL%%">%%MAIL%%</a><br><span data-t="s6.legal"></span></p>
+      <p class="mono fine"><span id="fstat" role="status" aria-live="polite"></span><span id="ffine" data-t="s6.fine"></span> <a id="mailTo" href="mailto:%%MAIL%%">%%MAIL%%</a></p>
     </form>
-    <div class="board"><div class="led" id="led"></div><button class="btn" id="back" type="button" data-t="s6.back"></button></div>
+    <div class="board"><div class="led" id="led"></div><button class="btn" id="back" type="button" data-t="s6.back"></button><p class="mono legal7" data-t="s6.legal"></p></div>
   </section>
 
   <div id="load"></div><div id="prog"></div>
@@ -1098,14 +1107,16 @@ function fRender(){const st=$('#fstat'),fine=$('#ffine'),send=$('#send'),mt=$('#
   st.textContent=fState==='ok'?T['s6.ok']+' ':fState==='err'?T['s6.err']+' ':''; st.className=fState==='err'?'err':fState==='ok'?'ok':'';
   fine.hidden=fState==='ok'||fState==='err';
   mt.hidden=fState==='ok';
+  $$('#form .ferr').forEach(e=>{if(e.dataset.k) e.textContent=T[e.dataset.k]});
   mt.href=fState==='err'&&fMail?fMail:'mailto:'+T['mail.to']}
 form.noValidate=true;
-form.addEventListener('input',e=>{if(e.target.setCustomValidity) e.target.setCustomValidity(''); if(fState==='ok'||fState==='err'){fState='';fMail='';fRender()}});
+function fErr(el,k){const e=$('#e-'+el.name); if(k){el.setAttribute('aria-invalid','true'); e.dataset.k=k; e.textContent=T[k]; e.hidden=false} else {el.removeAttribute('aria-invalid'); delete e.dataset.k; e.textContent=''; e.hidden=true}}
+form.addEventListener('input',e=>{if(e.target.name&&$('#e-'+e.target.name)&&e.target.hasAttribute('aria-invalid')) fErr(e.target,''); if(fState==='ok'||fState==='err'){fState='';fMail='';fRender()}});
 form.addEventListener('submit',async e=>{e.preventDefault(); if(fState==='sending') return;
   const f=new FormData(form),nm=(f.get('name')||'').trim(),em=(f.get('email')||'').trim(),tk=(f.get('task')||'').trim();
-  const ta=form.elements.task,ei=form.elements.email; ta.setCustomValidity(''); ei.setCustomValidity('');
-  const bad=!tk?[ta,'s6.errTask']:(!em||ei.validity.typeMismatch)?[ei,'s6.errEmail']:null;
-  if(bad){bad[0].setCustomValidity(T[bad[1]]); bad[0].reportValidity(); return}
+  const ta=form.elements.task,ei=form.elements.email;
+  const eBad=!em||ei.validity.typeMismatch, tBad=!tk; fErr(ei,eBad?'s6.errEmail':''); fErr(ta,tBad?'s6.errTask':'');
+  if(eBad||tBad){(eBad?ei:ta).focus({preventScroll:true}); return}
   if(f.get('botcheck')){fState='ok';form.reset();fRender();return} // honeypot ticked: quietly drop it
   fMail=fMailto(nm,em,tk); fState='sending'; fRender();
   const ac=new AbortController(), to=setTimeout(()=>ac.abort(),15000);
