@@ -168,7 +168,9 @@ form input:focus,form textarea:focus{outline:none;border-color:var(--lime)}
   #s4 .h{top:55vh}
   #s5 .lab{top:40vh}
   #s5 .h{top:44vh}
-  #s5 .card{left:16px}
+  #s2 .h,#s2 .meter,#s4 .h,#s4 .lab,#s5 .h,#s5 .lab,#s5 .card{left:var(--pad)}
+  #s2 .h,#s4 .h,#s4 .lab,#s5 .h,#s5 .lab{right:var(--pad)}
+  #s5 .card{width:calc(100vw - 2*var(--pad))}
   #s6 .h{top:9vh}
   #s1 .pill{left:16px;top:clamp(64px,9.5vh,128px);white-space:nowrap;font-size:min(11px,2.4vw);letter-spacing:.03em;padding:.6em .8em;max-width:calc(100vw - 32px)}
   #s6 form{gap:7px;padding:12px 14px;bottom:calc(clamp(64px,11vh,120px) + 1.2vh)}
@@ -355,6 +357,17 @@ function locate(p){for(const s of SEG){if(p<=s.p1)return [s,clamp((p-s.p0)/(s.p1
 /* ---------- i18n ---------- */
 let LANG='en', T=DICT.en;
 const mani=$('#mani'), rowsEl=$('#rows'), list=$('#scoutList');
+/* portrait phones: scenes 2, 4, 5 stack the heading (and its label) just above the bottom cards/panel, 14px gap */
+const PORT=matchMedia('(max-aspect-ratio:1/1)');
+function stack(){
+  [['#s2','.meter'],['#s4','.grid'],['#s5','.card']].forEach(([id,anc])=>{
+    const sec=$(id), a=sec.querySelector(anc), h=sec.querySelector('.h'), lab=sec.querySelector('.lab');
+    if(!PORT.matches){ h.style.top=h.style.bottom=''; if(lab) lab.style.top=lab.style.bottom=''; return; }
+    const hb=sec.clientHeight-a.offsetTop+14;
+    h.style.top='auto'; h.style.bottom=hb+'px';
+    if(lab){ lab.style.top='auto'; lab.style.bottom=(hb+h.offsetHeight+8)+'px'; }
+  });
+}
 function setLang(l,save){
   LANG=DICT[l]?l:'en'; T=DICT[LANG];
   document.documentElement.lang=LANG; document.title=T.title;
@@ -369,6 +382,7 @@ function setLang(l,save){
   $('#lang').setAttribute('aria-label',LANG==='es'?'Idioma':'Language');
   $$('#links a').forEach(a=>a.href=(LANG==='es'?'/es':'')+a.dataset.p);
   $('#links').setAttribute('aria-label',LANG==='es'?'Principal':'Main');
+  requestAnimationFrame(stack);
   const want=LANG==='es'?'/es/':'/'; if(location.protocol!=='file:'&&location.pathname!==want) try{history.replaceState(null,'',want+location.search.replace(/[?&]lang=(en|es)/,'').replace(/^&/,'?')+location.hash)}catch(e){}
   if(save) try{localStorage.setItem('raw2top-lang',LANG)}catch(e){}
   lastKey=''; update(P,TT,true);
@@ -697,6 +711,7 @@ function fitCards(){
   const room=(edge-left-2*gap)/3; if(room<cw) flips.forEach(f=>f.style.width=Math.max(120,room)+'px');
 }
 addEventListener('resize',()=>{resize();update(P,TT,true)});
+addEventListener('resize',stack); if(document.fonts) document.fonts.ready.then(stack);
 
 // language: saved choice > ?lang= > browser default is English
 // on /es/ the URL decides; on / a saved choice wins
