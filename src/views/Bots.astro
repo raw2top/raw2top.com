@@ -10,6 +10,10 @@ import { localize, type Lang } from '../i18n/utils';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const t = bp(lang);
+// caution tape over the coming-soon slots (CSS/SVG only)
+const TAPE0 = "<svg class=\"tape\" viewBox=\"0 0 315 440\" aria-hidden=\"true\" focusable=\"false\"><g class=\"tape-fold\" mask=\"url(#ctp-out)\"><g filter=\"url(#ctp-dk)\"><use href=\"#ctp-strip\" transform=\"translate(157.5 198.0) rotate(-36)\"/><use href=\"#ctp-strip\" transform=\"translate(157.5 246.0) rotate(40) skewX(-1.5)\"/></g></g><g clip-path=\"url(#ctp-in)\"><g filter=\"url(#ctp-ds)\"><use href=\"#ctp-strip\" transform=\"translate(157.5 198.0) rotate(-36)\"/></g><g filter=\"url(#ctp-ds)\"><use href=\"#ctp-strip\" transform=\"translate(157.5 246.0) rotate(40) skewX(-1.5)\"/></g></g></svg>";
+const TAPE1 = "<svg class=\"tape\" viewBox=\"0 0 315 440\" aria-hidden=\"true\" focusable=\"false\"><g class=\"tape-fold\" mask=\"url(#ctp-out)\"><g filter=\"url(#ctp-dk)\"><use href=\"#ctp-strip\" transform=\"translate(157.5 244.0) rotate(35)\"/><use href=\"#ctp-strip\" transform=\"translate(157.5 194.0) rotate(-38.5) skewX(1.2)\"/></g></g><g clip-path=\"url(#ctp-in)\"><g filter=\"url(#ctp-ds)\"><use href=\"#ctp-strip\" transform=\"translate(157.5 244.0) rotate(35)\"/></g><g filter=\"url(#ctp-ds)\"><use href=\"#ctp-strip\" transform=\"translate(157.5 194.0) rotate(-38.5) skewX(1.2)\"/></g></g></svg>";
+const tapeDefs = (txt: string) => "<svg class=\"tape-defs\" width=\"0\" height=\"0\" aria-hidden=\"true\" focusable=\"false\" style=\"position:absolute;width:0;height:0;overflow:hidden\"><defs>\n<linearGradient id=\"ctp-y\" x1=\"0\" y1=\"-27\" x2=\"0\" y2=\"27\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0\" stop-color=\"#FFE650\"/><stop offset=\".16\" stop-color=\"#F8DB14\"/><stop offset=\".55\" stop-color=\"#F3D00A\"/><stop offset=\".86\" stop-color=\"#E7C300\"/><stop offset=\"1\" stop-color=\"#C9A800\"/></linearGradient>\n<linearGradient id=\"ctp-hl\" x1=\"0\" y1=\"-27\" x2=\"0\" y2=\"-8\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0\" stop-color=\"#fff\" stop-opacity=\".55\"/><stop offset=\"1\" stop-color=\"#fff\" stop-opacity=\"0\"/></linearGradient>\n<linearGradient id=\"ctp-sh\" x1=\"-350\" y1=\"0\" x2=\"350\" y2=\"0\" gradientUnits=\"userSpaceOnUse\"><stop offset=\"0\" stop-color=\"#fff\" stop-opacity=\"0\"/><stop offset=\".33\" stop-color=\"#fff\" stop-opacity=\"0\"/><stop offset=\".41\" stop-color=\"#fff\" stop-opacity=\".32\"/><stop offset=\".47\" stop-color=\"#fff\" stop-opacity=\"0\"/><stop offset=\".6\" stop-color=\"#000\" stop-opacity=\"0\"/><stop offset=\".66\" stop-color=\"#000\" stop-opacity=\".1\"/><stop offset=\".72\" stop-color=\"#fff\" stop-opacity=\"0\"/><stop offset=\".76\" stop-color=\"#fff\" stop-opacity=\".18\"/><stop offset=\".8\" stop-color=\"#fff\" stop-opacity=\"0\"/><stop offset=\"1\" stop-color=\"#fff\" stop-opacity=\"0\"/></linearGradient>\n<filter id=\"ctp-ds\" x=\"-10%\" y=\"-60%\" width=\"120%\" height=\"220%\" color-interpolation-filters=\"sRGB\"><feDropShadow dx=\"0\" dy=\"3\" stdDeviation=\"3.2\" flood-color=\"#000\" flood-opacity=\".6\"/></filter>\n<filter id=\"ctp-dk\" color-interpolation-filters=\"sRGB\"><feColorMatrix type=\"matrix\" values=\".42 0 0 0 0 0 .42 0 0 0 0 0 .42 0 0 0 0 0 1 0\"/></filter>\n<g id=\"ctp-strip\">\n<rect x=\"-350\" y=\"-27\" width=\"700\" height=\"54\" fill=\"url(#ctp-y)\"/>\n<rect x=\"-350\" y=\"-27\" width=\"700\" height=\"19\" fill=\"url(#ctp-hl)\"/>\n<rect x=\"-350\" y=\"-22.5\" width=\"700\" height=\"3\" fill=\"#121212\"/>\n<rect x=\"-350\" y=\"19.5\" width=\"700\" height=\"3\" fill=\"#121212\"/>\n<text x=\"0\" y=\"9.2\" text-anchor=\"middle\" transform=\"scale(.8 1)\" fill=\"#121212\" font-size=\"25\" font-weight=\"700\" letter-spacing=\".6\" style=\"font-family:'Space Grotesk','Arial Narrow',Arial,sans-serif\">@@</text>\n<rect x=\"-350\" y=\"-27\" width=\"700\" height=\"54\" fill=\"url(#ctp-sh)\"/>\n<path d=\"M-118-27l7 54M42-27l-5 54M196-27l6 54M-260-27l-4 54\" stroke=\"#fff\" stroke-opacity=\".38\" stroke-width=\"1.3\" fill=\"none\"/>\n<path d=\"M-116.5-27l7 54M43.5-27l-5 54M197.5-27l6 54M-258.5-27l-4 54\" stroke=\"#000\" stroke-opacity=\".16\" stroke-width=\"1.6\" fill=\"none\"/>\n</g>\n<clipPath id=\"ctp-in\"><rect width=\"315\" height=\"440\" rx=\"18\"/></clipPath>\n<mask id=\"ctp-out\" maskUnits=\"userSpaceOnUse\" x=\"-30\" y=\"-30\" width=\"375\" height=\"500\"><rect x=\"-7\" y=\"-7\" width=\"329\" height=\"454\" rx=\"25\" fill=\"#fff\"/><rect width=\"315\" height=\"440\" rx=\"18\" fill=\"#000\"/></mask>\n</defs></svg>".replace('@@', (txt + ' · ').repeat(4).trim());
 const pad = (n: number) => String(n).padStart(2, '0');
 const MON = { en: ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'], es: ['ene','feb','mar','abr','may','jun','jul','ago','sept','oct','nov','dic'] };
 const fmtDate = (iso: string) => { const [y, m, d] = iso.split('-').map(Number); const mo = (MON as any)[lang][m - 1];
@@ -91,16 +95,18 @@ const dot = (s: string) => (s === 'Tested' ? 'd-tested' : s === 'Tested-stale' ?
           </div>
         </div>
       ))}
+      {empty.length > 0 && <Fragment set:html={tapeDefs(t('tape'))} />}
       {empty.map((n) => (
         <div class="slot soon" role="note" aria-label={t('slotAl', { n })}>
           <div class="shadow"></div>
           <div class="card3d"><div class="face" aria-hidden="true">
             <span class="num">{t('slot', { n })}</span>
             <div class="emb"><span class="wm">raw<b>2</b>top</span></div>
-            <span class="stamp">{t('soon')}</span>
             <span class="lablab"><i></i><span>{t('labNow')}</span></span>
             <span class="ser">RAW-0{n}</span>
-          </div></div>
+          </div>
+          {n % 2 === 0 ? <Fragment set:html={TAPE0} /> : <Fragment set:html={TAPE1} />}
+          </div>
         </div>
       ))}
     </div>
@@ -239,7 +245,9 @@ h1{font-family:var(--sans);font-weight:700;letter-spacing:-.045em;line-height:.9
 .serial{margin-top:3.4cqw;display:flex;justify-content:space-between;color:#6c7285;font-family:var(--mono);font-size:max(8.5px,2.75cqw);letter-spacing:.08em;text-transform:uppercase}
 
 .soon{cursor:default}
-.soon .card3d{opacity:var(--dim,.62);filter:saturate(var(--sat,.8))}
+.soon .face{opacity:var(--dim,.62);filter:saturate(var(--sat,.8)) brightness(.82)}
+/* caution tape: two crossed strips wrapping the card, folded under at the edges; rides the card3d tilt */
+.soon :global(.tape){position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;transform:translateZ(1.5px);backface-visibility:hidden;-webkit-backface-visibility:hidden}
 .soon .face{background:
    radial-gradient(70% 50% at 50% 50%,rgba(18,20,27,.0),rgba(10,11,15,.55)),
    repeating-linear-gradient(60deg,transparent 0 11px,rgba(38,42,54,.9) 11px 12px),
@@ -253,9 +261,6 @@ h1{font-family:var(--sans);font-weight:700;letter-spacing:-.045em;line-height:.9
 .emb{width:62cqw;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,var(--bg) 58%,transparent 59%),conic-gradient(from 0deg,var(--line),#3a3f4e,var(--line),#3a3f4e,var(--line));
   box-shadow:0 0 0 1px var(--line)}
 .emb .wm{font-size:11cqw}
-.stamp{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-11deg);padding:1.6cqw 3.4cqw;border:.7cqw solid var(--lime);border-radius:1.6cqw;color:var(--lime);
-  font-family:var(--mono);font-weight:600;font-size:max(10px,4.6cqw);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;background:rgba(10,11,15,.72);
-  box-shadow:0 0 0 .5cqw rgba(10,11,15,.72);opacity:.92;margin-top:22cqw}
 .lablab{position:absolute;bottom:9cqw;left:0;right:0;color:var(--muted);font-family:var(--mono);font-size:max(9px,3.1cqw);letter-spacing:.08em;text-transform:uppercase}
 .lablab i{display:inline-block;width:.6em;height:.6em;border-radius:50%;background:var(--violet);box-shadow:0 0 8px var(--violet);margin-right:.6em;vertical-align:.05em}
 

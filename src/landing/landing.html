@@ -149,6 +149,9 @@ button.lc{border:0;font:inherit;text-align:left;cursor:pointer;-webkit-tap-highl
 .soon .face{border:1.5px dashed #3a3f4e;background:rgba(18,20,27,.74);justify-content:center;align-items:center;text-align:center;color:var(--muted)}
 .soon .num{position:absolute;top:clamp(12px,1.2vw,22px);left:clamp(12px,1.2vw,22px);color:#5a6070}
 .soon .face b{font-family:var(--sans);font-size:clamp(18px,1.6vw,30px);color:var(--text);letter-spacing:-.045em;display:block;margin-bottom:.4em}
+/* caution tape over the coming-soon slots: two crossed strips folded under the card edges, front face only */
+.soon .front{background:rgba(12,13,18,.86);border-color:#2c303c;box-shadow:0 16px 36px -10px rgba(0,0,0,.7)}
+.soon .tape{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none;transform:translateZ(2px);backface-visibility:hidden;-webkit-backface-visibility:hidden}
 /* follow-on-X link: its own row under the cards (the .brk forces the wrap), lime outline like the drop type tag */
 #s4 .grid{flex-wrap:wrap}
 #s4 .brk{flex-basis:100%;height:0;margin-top:calc(-1*clamp(10px,1.4vw,26px) + 4px)}
@@ -325,6 +328,25 @@ html.rec *{transition:none!important}
   <section class="scene" id="s4">
     <div class="lab mono" data-t="s4.lab" id="s4lab"></div>
     <h2 class="h" data-t="s4.h"></h2>
+    <svg class="tape-defs" width="0" height="0" aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden"><defs>
+<linearGradient id="ctp-y" x1="0" y1="-27" x2="0" y2="27" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#FFE650"/><stop offset=".16" stop-color="#F8DB14"/><stop offset=".55" stop-color="#F3D00A"/><stop offset=".86" stop-color="#E7C300"/><stop offset="1" stop-color="#C9A800"/></linearGradient>
+<linearGradient id="ctp-hl" x1="0" y1="-27" x2="0" y2="-8" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<linearGradient id="ctp-sh" x1="-350" y1="0" x2="350" y2="0" gradientUnits="userSpaceOnUse"><stop offset="0" stop-color="#fff" stop-opacity="0"/><stop offset=".33" stop-color="#fff" stop-opacity="0"/><stop offset=".41" stop-color="#fff" stop-opacity=".32"/><stop offset=".47" stop-color="#fff" stop-opacity="0"/><stop offset=".6" stop-color="#000" stop-opacity="0"/><stop offset=".66" stop-color="#000" stop-opacity=".1"/><stop offset=".72" stop-color="#fff" stop-opacity="0"/><stop offset=".76" stop-color="#fff" stop-opacity=".18"/><stop offset=".8" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff" stop-opacity="0"/></linearGradient>
+<filter id="ctp-ds" x="-10%" y="-60%" width="120%" height="220%" color-interpolation-filters="sRGB"><feDropShadow dx="0" dy="3" stdDeviation="3.2" flood-color="#000" flood-opacity=".6"/></filter>
+<filter id="ctp-dk" color-interpolation-filters="sRGB"><feColorMatrix type="matrix" values=".42 0 0 0 0 0 .42 0 0 0 0 0 .42 0 0 0 0 0 1 0"/></filter>
+<g id="ctp-strip">
+<rect x="-350" y="-27" width="700" height="54" fill="url(#ctp-y)"/>
+<rect x="-350" y="-27" width="700" height="19" fill="url(#ctp-hl)"/>
+<rect x="-350" y="-22.5" width="700" height="3" fill="#121212"/>
+<rect x="-350" y="19.5" width="700" height="3" fill="#121212"/>
+<text x="0" y="9.2" text-anchor="middle" transform="scale(.8 1)" fill="#121212" font-size="25" font-weight="700" letter-spacing=".6" style="font-family:'Space Grotesk','Arial Narrow',Arial,sans-serif" data-t="s4.tape">COMING SOON · DO NOT CROSS · COMING SOON · DO NOT CROSS · COMING SOON · DO NOT CROSS · COMING SOON · DO NOT CROSS ·</text>
+<rect x="-350" y="-27" width="700" height="54" fill="url(#ctp-sh)"/>
+<path d="M-118-27l7 54M42-27l-5 54M196-27l6 54M-260-27l-4 54" stroke="#fff" stroke-opacity=".38" stroke-width="1.3" fill="none"/>
+<path d="M-116.5-27l7 54M43.5-27l-5 54M197.5-27l6 54M-258.5-27l-4 54" stroke="#000" stroke-opacity=".16" stroke-width="1.6" fill="none"/>
+</g>
+<clipPath id="ctp-in"><rect width="300" height="400" rx="32"/></clipPath>
+<mask id="ctp-out" maskUnits="userSpaceOnUse" x="-30" y="-30" width="360" height="460"><rect x="-7" y="-7" width="314" height="414" rx="39" fill="#fff"/><rect width="300" height="400" rx="32" fill="#000"/></mask>
+</defs></svg>
     <div class="grid">
       <div class="flip scout" tabindex="0" role="button" aria-pressed="false" aria-label="TCG Scout"><div class="in">
         <div class="face front"><img src="/landing/assets/tcg-scout.jpg" alt="TCG Scout"><span class="tag mono" data-t="s4.live"></span><span class="tag ty mono" data-t="ty.bot"></span><h3>TCG Scout</h3><p data-t="s4.desc"></p></div>
@@ -332,11 +354,13 @@ html.rec *{transition:none!important}
           <a class="btn see" id="seeScout" data-p="/drops/#tcg-scout" href="/drops/#tcg-scout" data-t="s4.see"></a></div>
       </div></div>
       <div class="flip soon" tabindex="0" role="button" aria-pressed="false"><div class="in">
-        <div class="face front"><span class="num mono">02</span><div><b data-t="s4.soon"></b><span class="mono" data-t="s4.next"></span></div></div>
+        <div class="face front"><span class="num mono">02</span><span class="sr"><span data-t="s4.soon"></span>. <span data-t="s4.next"></span></span></div>
+        <svg class="tape" viewBox="0 0 300 400" aria-hidden="true" focusable="false"><g class="tape-fold" mask="url(#ctp-out)"><g filter="url(#ctp-dk)"><use href="#ctp-strip" transform="translate(150.0 178.0) rotate(-36)"/><use href="#ctp-strip" transform="translate(150.0 226.0) rotate(40) skewX(-1.5)"/></g></g><g clip-path="url(#ctp-in)"><g filter="url(#ctp-ds)"><use href="#ctp-strip" transform="translate(150.0 178.0) rotate(-36)"/></g><g filter="url(#ctp-ds)"><use href="#ctp-strip" transform="translate(150.0 226.0) rotate(40) skewX(-1.5)"/></g></g></svg>
         <div class="face back"><span class="num mono">02</span><div><b data-t="s4.testing"></b><span class="mono" data-t="s4.colour"></span></div></div>
       </div></div>
       <div class="flip soon" tabindex="0" role="button" aria-pressed="false"><div class="in">
-        <div class="face front"><span class="num mono">03</span><div><b data-t="s4.soon"></b><span class="mono" data-t="s4.next"></span></div></div>
+        <div class="face front"><span class="num mono">03</span><span class="sr"><span data-t="s4.soon"></span>. <span data-t="s4.next"></span></span></div>
+        <svg class="tape" viewBox="0 0 300 400" aria-hidden="true" focusable="false"><g class="tape-fold" mask="url(#ctp-out)"><g filter="url(#ctp-dk)"><use href="#ctp-strip" transform="translate(150.0 224.0) rotate(35)"/><use href="#ctp-strip" transform="translate(150.0 174.0) rotate(-38.5) skewX(1.2)"/></g></g><g clip-path="url(#ctp-in)"><g filter="url(#ctp-ds)"><use href="#ctp-strip" transform="translate(150.0 224.0) rotate(35)"/></g><g filter="url(#ctp-ds)"><use href="#ctp-strip" transform="translate(150.0 174.0) rotate(-38.5) skewX(1.2)"/></g></g></svg>
         <div class="face back"><span class="num mono">03</span><div><b data-t="s4.testing"></b><span class="mono" data-t="s4.colour"></span></div></div>
       </div></div>
       <i class="brk" aria-hidden="true"></i>
@@ -404,7 +428,7 @@ const DICT={
   mani:['We build drops that take','the friction out of','everyday life.','Every drop is tested and','approved before it ships.','We’re raw, we’re top.'],
   's4.lab':'The lab · hover a card','s4.labt':'The lab · tap a card','s4.h':'Drops','s4.live':'01 · New',
   's4.desc':'Buyer and analyst of collectible trading cards: Pokémon, Magic, One Piece, Lorcana and more.',
-  's4.see':'See drop →','s4.soon':'Coming soon','s4.next':'Next drop in the lab','s4.testing':'In testing','s4.colour':'Gets its own colour','s4.x':'Follow on X for the next drop',
+  's4.see':'See drop →','s4.soon':'Coming soon','s4.next':'Next drop in the lab','s4.testing':'In testing','s4.colour':'Gets its own colour','s4.tape':'COMING SOON · DO NOT CROSS · COMING SOON · DO NOT CROSS · COMING SOON · DO NOT CROSS · COMING SOON · DO NOT CROSS ·','s4.x':'Follow on X for the next drop',
   's5.lab':'How we test','s5.h':'Every drop gets<br>a test card.',
   rows:['One real task','A clear result','Date and version','Promised vs delivered · promised [n] → delivered [n]'],
   'note.fill':'Filling the test card…',
@@ -442,7 +466,7 @@ const DICT={
   mani:['Creamos drops que quitan','fricción al día a día.','Cada drop se prueba','y se aprueba antes de salir.','Somos raw, somos top.'],
   's4.lab':'El laboratorio · pasa el cursor por una carta','s4.labt':'El laboratorio · toca una carta','s4.h':'Drops','s4.live':'01 · Nuevo',
   's4.desc':'Comprador y analista de cartas coleccionables: Pokémon, Magic, One Piece, Lorcana y más.',
-  's4.see':'Ver drop →','s4.soon':'Próximamente','s4.next':'Próximo drop del laboratorio','s4.testing':'En pruebas','s4.colour':'Tendrá su propio color','s4.x':'Síguenos en X para el próximo drop',
+  's4.see':'Ver drop →','s4.soon':'Próximamente','s4.next':'Próximo drop del laboratorio','s4.testing':'En pruebas','s4.colour':'Tendrá su propio color','s4.tape':'COMING SOON · NO PASAR · COMING SOON · NO PASAR · COMING SOON · NO PASAR · COMING SOON · NO PASAR ·','s4.x':'Síguenos en X para el próximo drop',
   's5.lab':'Cómo probamos','s5.h':'Cada drop tiene<br>su ficha de prueba.',
   rows:['Una tarea real','Un resultado claro','Fecha y versión','Lo prometido frente a lo entregado · prometido [n] → entregado [n]'],
   'note.fill':'Rellenando la ficha de prueba…',
