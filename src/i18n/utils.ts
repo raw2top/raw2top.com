@@ -15,7 +15,7 @@ export function getLang(current: string | undefined): Lang {
   return current === 'es' ? 'es' : 'en';
 }
 
-/** '/bots/' + 'es' -> '/es/bots/' */
+/** '/drops/' + 'es' -> '/es/drops/' */
 export function localize(path: string, lang: Lang): string {
   const clean = path.startsWith('/') ? path : `/${path}`;
   return lang === defaultLang ? clean : `/${lang}${clean === '/' ? '/' : clean}`;

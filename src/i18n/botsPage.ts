@@ -1,13 +1,13 @@
-// All copy for the /bots/ collection page (EN + ES). Bot facts come from src/data/landing-bots.json, never from here.
+// All copy for the /drops/ collection page (EN + ES). Bot facts come from src/data/landing-bots.json, never from here.
 import type { Lang } from './utils';
 
 export const botsPage = {
   en: {
-    title: 'Bots',
-    desc: 'Bot templates for Grok Bot by raw2top. Each one comes with a dated, public test card.',
+    title: 'Drops',
+    desc: 'Drops by raw2top: bots, prompts, tools, content and courses. Testable drops come with a dated, public test card.',
     lab: 'The collection · {n} / {total}',
-    h1: 'Bots',
-    intro: 'My own templates for Grok Bot. Open one to see its test card and add it to your app.',
+    h1: 'Drops',
+    intro: 'Everything I launch, in one place: bots, prompts, tools, content and courses. Open a drop to see its test card.',
     count: '<em>{n}</em> of {total} collected',
     hintPointer: 'Hover to tilt · click or press Enter to flip',
     hintTouch: 'Press and drag to tilt · tap to flip',
@@ -25,11 +25,11 @@ export const botsPage = {
     'leg.status': 'Status', 'leg.tested': 'test card under 30 days old', 'leg.stale': 'older, waiting for a re-test', 'leg.listed': 'published, not tested yet',
   },
   es: {
-    title: 'Bots',
-    desc: 'Plantillas de bots para Grok Bot de raw2top. Cada una viene con una ficha de prueba pública y fechada.',
+    title: 'Drops',
+    desc: 'Drops de raw2top: bots, prompts, utilidades, contenido y cursos. Los que se pueden probar llevan una ficha de prueba pública y fechada.',
     lab: 'La colección · {n} / {total}',
-    h1: 'Bots',
-    intro: 'Mis propias plantillas para Grok Bot. Abre una para ver su ficha de prueba y añadirla a tu app.',
+    h1: 'Drops',
+    intro: 'Todo lo que lanzo, en un solo sitio: bots, prompts, utilidades, contenido y cursos. Abre un drop para ver su ficha de prueba.',
     count: '<em>{n}</em> de {total} en la colección',
     hintPointer: 'Pasa el cursor para inclinar · haz clic o pulsa Intro para girar',
     hintTouch: 'Mantén y arrastra para inclinar · toca para girar',

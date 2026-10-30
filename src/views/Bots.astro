@@ -1,10 +1,11 @@
 ---
-// /bots/ and /es/bots/: the collection page. One holo card per real bot (63:88), face-down cards for the empty slots.
+// /drops/ and /es/drops/: the collection page. One holo card per drop (63:88), face-down cards for the empty slots.
 // Copy: src/i18n/botsPage.ts. Bot facts: src/data/landing-bots.json (nothing invented here).
 import Base from '../layouts/Base.astro';
 import landing from '../data/landing-bots.json';
 import { SLOTS, STALE_DAYS } from '../lib/bots';
 import { bp } from '../i18n/botsPage';
+import { dropTypeLabel } from '../i18n/dropTypes';
 import { localize, type Lang } from '../i18n/utils';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
@@ -26,7 +27,8 @@ const bots = landing.bots.map((b: any) => {
     ...b, games, moves: features.slice(1), status,
     statusLabel: t(`st.${status}` as any),
     fn: b.oneLiner[lang] ?? b.oneLiner.en,
-    type: b.type?.[lang] ?? b.type?.en, kind: b.kind?.[lang] ?? b.kind?.en,
+    typeTag: dropTypeLabel(b.type, lang),
+    role: b.role?.[lang] ?? b.role?.en, kind: b.kind?.[lang] ?? b.kind?.en,
     access: b.access?.[lang] ?? b.access?.en,
     serial: `RAW-0${b.number}`,
     result: typeof tst?.rating === 'number' ? `${tst.rating.toLocaleString(lang === 'es' ? 'es-ES' : 'en-US', { minimumFractionDigits: 1, maximumFractionDigits: 1 })}/5` : null,
@@ -64,8 +66,8 @@ const dot = (s: string) => (s === 'Tested' ? 'd-tested' : s === 'Tested-stale' ?
           <div class="card3d">
             <article class="face front" aria-hidden="false">
               <div class="ttl"><h3>{b.name}</h3><span class="badge"><i class={dot(b.status)}></i><span>{b.statusLabel}</span></span></div>
-              <div class="art"><img src={b.cardImage ?? b.image} alt={t('imgAlt', { name: b.name })} width="720" height="720" decoding="async" /></div>
-              {b.type && <div class="type"><span>{b.type}</span><b>{b.kind}</b></div>}
+              <div class="art"><img src={b.cardImage ?? b.image} alt={t('imgAlt', { name: b.name })} width="720" height="720" decoding="async" />{b.typeTag && <span class="dtype">{b.typeTag}</span>}</div>
+              {b.role && <div class="type"><span>{b.role}</span><b>{b.kind}</b></div>}
               <p class="fn">{b.fn}</p>
               <ul class="moves">{b.moves.map((m: string) => <li>{m}</li>)}</ul>
               <div class="cfoot"><span>{b.serial}</span><span class="wm">raw<b>2</b>top</span><span>{b.number} / {pad(total)} ↻</span></div>
@@ -155,6 +157,8 @@ h1{font-family:var(--sans);font-weight:700;letter-spacing:-.045em;line-height:.9
 .badge i{width:.6em;height:.6em;border-radius:50%;display:inline-block}
 .art{position:relative;flex:none;height:64cqw;border-radius:2.4cqw;overflow:hidden;background:#000;box-shadow:0 0 0 .5cqw var(--lime),0 1.6cqw 4cqw rgba(5,14,60,.6)}
 .art img{position:absolute;left:-9%;top:-12%;width:118%;height:auto;max-width:none;display:block}
+.dtype{position:absolute;top:2.4cqw;left:2.4cqw;padding:.4em .7em;border-radius:1.2cqw;background:rgba(10,11,15,.82);border:1px solid rgba(198,255,61,.55);
+  font-family:var(--mono);font-size:max(8.5px,2.75cqw);letter-spacing:.08em;text-transform:uppercase;color:var(--lime);line-height:1;white-space:nowrap}
 .type{position:relative;flex:none;white-space:nowrap;gap:2cqw;margin-top:3cqw;display:flex;justify-content:space-between;align-items:center;padding:1.3cqw 2.2cqw;border-radius:1.4cqw;background:rgba(10,11,15,.55);
   font-family:var(--mono);font-size:max(8.5px,2.75cqw);letter-spacing:.08em;text-transform:uppercase;color:#dfe9ff}
 .type b{color:var(--lime);font-weight:500}

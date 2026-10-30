@@ -10,7 +10,7 @@ const { title, description = t('meta.desc') } = Astro.props;
 const fullTitle = title === 'home' ? t('meta.home') : `${title} · raw2top`;
 const path = unlocalize(Astro.url.pathname);
 const links = [
-  { href: '/bots/', label: t('nav.bots') },
+  { href: '/drops/', label: t('nav.drops') },
   { href: '/about/', label: t('nav.about') },
   { href: '/report/', label: t('nav.report') },
 ];
@@ -67,7 +67,7 @@ const other: Lang = lang === 'en' ? 'es' : 'en';
       <p class="muted">{t('foot.tag')}</p>
     </div>
     <ul>
-      <li><a href={localize('/bots/', lang)}>{t('nav.bots')}</a></li>
+      <li><a href={localize('/drops/', lang)}>{t('nav.drops')}</a></li>
       <li><a href={localize('/about/', lang)}>{t('nav.about')}</a></li>
       <li><a href={localize('/report/', lang)}>{t('foot.report')}</a></li>
     </ul>

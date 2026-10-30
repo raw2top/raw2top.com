@@ -10,7 +10,7 @@ const run = bot.tested;
 ---
 <article class="card bot">
   <p class="eyebrow">{bot.isExample ? t('card.example') : t(`status.${status}`)}</p>
-  <h3><a href={localize(`/bots/${bot.slug}/`, lang)} class="stretch">{bot.name}</a></h3>
+  <h3><a href={localize(`/drops/${bot.slug}/`, lang)} class="stretch">{bot.name}</a></h3>
   <p class="muted one">{tx(bot.oneLiner, lang)}</p>
   {run && (
     <dl class="meta mono">

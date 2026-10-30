@@ -4,12 +4,12 @@
 - `bots` (array of Bot): Sergio's own templates only.
 - `example` (Bot, optional): placeholder, never listed as real. Currently absent.
 
-The /bots/ collection page reads `src/data/landing-bots.json` (TCG Scout: `tested` = { date (YYYY-MM-DD), rating (0–5), appVersion, skills: { en: [], es: [] } }; a null field shows "— pending"; skills render as a SEE/VER bubble; status Tested/Stale is computed from the date at build time).
+The /drops/ collection page (moved from /bots/, which now redirects) reads `src/data/landing-bots.json` (TCG Scout: `tested` = { date (YYYY-MM-DD), rating (0–5), appVersion, skills: { en: [], es: [] } }; a null field shows "— pending"; skills render as a SEE/VER bubble; status Tested/Stale is computed from the date at build time). Each entry has `type` (bot | prompt | utility | content | course; tag labels in src/i18n/dropTypes.ts) and `role` ({en, es}, the 'Buyer · Analyst' row).
 
 ## Bot
 | field | type | notes |
 |---|---|---|
-| slug | string | URL: /bots/<slug> |
+| slug | string | URL: /drops/<slug> |
 | name | string | |
 | oneLiner | string | one sentence |
 | description | string | optional, longer text |
