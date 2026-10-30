@@ -168,6 +168,8 @@ button.lc{border:0;font:inherit;text-align:left;cursor:pointer;-webkit-tap-highl
 #s6 .lab{color:var(--muted)}
 #s6 .h{font-size:clamp(40px,5.2vw,100px);margin-top:.32em}
 #s6 .h em{font-style:normal;color:var(--lime)}
+/* desktop/landscape: keep the Encargos title on its 2 lines (ES first line is ~9.75em wide, EN ~6.6em; the column is min(40vw,640px)) */
+@media (min-aspect-ratio:1/1){#s6 .h{font-size:clamp(40px,5.2vw,92px)}html[lang=es] #s6 .h{font-size:clamp(28px,3.7vw,62px)}}
 #s6 .lead{margin-top:clamp(14px,2.4vh,28px);max-width:30em;font-size:clamp(15px,1.15vw,21px);line-height:1.42;color:rgba(242,243,247,.92)}
 #s6 .items{margin-top:clamp(16px,2.8vh,32px);display:flex;flex-wrap:wrap;gap:8px}
 .ech{display:inline-flex;align-items:center;gap:.6em;min-height:40px;padding:.7em 1em;border:1px solid var(--line);border-radius:999px;background:rgba(18,20,27,.82);color:var(--muted);
@@ -397,7 +399,7 @@ const DICT={
    '04 — Promised vs delivered: what the drop promised vs what it actually delivered — promised [n] → delivered [n].'],
   'enc.lab':'Commissions','enc.h':'We also build<br><em>to order.</em>','enc.p':'If you need something made with AI, tell us and we’ll build it for you.',
   'enc.i1':'Websites','enc.i2':'AI agents','enc.i3':'Music videos','enc.i4':'Books','enc.more':'And whatever you have in mind.',
-  /* PLACEHOLDER (pending approval): board status + hint of the commissions scene */
+  /* board status + hint of the commissions scene */
   'led.f':['Forging: websites','Forging: AI agents','Forging: music videos','Forging: books','Forging: your idea'],
   'enc.hint':'Hover the particles · pick a commission','enc.hintt':'Touch the particles · tap a commission',
   's6.h':'Your custom drop<br><em>starts here.</em>','s6.hd':'Request · custom drop',
@@ -434,7 +436,7 @@ const DICT={
    '04 — Lo prometido frente a lo entregado: lo que prometía el drop frente a lo que entregó de verdad — prometido [n] → entregado [n].'],
   'enc.lab':'Encargos','enc.h':'También lo hacemos<br><em>a medida.</em>','enc.p':'Si necesitas algo hecho con IA, cuéntanoslo y lo construimos para ti.',
   'enc.i1':'Páginas web','enc.i2':'Agentes de IA','enc.i3':'Videoclips','enc.i4':'Libros','enc.more':'Y lo que se te ocurra.',
-  /* PLACEHOLDER (pendiente de aprobación): estado del tablero + pista de la escena de encargos */
+  /* estado del tablero + pista de la escena de encargos */
   'led.f':['Forjando: páginas web','Forjando: agentes de IA','Forjando: videoclips','Forjando: libros','Forjando: tu idea'],
   'enc.hint':'Pasa el cursor por las partículas · toca un encargo','enc.hintt':'Toca las partículas · toca un encargo',
   's6.h':'Tu drop a medida<br><em>empieza aquí.</em>','s6.hd':'Encargo · drop a medida',
