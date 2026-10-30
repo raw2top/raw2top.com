@@ -34,7 +34,6 @@ const bots = landing.bots.map((b: any) => {
     app: tst?.appVersion ?? null,
     skills: (tst?.skills?.[lang] ?? tst?.skills?.en ?? null) as string[] | null,
     note: !tst ? t('back.note') : (tst.skills ? null : t('back.noteSkills')),
-    detail: localize(`/bots/${b.slug}/`, lang),
   };
 });
 const empty = Array.from({ length: Math.max(0, total - bots.length) }, (_, i) => pad(bots.length + i + 1));
@@ -85,7 +84,6 @@ const dot = (s: string) => (s === 'Tested' ? 'd-tested' : s === 'Tested-stale' ?
               <div class="games"><span class="gl">{t('gamesL')}</span>{b.games.map((g: string) => <span>{g}</span>)}</div>
               <div class="btns">
                 <a class="bbtn" href={b.templateUrl} target="_blank" rel="noopener" tabindex="-1">{t('back.open')}</a>
-                <a class="bbtn sec" href={b.detail} tabindex="-1">{t('back.card')}</a>
               </div>
               <div class="serial"><span>{b.serial}</span><span>{t('back.flip')}</span></div>
               {b.skills?.length && <div class="sbub" id={`sk-${b.slug}`} role="group" aria-labelledby={`skh-${b.slug}`} hidden><b id={`skh-${b.slug}`}>{t('back.skills')} · {b.skills.length}</b><ul>{b.skills.map((k: string) => <li>{k}</li>)}</ul></div>}
@@ -222,7 +220,7 @@ h1{font-family:var(--sans);font-weight:700;letter-spacing:-.045em;line-height:.9
 .games{margin:4cqw 0 3.4cqw;display:flex;flex-wrap:wrap;gap:1.1cqw}
 .games .gl{width:100%;font-family:var(--mono);font-size:max(9px,2.9cqw);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.4cqw}
 .games span:not(.gl){font-family:var(--mono);font-size:max(9px,3cqw);letter-spacing:0;padding:.4em .45em;white-space:nowrap;border:1px solid var(--line);border-radius:999px;color:var(--text);background:rgba(10,11,15,.5)}
-.btns{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:2.4cqw}
+.btns{margin-top:auto;display:grid;grid-template-columns:1fr;gap:2.4cqw}
 .bbtn{display:inline-flex;justify-content:center;align-items:center;gap:.5em;background:var(--lime);color:#0a0b0f;border:1px solid var(--lime);border-radius:10px;padding:.95em .6em;
   font-family:var(--mono);font-weight:500;font-size:max(10px,3.2cqw);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;cursor:pointer;white-space:nowrap}
 .bbtn:hover{color:#0a0b0f;filter:brightness(1.06)}
