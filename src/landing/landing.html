@@ -190,7 +190,7 @@ button.lc{border:0;font:inherit;text-align:left;cursor:pointer;-webkit-tap-highl
 /* S7 · contact */
 #s7 .h{left:var(--pad);top:13vh;font-size:clamp(40px,5.8vw,112px);line-height:.96}
 #s7 .h em{font-style:normal;color:var(--lime)}
-#s7 form{left:var(--pad);top:41vh;width:min(32vw,560px);background:rgba(18,20,27,.9);border:1px solid var(--line);border-radius:16px;padding:clamp(14px,1.4vw,24px);display:grid;gap:10px}
+#s7 form{left:var(--pad);top:auto;bottom:calc(clamp(64px,11vh,120px) + 2vh + env(safe-area-inset-bottom,0px));width:min(32vw,560px);background:rgba(18,20,27,.9);border:1px solid var(--line);border-radius:16px;padding:clamp(14px,1.4vw,24px);display:grid;gap:10px}
 form .hd{display:flex;justify-content:space-between;color:var(--muted);padding-bottom:6px;border-bottom:1px solid var(--line)}
 form label{display:grid;gap:6px;color:var(--muted)}
 form input,form textarea{background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--text);padding:.7em .8em;font-family:var(--mono);font-size:14px;resize:none}
@@ -201,6 +201,8 @@ form input:focus,form textarea:focus{outline:none;border-color:var(--lime)}
 .led.pass{color:var(--lime);text-shadow:0 0 14px rgba(198,255,61,.9)}
 #back{background:transparent;color:var(--text);border:1px solid var(--line);white-space:nowrap}
 #back:hover{border-color:var(--lime);color:var(--lime)}
+/* short landscape screens (e.g. 1366×768, 1280×720): compact the contact form so it fits between the title and the bottom bar */
+@media (min-aspect-ratio:1/1) and (min-width:761px) and (max-height:780px){#s7 .h{top:11vh}#s7 form{gap:7px}#s7 form textarea{height:3.6em}}
 @media (max-aspect-ratio:1/1),(max-width:760px){
   #s2 .h,#s3 p,#s5 .card,#s5 .h,#s7 form{max-width:none;width:calc(100vw - 32px)}
   #s2 .h{top:16vh;font-size:11vw}
@@ -226,7 +228,7 @@ form input:focus,form textarea:focus{outline:none;border-color:var(--lime)}
   .led{font-size:4.6vw}
   #back{font-size:2.6vw;padding:.8em .8em}
   #s5 .card{top:auto;bottom:4vh}
-  #s7 form{top:auto;bottom:calc(clamp(64px,11vh,120px) + 2vh)}
+  #s7 form{top:auto;bottom:calc(clamp(64px,11vh,120px) + 2vh + env(safe-area-inset-bottom,0px))}
   #s2 .h,#s4 .h,#s5 .h,#s7 .h{text-shadow:0 2px 18px rgba(10,11,15,.9)}
   #idx .nm{display:none}
   #idx{display:none}
@@ -246,7 +248,7 @@ form input:focus,form textarea:focus{outline:none;border-color:var(--lime)}
   #s5 .card{width:calc(100vw - 2*var(--pad))}
   #s7 .h{top:9vh}
   #s1 .pill{left:16px;top:clamp(64px,9.5vh,128px);white-space:nowrap;font-size:min(11px,2.4vw);letter-spacing:.03em;padding:.6em .8em;max-width:calc(100vw - 32px)}
-  #s7 form{gap:7px;padding:12px 14px;bottom:calc(clamp(64px,11vh,120px) + 1.2vh)}
+  #s7 form{gap:7px;padding:12px 14px;bottom:calc(clamp(64px,11vh,120px) + 1.2vh + env(safe-area-inset-bottom,0px))}
   #s7 form{grid-template-columns:1fr 1fr;gap:6px 8px;padding:10px 12px}
   #s7 form>*{grid-column:1/-1}
   #s7 form>label:nth-of-type(1),#s7 form>label:nth-of-type(2){grid-column:auto;min-width:0}
