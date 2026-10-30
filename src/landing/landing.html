@@ -139,6 +139,14 @@ button.lc{border:0;font:inherit;text-align:left;cursor:pointer;-webkit-tap-highl
 .soon .face{border:1.5px dashed #3a3f4e;background:rgba(18,20,27,.74);justify-content:center;align-items:center;text-align:center;color:var(--muted)}
 .soon .num{position:absolute;top:clamp(12px,1.2vw,22px);left:clamp(12px,1.2vw,22px);color:#5a6070}
 .soon .face b{font-family:var(--sans);font-size:clamp(18px,1.6vw,30px);color:var(--text);letter-spacing:-.045em;display:block;margin-bottom:.4em}
+/* follow-on-X link: its own row under the cards (the .brk forces the wrap), lime outline like the drop type tag */
+#s4 .grid{flex-wrap:wrap}
+#s4 .brk{flex-basis:100%;height:0;margin-top:calc(-1*clamp(10px,1.4vw,26px) + 4px)}
+.xf{display:inline-flex;align-items:center;gap:.5em;min-height:44px;padding:.75em 1.1em;border-radius:10px;background:rgba(10,11,15,.82);color:var(--lime);
+  box-shadow:inset 0 0 0 1px rgba(198,255,61,.55);font-weight:500;font-size:clamp(11px,.8vw,14px);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;white-space:nowrap;
+  -webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:background .2s,color .2s,box-shadow .2s}
+.xf:hover{background:var(--lime);color:#0a0b0f}
+.xf:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
 /* S5 */
 #s5 .lab{left:var(--pad);top:13vh;color:var(--muted)}
 #s5 .h{left:var(--pad);top:17vh;font-size:clamp(40px,5.2vw,100px);max-width:46vw}
@@ -188,6 +196,8 @@ form input:focus,form textarea:focus{outline:none;border-color:var(--lime)}
   .tag.ty{position:relative;top:auto;left:auto;right:auto;align-self:flex-start;margin-bottom:.6em} /* narrow tiles: type tag sits above the name, off the character's face */
   .soon .face b{font-size:3.9vw}
   .soon .face .mono{font-size:2.3vw}
+  #s4 .brk{margin-top:-2px}
+  .xf{font-size:min(12px,3.1vw);letter-spacing:.06em;padding:.7em 1em}
   .led{font-size:4.6vw}
   #back{font-size:2.6vw;padding:.8em .8em}
   #s5 .card{top:auto;bottom:4vh}
@@ -283,6 +293,8 @@ html.rec *{transition:none!important}
         <div class="face front"><span class="num mono">03</span><div><b data-t="s4.soon"></b><span class="mono" data-t="s4.next"></span></div></div>
         <div class="face back"><span class="num mono">03</span><div><b data-t="s4.testing"></b><span class="mono" data-t="s4.colour"></span></div></div>
       </div></div>
+      <i class="brk" aria-hidden="true"></i>
+      <a class="xf mono" id="xf" href="https://x.com/raw2top" target="_blank" rel="noopener"><span data-t="s4.x"></span> <span aria-hidden="true">↗</span></a>
     </div>
   </section>
 
@@ -329,7 +341,7 @@ const DICT={
   mani:['We build drops that do','one real job.','Every drop is tested on','a real task, dated,','versioned, and honest','about what it can\'t do.'],
   's4.lab':'The lab · hover a card','s4.labt':'The lab · tap a card','s4.h':'Drops','s4.live':'01 · New',
   's4.desc':'Buyer and analyst of collectible trading cards: Magic, One Piece, Lorcana and more.',
-  's4.see':'See drop →','s4.soon':'Coming soon','s4.next':'Next drop in the lab','s4.testing':'In testing','s4.colour':'Gets its own colour',
+  's4.see':'See drop →','s4.soon':'Coming soon','s4.next':'Next drop in the lab','s4.testing':'In testing','s4.colour':'Gets its own colour','s4.x':'Follow on X for the next drop',
   's5.lab':'How we test','s5.h':'Every drop gets<br>a test card.',
   rows:['One real task','A clear result','Date and version','Promised vs delivered · promised [n] → delivered [n]'],
   'note.fill':'Filling the test card…',
@@ -361,7 +373,7 @@ const DICT={
   mani:['Creamos drops que hacen','un trabajo real.','Cada drop se prueba','en una tarea real,','con fecha y versión,','y dice sin rodeos','lo que no sabe hacer.'],
   's4.lab':'El laboratorio · pasa el cursor por una carta','s4.labt':'El laboratorio · toca una carta','s4.h':'Drops','s4.live':'01 · Nuevo',
   's4.desc':'Comprador y analista de cartas coleccionables: Magic, One Piece, Lorcana y más.',
-  's4.see':'Ver drop →','s4.soon':'Próximamente','s4.next':'Próximo drop del laboratorio','s4.testing':'En pruebas','s4.colour':'Tendrá su propio color',
+  's4.see':'Ver drop →','s4.soon':'Próximamente','s4.next':'Próximo drop del laboratorio','s4.testing':'En pruebas','s4.colour':'Tendrá su propio color','s4.x':'Síguenos en X para el próximo drop',
   's5.lab':'Cómo probamos','s5.h':'Cada drop tiene<br>su ficha de prueba.',
   rows:['Una tarea real','Un resultado claro','Fecha y versión','Lo prometido frente a lo entregado · prometido [n] → entregado [n]'],
   'note.fill':'Rellenando la ficha de prueba…',
@@ -776,6 +788,7 @@ const SC=[
     mv(mani,0,(1-r(lp,0,.16))*40,1); },
   lp=>{ mv($('#s4 .h'),(1-r(lp,0,.2))*-80,0,r(lp,0,.16));
     flips.forEach((f,j)=>{const q=r(lp,.04+j*.07,.26+j*.07);mv(f,0,(1-q)*vh()*.22,q)});
+    {const q=r(lp,.25,.45);mv($('#xf'),0,(1-q)*24,q)}
     if(REC){const a=180*(r(lp,.44,.54)-r(lp,.76,.84));flips[0].querySelector('.in').style.transform=`rotateY(${a}deg)`} },
   lp=>{ const a=Math.min(3,Math.floor(r(lp,.12,.86)*4.0001));
     if(lp<.12){tabs.forEach(t=>t.classList.remove('act'));$$('#rows div').forEach(rw=>rw.classList.remove('ok'));note.textContent=T['note.fill']}

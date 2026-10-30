@@ -1,5 +1,5 @@
 {
-  "_note": "Drops shown on the landing 'My drops' cards and on /drops/ (page moved from /bots/ on 2026-10-30; /bots/ redirects). type = drop type tag: bot | prompt | utility | content | course (labels in src/i18n/dropTypes.ts). role = the card's 'Buyer · Analyst' row (was 'type' before 2026-10-30). Copied from the landing card; oneLiner + games line include Pokémon (Sergio, 2026-10-30, as in the approved /bots/ mockup, now /drops/). The landing page itself keeps its own copy in src/landing/landing.html. access = Sergio's wording (2026-10-30). tested = Sergio's test (given 2026-10-30): rating 4.9/5, date 2026-10-29 ('yesterday'), app = latest Grok Bot release at the time (v0.78.1, changelog Oct 27, 2026). skills = the 5 skills Sergio confirmed (2026-10-30); /drops/ shows them in a SEE/VER bubble. A null field shows '— pending'. Status 'Tested' vs 'Stale' (> 30 days) is computed at build time. Not in bots.json (different schema).",
+  "_note": "Drops shown on the landing 'My drops' cards and on /drops/ (page moved from /bots/ on 2026-10-30; /bots/ redirects). type = drop type tag: bot | prompt | utility | content | course (labels in src/i18n/dropTypes.ts). role = the card's 'Buyer · Analyst' row (was 'type' before 2026-10-30). Copied from the landing card; oneLiner + games line include Pokémon (Sergio, 2026-10-30, as in the approved /bots/ mockup, now /drops/). The landing page itself keeps its own copy in src/landing/landing.html. access = Sergio's wording (2026-10-30). tested = Sergio's test (given 2026-10-30): date 2026-10-29 ('yesterday'), app = latest Grok Bot release at the time (v0.78.1, changelog Oct 27, 2026). skills = the 5 skills Sergio confirmed (2026-10-30); /drops/ shows them in a SEE/VER bubble. A null field shows '— pending'. No star/score rating is shown or stored (4.9/5 removed 2026-10-30). Status 'Tested' vs 'Stale' (> 30 days) is computed at build time. Not in bots.json (different schema).",
   "bots": [
     {
       "slug": "tcg-scout",
@@ -45,7 +45,6 @@
       },
       "tested": {
         "date": "2026-10-29",
-        "rating": 4.9,
         "appVersion": "Grok Bot v0.78.1",
         "skills": {
           "en": [
