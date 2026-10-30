@@ -63,7 +63,7 @@ const other: Lang = lang === 'en' ? 'es' : 'en';
   <main id="main"><slot /></main>
   <footer class="wrap foot">
     <div>
-      <span class="logo small">raw2top<span aria-hidden="true">_</span></span>
+      <span class="logo small">raw<b>2</b>top</span>
       <p class="muted">{t('foot.tag')}</p>
     </div>
     <ul>
@@ -146,7 +146,9 @@ const other: Lang = lang === 'en' ? 'es' : 'en';
   .nav .logo:hover { color: var(--text); }
   .logo { font-weight: 700; font-size: 20px; letter-spacing: -0.02em; text-decoration: none; color: var(--text); }
   .logo span { color: var(--lime); }
-  .logo.small { font-size: 17px; }
+  /* footer logo: same mark as the header (raw<b>2</b>top, Space Grotesk 700, lime 2), a bit smaller */
+  .foot .logo.small { font-family: var(--sans); font-weight: 700; letter-spacing: -.045em; font-size: 19px; }
+  .foot .logo b { color: var(--lime); }
   .right { display: flex; align-items: center; gap: 26px; }
   .lang { position: relative; z-index: 60; }
   .lang-btn { display: inline-flex; align-items: center; gap: 7px; padding: 8px 11px 8px 10px; min-height: 36px; border: 1px solid var(--line); border-radius: 999px;

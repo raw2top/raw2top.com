@@ -6,9 +6,9 @@ interface Props { lang: 'en' | 'es'; }
 const { lang } = Astro.props;
 const META = {
   en: { title: 'raw2top · Tested bots, dated and honest',
-        desc: "raw2top is where Sergio Domínguez publishes his own bots for Grok Bot. Every bot is tested on a real task, dated, versioned, and honest about what it can't do." },
+        desc: "raw2top is where the raw2top team publishes its own bots for Grok Bot. Every bot is tested on a real task, dated, versioned, and honest about what it can't do." },
   es: { title: 'raw2top · Bots probados, con fecha y honestos',
-        desc: 'raw2top es donde Sergio Domínguez publica sus propios bots para Grok Bot. Cada bot se prueba en una tarea real, con fecha y versión, y dice claramente lo que no sabe hacer.' },
+        desc: 'raw2top es donde el equipo de raw2top publica sus propios bots para Grok Bot. Cada bot se prueba en una tarea real, con fecha y versión, y dice claramente lo que no sabe hacer.' },
 }[lang];
 const site = Astro.site!.href.replace(/\/$/, '');
 const url = { en: `${site}/`, es: `${site}/es/` };

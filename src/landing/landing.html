@@ -49,6 +49,9 @@ html.rec #fakecur{display:block}
 #links{padding:.3em .4em;gap:0}
 #links a{color:var(--muted);text-decoration:none;padding:.35em .6em;border-radius:999px}
 #links a:hover,#links a:focus-visible{color:var(--text)}
+/* thin divider between the nav items so Bots / About / Report read as three links, not one run of text */
+#links a{position:relative}
+#links a+a::before{content:"";position:absolute;left:0;top:28%;bottom:28%;width:1px;background:#353a48;pointer-events:none}
 form .fine{color:var(--muted);font-size:11px;line-height:1.45;letter-spacing:.02em;text-transform:none}
 form .fine a{color:var(--lime)}
 /* language dropdown: current flag as the main button, vertical menu drops down */
@@ -187,7 +190,7 @@ form input:focus,form textarea:focus{outline:none;border-color:var(--lime)}
   #s2 .h,#s4 .h,#s5 .h,#s6 .h{text-shadow:0 2px 18px rgba(10,11,15,.9)}
   #idx .nm{display:none}
   #idx{display:none}
-  #links a{padding:.35em .45em}
+  #links a{padding:.35em .6em}
 }
 /* portrait phones: texts left-aligned, moved below the face band (~15-40% of the height in every hold) */
 @media (max-aspect-ratio:1/1){
@@ -309,7 +312,7 @@ html.rec *{transition:none!important}
 const DICT={
  en:{
   title:'raw2top · Tested bots, dated and honest',
-  desc:'raw2top is where Sergio Domínguez publishes his own bots for Grok Bot. Every bot is tested on a real task, dated, versioned, and honest about what it can\'t do.',
+  desc:'raw2top is where the raw2top team publishes its own bots for Grok Bot. Every bot is tested on a real task, dated, versioned, and honest about what it can\'t do.',
   names:['BOOT','BUILD','MANIFESTO','MY BOTS','HOW I TEST','CONTACT'],
   's1.pill':'Bots for Grok Bot · tested, dated, honest','s1.cue':'Scroll to boot ↓',
   's2.h':'From raw idea to tested bot.','s2.run':'Test run','s2.running':'Running…','s2.pass':'Pass ✓',
@@ -340,7 +343,7 @@ const DICT={
  },
  es:{
   title:'raw2top · Bots probados, con fecha y honestos',
-  desc:'raw2top es donde Sergio Domínguez publica sus propios bots para Grok Bot. Cada bot se prueba en una tarea real, con fecha y versión, y dice claramente lo que no sabe hacer.',
+  desc:'raw2top es donde el equipo de raw2top publica sus propios bots para Grok Bot. Cada bot se prueba en una tarea real, con fecha y versión, y dice claramente lo que no sabe hacer.',
   names:['ARRANQUE','CREACIÓN','MANIFIESTO','MIS BOTS','CÓMO PRUEBO','CONTACTO'],
   's1.pill':'Bots para Grok Bot · probados, fechados, honestos','s1.cue':'Desliza para arrancar ↓',
   's2.h':'De idea en bruto a bot probado.','s2.run':'Prueba','s2.running':'En curso…','s2.pass':'Superada ✓',

@@ -107,7 +107,7 @@ const dot = (s: string) => (s === 'Tested' ? 'd-tested' : s === 'Tested-stale' ?
     <p class="hint m bp-in" aria-hidden="true">{t('hintPointer')}</p>
 
     <div class="legend m bp-in" role="group" aria-label={t('leg.status')}>
-      <span>{t('leg.status')}</span>
+      <span class="leg-h">{t('leg.status')}:</span>
       <span class="chip"><i class="dot d-tested"></i><b>{t('st.Tested')}</b><span>{t('leg.tested')}</span></span>
       <span class="chip"><i class="dot d-stale"></i><b>{t('st.Tested-stale')}</b><span>{t('leg.stale')}</span></span>
       <span class="chip"><i class="dot d-listed"></i><b>{t('st.Listed')}</b><span>{t('leg.listed')}</span></span>
@@ -249,7 +249,10 @@ h1{font-family:var(--sans);font-weight:700;letter-spacing:-.045em;line-height:.9
 .lablab{position:absolute;bottom:9cqw;left:0;right:0;color:var(--muted);font-family:var(--mono);font-size:max(9px,3.1cqw);letter-spacing:.08em;text-transform:uppercase}
 .lablab i{display:inline-block;width:.6em;height:.6em;border-radius:50%;background:var(--violet);box-shadow:0 0 8px var(--violet);margin-right:.6em;vertical-align:.05em}
 
-.legend{margin:clamp(30px,4.6vh,60px) auto 0;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;color:var(--muted)}
+/* status legend: 'Status:' label on its own line, then the three chips stacked in one left-aligned column (block centred on desktop) */
+.legend{margin:clamp(30px,4.6vh,60px) auto 0;width:fit-content;max-width:100%;display:flex;flex-direction:column;align-items:flex-start;gap:8px;color:var(--muted)}
+.legend .leg-h{margin-bottom:2px}
+.legend .chip{max-width:100%}
 .chip{display:inline-flex;align-items:center;gap:.5em;padding:.55em .9em;border:1px solid var(--line);border-radius:999px;background:rgba(18,20,27,.7);font-size:11.5px}
 .chip b{color:var(--text);font-weight:500}
 .dot{width:.62em;height:.62em;border-radius:50%;display:inline-block}
@@ -266,7 +269,8 @@ h1{font-family:var(--sans);font-weight:700;letter-spacing:-.045em;line-height:.9
   .intro{font-size:16px}
   .deck{grid-template-columns:1fr 1fr;gap:18px 14px;margin-top:24px}
   .deck .holo{grid-column:1/-1;width:min(100%,330px);justify-self:center}
-  .legend{justify-content:flex-start}
+  .legend{margin-left:0;margin-right:0}
+  .legend .chip{padding:.55em .8em;gap:.45em;letter-spacing:.05em}
 }
 @media (max-width:340px){.deck{grid-template-columns:1fr}}
 </style>
