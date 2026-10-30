@@ -162,22 +162,45 @@ button.lc{border:0;font:inherit;text-align:left;cursor:pointer;-webkit-tap-highl
 .rows div.ok{color:var(--text)}.rows div.ok .ck{color:var(--lime)}
 .rows div .n{color:inherit;opacity:.7}
 .note{padding:14px 18px;border-top:1px solid var(--line);background:var(--panel-2);color:var(--muted);font-family:var(--mono);font-size:clamp(11px,.85vw,15px);line-height:1.5;min-height:6.2em}
-/* S6 */
-#s6 .h{left:var(--pad);top:13vh;font-size:clamp(40px,5.8vw,112px);line-height:.96}
+/* S6 · Encargos: copy on the left, particle hologram above the character's open palm (canvas #holo, drawn in code) */
+#holo{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;z-index:11}
+#s6 .enc{left:var(--pad);top:13vh;width:min(40vw,640px)}
+#s6 .lab{color:var(--muted)}
+#s6 .h{font-size:clamp(40px,5.2vw,100px);margin-top:.32em}
 #s6 .h em{font-style:normal;color:var(--lime)}
-#s6 form{left:var(--pad);top:41vh;width:min(32vw,560px);background:rgba(18,20,27,.9);border:1px solid var(--line);border-radius:16px;padding:clamp(14px,1.4vw,24px);display:grid;gap:10px}
+#s6 .lead{margin-top:clamp(14px,2.4vh,28px);max-width:30em;font-size:clamp(15px,1.15vw,21px);line-height:1.42;color:rgba(242,243,247,.92)}
+#s6 .items{margin-top:clamp(16px,2.8vh,32px);display:flex;flex-wrap:wrap;gap:8px}
+.ech{display:inline-flex;align-items:center;gap:.6em;min-height:40px;padding:.7em 1em;border:1px solid var(--line);border-radius:999px;background:rgba(18,20,27,.82);color:var(--muted);
+  font-family:var(--mono);font-size:clamp(11px,.8vw,14px);letter-spacing:.08em;text-transform:uppercase;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;
+  transition:border-color .2s,color .2s,box-shadow .2s}
+.ech i{width:.55em;height:.55em;border-radius:50%;background:#3a3f4e;transition:background .2s,box-shadow .2s}
+.ech:hover{color:var(--text);border-color:#4a5060}
+.ech.act{color:var(--text);border-color:var(--lime);box-shadow:0 0 0 1px rgba(198,255,61,.22),0 0 22px rgba(198,255,61,.2)}
+.ech.act i{background:var(--lime);box-shadow:0 0 8px var(--lime)}
+.ech:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+.ech.more{border:1.5px dashed rgba(124,92,255,.8);color:var(--text);background:rgba(18,20,27,.7)}
+.ech.more b{color:var(--lime);font-weight:700;font-size:1.15em;line-height:1}
+.ech.more:hover,.ech.more.act{border-color:var(--violet);box-shadow:0 0 24px rgba(124,92,255,.38)}
+.ech.pop{animation:echpop .55s cubic-bezier(.2,.9,.3,1.3)}
+@keyframes echpop{0%{transform:scale(1)}28%{transform:scale(1.13)}100%{transform:scale(1)}}
+#ledE{color:var(--lime);text-shadow:0 0 14px rgba(198,255,61,.9)}
+#hint{color:var(--muted);text-align:right;white-space:nowrap}
+/* S7 · contact */
+#s7 .h{left:var(--pad);top:13vh;font-size:clamp(40px,5.8vw,112px);line-height:.96}
+#s7 .h em{font-style:normal;color:var(--lime)}
+#s7 form{left:var(--pad);top:41vh;width:min(32vw,560px);background:rgba(18,20,27,.9);border:1px solid var(--line);border-radius:16px;padding:clamp(14px,1.4vw,24px);display:grid;gap:10px}
 form .hd{display:flex;justify-content:space-between;color:var(--muted);padding-bottom:6px;border-bottom:1px solid var(--line)}
 form label{display:grid;gap:6px;color:var(--muted)}
 form input,form textarea{background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--text);padding:.7em .8em;font-family:var(--mono);font-size:14px;resize:none}
 form input:focus,form textarea:focus{outline:none;border-color:var(--lime)}
-#s6 .board{left:0;right:0;bottom:0;height:clamp(64px,11vh,120px);border-top:1px solid var(--line);background:rgba(5,6,8,.92);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 clamp(16px,3.2vw,56px)}
+#s6 .board,#s7 .board{left:0;right:0;bottom:0;height:clamp(64px,11vh,120px);border-top:1px solid var(--line);background:rgba(5,6,8,.92);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 clamp(16px,3.2vw,56px)}
 .led{font-family:var(--mono);font-weight:700;font-size:clamp(20px,3.4vw,62px);letter-spacing:.06em;color:#2b3a12;text-transform:uppercase;white-space:nowrap;
   -webkit-mask-image:radial-gradient(circle,#000 58%,transparent 64%);mask-image:radial-gradient(circle,#000 58%,transparent 64%);-webkit-mask-size:4px 4px;mask-size:4px 4px}
 .led.pass{color:var(--lime);text-shadow:0 0 14px rgba(198,255,61,.9)}
 #back{background:transparent;color:var(--text);border:1px solid var(--line);white-space:nowrap}
 #back:hover{border-color:var(--lime);color:var(--lime)}
 @media (max-aspect-ratio:1/1),(max-width:760px){
-  #s2 .h,#s3 p,#s5 .card,#s5 .h,#s6 form{max-width:none;width:calc(100vw - 32px)}
+  #s2 .h,#s3 p,#s5 .card,#s5 .h,#s7 form{max-width:none;width:calc(100vw - 32px)}
   #s2 .h{top:16vh;font-size:11vw}
   #s2 .meter{top:auto;bottom:calc(9vh + 32vw);left:16px;right:auto;width:60vw}
   #s2 .cards{bottom:6vh}.lc{width:28vw}
@@ -185,7 +208,7 @@ form input:focus,form textarea:focus{outline:none;border-color:var(--lime)}
   #s4 .h{font-size:15vw}#s4 .grid{top:32vh;gap:8px}.flip{width:29vw}
   .face h3{font-size:5vw}.face p{font-size:2.6vw}.flip .back{padding:10px 8px}.back .btn.see{font-size:14px;letter-spacing:0;gap:.3em;white-space:nowrap;padding:.85em .2em;border-radius:9px}
   #s5 .h{font-size:10vw}#s5 .card{top:28vh}
-  #s6 .h{font-size:10vw}#s6 form{top:34vh}
+  #s7 .h{font-size:10vw}#s7 form{top:34vh}
   .led{font-size:5.6vw}
   /* portrait: keep the character's face clear, push panels to the bottom */
   #s3 p{top:auto;bottom:6vh;left:12px;width:calc(100vw - 24px);padding:12px 14px;background:rgba(10,11,15,.74);border-radius:14px;-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px)}
@@ -201,15 +224,15 @@ form input:focus,form textarea:focus{outline:none;border-color:var(--lime)}
   .led{font-size:4.6vw}
   #back{font-size:2.6vw;padding:.8em .8em}
   #s5 .card{top:auto;bottom:4vh}
-  #s6 form{top:auto;bottom:calc(clamp(64px,11vh,120px) + 2vh)}
-  #s2 .h,#s4 .h,#s5 .h,#s6 .h{text-shadow:0 2px 18px rgba(10,11,15,.9)}
+  #s7 form{top:auto;bottom:calc(clamp(64px,11vh,120px) + 2vh)}
+  #s2 .h,#s4 .h,#s5 .h,#s7 .h{text-shadow:0 2px 18px rgba(10,11,15,.9)}
   #idx .nm{display:none}
   #idx{display:none}
   #links a{padding:.35em .6em}
 }
 /* portrait phones: texts left-aligned, moved below the face band (~15-40% of the height in every hold) */
 @media (max-aspect-ratio:1/1){
-  #s2 .h,#s4 .h,#s4 .lab,#s5 .h,#s5 .lab,#s6 .h{left:16px;right:16px;width:auto;max-width:none;text-align:left}
+  #s2 .h,#s4 .h,#s4 .lab,#s5 .h,#s5 .lab,#s7 .h{left:16px;right:16px;width:auto;max-width:none;text-align:left}
   #s2 .h{top:42vh;font-size:10vw}
   #s2 .meter{left:16px;right:auto;width:60vw;bottom:calc(6vh + 25vw + 14px)}
   #s4 .lab{top:51vh}
@@ -219,19 +242,25 @@ form input:focus,form textarea:focus{outline:none;border-color:var(--lime)}
   #s2 .h,#s2 .meter,#s4 .h,#s4 .lab,#s5 .h,#s5 .lab,#s5 .card{left:var(--pad)}
   #s2 .h,#s4 .h,#s4 .lab,#s5 .h,#s5 .lab{right:var(--pad)}
   #s5 .card{width:calc(100vw - 2*var(--pad))}
-  #s6 .h{top:9vh}
+  #s7 .h{top:9vh}
   #s1 .pill{left:16px;top:clamp(64px,9.5vh,128px);white-space:nowrap;font-size:min(11px,2.4vw);letter-spacing:.03em;padding:.6em .8em;max-width:calc(100vw - 32px)}
-  #s6 form{gap:7px;padding:12px 14px;bottom:calc(clamp(64px,11vh,120px) + 1.2vh)}
-  #s6 form{grid-template-columns:1fr 1fr;gap:6px 8px;padding:10px 12px}
-  #s6 form>*{grid-column:1/-1}
-  #s6 form>label:nth-of-type(1),#s6 form>label:nth-of-type(2){grid-column:auto;min-width:0}
-  #s6 form label{gap:3px}
-  #s6 form input,#s6 form textarea{padding:.45em .6em;font-size:13px;min-width:0;width:100%}
-  #s6 form textarea{height:3.2em}
-  #s6 form .fine{font-size:10px;line-height:1.35}
+  #s7 form{gap:7px;padding:12px 14px;bottom:calc(clamp(64px,11vh,120px) + 1.2vh)}
+  #s7 form{grid-template-columns:1fr 1fr;gap:6px 8px;padding:10px 12px}
+  #s7 form>*{grid-column:1/-1}
+  #s7 form>label:nth-of-type(1),#s7 form>label:nth-of-type(2){grid-column:auto;min-width:0}
+  #s7 form label{gap:3px}
+  #s7 form input,#s7 form textarea{padding:.45em .6em;font-size:13px;min-width:0;width:100%}
+  #s7 form textarea{height:3.2em}
+  #s7 form .fine{font-size:10px;line-height:1.35}
+  #s6 .enc{top:auto;left:var(--pad);right:var(--pad);width:auto;bottom:calc(clamp(64px,11vh,120px) + 2.2vh)}
+  #s6 .h{font-size:10vw;margin-top:.3em;text-shadow:0 2px 18px rgba(10,11,15,.9)}
+  #s6 .lead{font-size:15px;margin-top:12px;text-shadow:0 1px 12px rgba(10,11,15,.95)}
+  #s6 .items{margin-top:14px;gap:6px}
+  .ech{min-height:36px;padding:.6em .8em;font-size:min(11px,2.9vw);letter-spacing:.06em}
+  #hint{display:none}
 }
 html.rec *{transition:none!important}
-@media (prefers-reduced-motion:reduce){#s2 .bub.pop{animation:none}.lc i,button.lc{transition:none}.flip .in,#s3 p span,.rows div,.rows div .ck{transition:none}}
+@media (prefers-reduced-motion:reduce){#s2 .bub.pop,.ech.pop{animation:none}.ech,.ech i{transition:none}.lc i,button.lc{transition:none}.flip .in,#s3 p span,.rows div,.rows div .ck{transition:none}}
 </style>
 </head>
 <body>
@@ -245,11 +274,12 @@ html.rec *{transition:none!important}
   <div class="vignette"></div>
   <canvas id="petals" aria-hidden="true"></canvas>
   <canvas id="dust" aria-hidden="true"></canvas>
+  <canvas id="holo" aria-hidden="true"></canvas>
 
   <header id="bar">
     <div class="l">
       <a class="logo" href="#" id="logo">raw<b>2</b>top</a>
-      <div class="chip mono" id="idx"><em id="sn">01</em> / 06 <span class="nm">— <span id="sname"></span></span></div>
+      <div class="chip mono" id="idx"><em id="sn">01</em> / 07 <span class="nm">— <span id="sname"></span></span></div>
     </div>
     <div class="r">
     <nav class="chip mono" id="links" aria-label="Main"><a data-p="/drops/" data-t="nav.drops" href="/drops/">Drops</a><a data-p="/about/" data-t="nav.about" href="/about/">About us</a><a data-p="/report/" data-t="nav.report" href="/report/">Report</a></nav>
@@ -308,7 +338,23 @@ html.rec *{transition:none!important}
     </div>
   </section>
 
-  <section class="scene" id="s6">
+  <section class="scene" id="s6" aria-labelledby="enc-h">
+    <div class="enc">
+      <div class="lab mono" data-t="enc.lab"></div>
+      <h2 class="h" id="enc-h" data-t="enc.h"></h2>
+      <p class="lead" data-t="enc.p"></p>
+      <div class="items" id="encItems">
+        <button type="button" class="ech" data-k="0" aria-pressed="false"><i aria-hidden="true"></i><span data-t="enc.i1"></span></button>
+        <button type="button" class="ech" data-k="1" aria-pressed="false"><i aria-hidden="true"></i><span data-t="enc.i2"></span></button>
+        <button type="button" class="ech" data-k="2" aria-pressed="false"><i aria-hidden="true"></i><span data-t="enc.i3"></span></button>
+        <button type="button" class="ech" data-k="3" aria-pressed="false"><i aria-hidden="true"></i><span data-t="enc.i4"></span></button>
+        <button type="button" class="ech more" data-k="4" id="encMore"><b aria-hidden="true">?</b><span data-t="enc.more"></span></button>
+      </div>
+    </div>
+    <div class="board"><div class="led" id="ledE"></div><div class="mono" id="hint"></div></div>
+  </section>
+
+  <section class="scene" id="s7">
     <h2 class="h" data-t="s6.h"></h2>
     <form id="form" method="post" enctype="text/plain" action="mailto:raw2top@gmail.com">
       <div class="hd mono"><span data-t="s6.hd"></span><span>v0.1</span></div>
@@ -330,7 +376,7 @@ const DICT={
  en:{
   title:'raw2top · Tested AI drops',
   desc:'raw2top is where the raw2top team publishes its AI drops: bots, prompts, tools, content, courses and more. Every drop is tested and kept up to date by the team itself.',
-  names:['BOOT','BUILD','MANIFESTO','DROPS','HOW WE TEST','CONTACT'],
+  names:['BOOT','BUILD','MANIFESTO','DROPS','HOW WE TEST','COMMISSIONS','CONTACT'],
   's1.pill':'AI drops · bots, prompts, tools & courses','s1.cue':'Scroll to boot ↓',
   's2.h':'From raw idea to tested drop.','s2.run':'Test run','s2.running':'Running…','s2.pass':'Pass ✓',
   's2.c1':'Tested','s2.c2':'Dated','s2.c3':'Honest','s2.status':'Drop status',
@@ -349,6 +395,11 @@ const DICT={
    '02 — A clear result: pass or fail is obvious — a price, a file, a booked slot.',
    '03 — Date and version: every test is stamped with the date and the drop version.',
    '04 — Promised vs delivered: what the drop promised vs what it actually delivered — promised [n] → delivered [n].'],
+  'enc.lab':'Commissions','enc.h':'We also build<br><em>to order.</em>','enc.p':'If you need something made with AI, tell us and we’ll build it for you.',
+  'enc.i1':'Websites','enc.i2':'AI agents','enc.i3':'Music videos','enc.i4':'Books','enc.more':'And whatever you have in mind.',
+  /* PLACEHOLDER (pending approval): board status + hint of the commissions scene */
+  'led.f':['Forging: websites','Forging: AI agents','Forging: music videos','Forging: books','Forging: your idea'],
+  'enc.hint':'Hover the particles · pick a commission','enc.hintt':'Touch the particles · tap a commission',
   's6.h':'Your custom drop<br><em>starts here.</em>','s6.hd':'Request · custom drop',
   's6.l1':'01 · Name','s6.l2':'02 · Email','s6.l3':'03 · What do you need?',
   's6.p1':'Your name','s6.p2':'you@domain.com','s6.p3':'A bot, a prompt, a tool…',
@@ -362,7 +413,7 @@ const DICT={
  es:{
   title:'raw2top · Drops de IA probados',
   desc:'raw2top es donde el equipo de raw2top publica sus drops de IA: bots, prompts, utilidades, contenido, cursos y más. Cada drop lo prueba y lo actualiza el propio equipo.',
-  names:['ARRANQUE','CREACIÓN','MANIFIESTO','DROPS','CÓMO PROBAMOS','CONTACTO'],
+  names:['ARRANQUE','CREACIÓN','MANIFIESTO','DROPS','CÓMO PROBAMOS','ENCARGOS','CONTACTO'],
   's1.pill':'Drops de IA · bots, prompts, utilidades y cursos','s1.cue':'Desliza para arrancar ↓',
   's2.h':'De idea en bruto a drop probado.','s2.run':'Prueba','s2.running':'En curso…','s2.pass':'Superada ✓',
   's2.c1':'Probado','s2.c2':'Fechado','s2.c3':'Honesto','s2.status':'Estado del drop',
@@ -381,6 +432,11 @@ const DICT={
    '02 — Un resultado claro: se ve enseguida si pasa o falla — un precio, un archivo, una cita reservada.',
    '03 — Fecha y versión: cada prueba queda marcada con la fecha y la versión del drop.',
    '04 — Lo prometido frente a lo entregado: lo que prometía el drop frente a lo que entregó de verdad — prometido [n] → entregado [n].'],
+  'enc.lab':'Encargos','enc.h':'También lo hacemos<br><em>a medida.</em>','enc.p':'Si necesitas algo hecho con IA, cuéntanoslo y lo construimos para ti.',
+  'enc.i1':'Páginas web','enc.i2':'Agentes de IA','enc.i3':'Videoclips','enc.i4':'Libros','enc.more':'Y lo que se te ocurra.',
+  /* PLACEHOLDER (pendiente de aprobación): estado del tablero + pista de la escena de encargos */
+  'led.f':['Forjando: páginas web','Forjando: agentes de IA','Forjando: videoclips','Forjando: libros','Forjando: tu idea'],
+  'enc.hint':'Pasa el cursor por las partículas · toca un encargo','enc.hintt':'Toca las partículas · toca un encargo',
   's6.h':'Tu drop a medida<br><em>empieza aquí.</em>','s6.hd':'Encargo · drop a medida',
   's6.l1':'01 · Nombre','s6.l2':'02 · Email','s6.l3':'03 · ¿Qué necesitas?',
   's6.p1':'Tu nombre','s6.p2':'tu@dominio.com','s6.p3':'Un bot, un prompt, una utilidad…',
@@ -403,7 +459,7 @@ const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 
 /* ---------- timeline: holds (scene text) and clips (character moves), in vh of scroll ---------- */
 const SEG=[{h:0,len:120},{c:0,len:130},{h:1,len:120},{c:1,len:130},{h:2,len:220},{c:2,len:130},
-           {h:3,len:160},{c:3,len:130},{h:4,len:260},{c:4,len:130},{h:5,len:120}];
+           {h:3,len:160},{c:3,len:130},{h:4,len:260},{c:4,len:130},{h:5,len:260},{c:5,len:130},{h:6,len:120}];
 let acc=0; const TOT=SEG.reduce((a,s)=>a+s.len,0);
 SEG.forEach(s=>{s.p0=acc/TOT; acc+=s.len; s.p1=acc/TOT});
 window.__SEG=SEG;
@@ -469,19 +525,19 @@ function setLang(l,save){
 // phones/tablets/save-data: 1280px, every 2nd frame (46 per clip, ~6.2 MB, black already lifted to the brand bg),
 // shown with a crossfade between neighbours. Desktop: 1280px x 91 per clip (~15 MB).
 const MOB = matchMedia('(max-width: 900px), (pointer: coarse)').matches || !!(navigator.connection&&navigator.connection.saveData);
-const NCL=5, NF=MOB?46:91, FDIR=MOB?'frames-m':'frames', BAKED=MOB;
+const NCL=6, NF=MOB?46:91, FDIR=MOB?'frames-m':'frames', BAKED=MOB;
 window.__MOB=MOB;
 const seq=$('#seq'), sx=seq.getContext('2d',{alpha:false});
 const plates=[];
 // blobs: compressed frames kept in memory; bmps: decoded frames, only in a window around the playhead
 const blobs=[...Array(NCL)].map(()=>new Array(NF).fill(null)), state=[...Array(NCL)].map(()=>new Uint8Array(NF));
 const bmps=[...Array(NCL)].map(()=>new Array(NF).fill(null)), dst=[...Array(NCL)].map(()=>new Uint8Array(NF));
-let nLoaded=0; const NTOTAL=RM?6:6+NCL*NF;
+let nLoaded=0; const NTOTAL=RM?7:7+NCL*NF;
 const loadEl=$('#load');
 const STATS=window.__DRAW={draws:0,fades:0,miss:0,decoded:0,evicted:0};
 function loadImg(src){return new Promise(res=>{const im=new Image();im.decoding='async';im.onload=()=>{(im.decode?im.decode():Promise.resolve()).catch(()=>{}).then(()=>res(im))};im.onerror=()=>res(null);im.src=src})}
 function bump(){nLoaded++;loadEl.style.transform=`scaleX(${nLoaded/NTOTAL})`;if(nLoaded>=NTOTAL)loadEl.style.opacity=0}
-const platesReady=Promise.all([1,2,3,4,5,6].map((i,k)=>loadImg(`/landing/assets/plate-0${i}.webp`).then(im=>{plates[k]=im;bump();lastKey='';if(k===3&&W)fitCards()})));
+const platesReady=Promise.all([1,2,3,4,5,6,7].map((i,k)=>loadImg(`/landing/assets/plate-0${i}.webp`).then(im=>{plates[k]=im;bump();lastKey='';if(k===3&&W)fitCards();if(k===5&&W)holoResize()})));
 let curClip=0, curF=0, atHold=0, MOVING=false; // playhead: clip + frame, or the hold index (atHold>=0)
 // download order: the chapter you are in, then the next one, then the previous, then the rest; coarse-to-fine inside a chapter
 function clipOrder(){const o=[curClip];for(let d=1;d<NCL;d++){if(curClip+d<NCL)o.push(curClip+d);if(curClip-d>=0)o.push(curClip-d)}return o}
@@ -523,9 +579,9 @@ if(REC) window.__decoded=()=>framesReady.then(function w(){return STATS.decoded>
 
 let W=0,H=0,DPR=1;
 // portrait: per-scene focal point. FX = character centre as a fraction of the frame width, TX = where it lands on screen
-const FX=[.51,.66,.72,.84,.70,.72], TX=[.5,.56,.5,.62,.64,.62]; let FOC=0;
+const FX=[.51,.66,.72,.84,.70,.66,.72], TX=[.5,.56,.5,.62,.64,.585,.62]; let FOC=0;
 function cover(im){const iw=im.naturalWidth||im.width||1280, ih=im.naturalHeight||im.height||720, s=Math.max(W/iw,H/ih), dw=iw*s, dh=ih*s;
-  if(W/H<1){ const a=Math.floor(FOC), b=Math.min(5,a+1), f=FOC-a, fx=FX[a]+(FX[b]-FX[a])*f, tx=TX[a]+(TX[b]-TX[a])*f;
+  if(W/H<1){ const a=Math.floor(FOC), b=Math.min(6,a+1), f=FOC-a, fx=FX[a]+(FX[b]-FX[a])*f, tx=TX[a]+(TX[b]-TX[a])*f;
     return [ clamp(W*tx-dw*fx, W-dw, 0), (H-dh)*.5, dw, dh ]; }
   return [ (W-dw)*.5, (H-dh)*.5, dw, dh ];}
 let lastKey='';
@@ -571,7 +627,8 @@ const EYES=[
   null /* scene 3: looking down at the laptop, lids half closed, irises ~5 px: no room to move them */,
   {k:3,x:1050,y:150,w:113,h:33,pw:1280,eyes:[{cx:22.00,cy:14.00,r:5.50,sc:"#4b7c6e"},{cx:88.00,cy:18.00,r:5.50,sc:"#5c8f7f"}]},
   {k:4,x:894,y:146,w:112,h:32,pw:1280,eyes:[{cx:22.50,cy:17.50,r:5.00,sc:"#457a70"},{cx:89.50,cy:14.50,r:6.00,sc:"#4f8072"}]},
-  {k:5,x:880,y:205,w:175,h:43,pw:1280,eyes:[{cx:31.00,cy:16.00,r:8.50,sc:"#4c766d"},{cx:136.50,cy:23.50,r:9.00,sc:"#597c72"}]}];
+  {k:5,x:892,y:145,w:110,h:36,pw:1280,eyes:[{cx:21.50,cy:21.00,r:6.00,sc:"#6f7a72"},{cx:87.50,cy:14.50,r:6.00,sc:"#718078"}]},
+  {k:6,x:880,y:205,w:175,h:43,pw:1280,eyes:[{cx:31.00,cy:16.00,r:8.50,sc:"#4c766d"},{cx:136.50,cy:23.50,r:9.00,sc:"#597c72"}]}];
 EYES.forEach(E=>{ if(E){ E.img=new Image(); E.img.src=`/landing/assets/eyes-h${E.k}.png`; } });
 const ecv=$('#eyes'), ex=ecv.getContext('2d'), fakecur=$('#fakecur'), eoc=document.createElement('canvas'), eo=eoc.getContext('2d'), etc=document.createElement('canvas'), et=etc.getContext('2d');
 const EYE_ON=!RM && (REC || /[?&]eyes=1/.test(location.search) || matchMedia('(hover:hover) and (pointer:fine)').matches);   // ?eyes=1: dev override for headless tests
@@ -580,9 +637,11 @@ if(EYE_ON&&!REC) addEventListener('pointermove',e=>{ if(e.pointerType&&e.pointer
 // recording only: a scripted cursor path during two holds
 function fakeCursor(seg,u){
   if(REC&&window.__CUR) return window.__CUR;   // test hook (eye checks on every hold)
-  if(!REC||(seg.h!==1&&seg.h!==5)) return null;
+  if(!REC||(seg.h!==1&&seg.h!==5&&seg.h!==6)) return null;
   const a=r(u,.12,.88), env=r(u,.06,.16)*(1-r(u,.84,.94));
   if(seg.h===1) return {x:W*(.38+.5*Math.sin(a*Math.PI*1.5)**2*(a<.67?1:1)), y:H*(.42-.18*Math.sin(a*Math.PI*2)), o:env};
+  if(seg.h===5&&window.__HOLO){ const c=window.__HOLO(); if(c){ // recording: sweep the cursor through the hologram, then rest on the copy
+    const b=r(u,.2,.62), ang=b*Math.PI*2.4; return {x:c.x-c.r*1.5+b*c.r*2.6, y:c.y+Math.sin(ang)*c.r*.45, o:r(u,.14,.22)*(1-r(u,.66,.74))}; } }
   return {x:W*(.30+.62*(.5-.5*Math.cos(a*Math.PI*2.2))), y:H*(.38+.16*Math.sin(a*Math.PI*3)), o:env};
 }
 function drawEyes(seg,u,t){
@@ -590,7 +649,7 @@ function drawEyes(seg,u,t){
   const k=seg.h, E=k!=null?EYES[k]:null;
   const fc=fakeCursor(seg,u);
   if(REC){ fakecur.style.opacity=fc?fc.o:0; if(fc) fakecur.style.transform=`translate(${fc.x-3}px,${fc.y-2}px)` }
-  const A = E&&plates[k]&&E.img.complete&&E.img.naturalWidth ? (k===5?r(u,0,.08):k===0?1-r(u,.92,1):r(u,0,.08)*(1-r(u,.92,1))) : 0;
+  const A = E&&plates[k]&&E.img.complete&&E.img.naturalWidth ? (k===6?r(u,0,.08):k===0?1-r(u,.92,1):r(u,0,.08)*(1-r(u,.92,1))) : 0;
   const now=t; const dt=eyeLast<0?0:Math.min(.1,Math.max(0,now-eyeLast)); eyeLast=now;
   const clear=()=>{ if(eyeDirty){ex.setTransform(1,0,0,1,0,0);ex.clearRect(0,0,ecv.width,ecv.height);eyeDirty=false} };
   if(A<=0.001){ clear(); EO.x=EO.y=0; return }
@@ -759,8 +818,9 @@ function petals(t,p,amt){
 
 /* ---------- scenes ---------- */
 const scenes=$$('.scene'), fill=$('#fill'),pct=$('#pct'),mstate=$('#mstate'),lcs=$$('#s2 .lc'),flips=$$('#s4 .flip'),
-      tabs=$$('#tabs button'),note=$('#note'),led=$('#led'),form=$('#form'),h6=$('#s6 .h'),goggle=$('#goggle'),prog=$('#prog'),sn=$('#sn'),sname=$('#sname');
+      tabs=$$('#tabs button'),note=$('#note'),led=$('#led'),form=$('#form'),h6=$('#s7 .h'),goggle=$('#goggle'),prog=$('#prog'),sn=$('#sn'),sname=$('#sname');
 const M=RM?0:1;
+const encBox=$('#s6 .enc'), echs=$$('#s6 .ech'), ledE=$('#ledE'), hintE=$('#hint');
 /* scene 2: tap a lime card -> speech bubble explaining it (one at a time; tap again / elsewhere / Esc closes) */
 const bub=$('#bub'), bubh=$('#bubh'), bubt=$('#bubt'); let bubOpen=null;
 function bubPlace(){ if(!bubOpen) return;
@@ -794,9 +854,187 @@ const SC=[
     if(lp<.12){tabs.forEach(t=>t.classList.remove('act'));$$('#rows div').forEach(rw=>rw.classList.remove('ok'));note.textContent=T['note.fill']}
     else{tabs.forEach((t,j)=>t.classList.toggle('act',j===a));$$('#rows div').forEach((rw,j)=>rw.classList.toggle('ok',j<=a));note.textContent=T.notes[a]}
     mv($('#s5 .card'),0,(1-r(lp,0,.16))*60,1); },
+  lp=>{ mv(encBox,0,(1-r(lp,0,.16))*50,r(lp,0,.14));
+    echs.forEach((c,j)=>{const q=r(lp,.05+j*.025,.17+j*.025);mv(c,0,(1-q)*22,q)});
+    // scroll forges the four commissions in order (like the four test steps of scene 5)
+    HO.step=Math.min(3,Math.floor(Math.max(0,(lp-.14)/.72)*4)); },
   lp=>{ mv(h6,0,(1-r(lp,0,.2))*60,r(lp,0,.16)); mv(form,0,(1-r(lp,.08,.3))*80,r(lp,.08,.3));
     const pass=lp>=.5; led.classList.toggle('pass',pass); led.textContent=pass?T['led.pass']:T['led.run']; }
 ];
+/* ---------- scene 6 (Encargos): particle hologram above the open palm ----------
+   Same particle language as the hero wordmark (square cells, lime + white, a few cyan/violet sparks, additive glow).
+   Icons: 0 websites, 1 AI agents, 2 music videos, 3 books, 4 '?' (whatever you have in mind). Scroll forges 0-3 in order,
+   hover/tap/focus on a chip re-forms that icon, the cursor/finger scatters the cells, the dashed '?' chip bursts into
+   cherry petals and takes you to the contact form. Runs only while scene 6 is on screen; static under reduced motion. */
+const holoC=$('#holo'), hgx=holoC.getContext('2d');
+// anchor in hold-frame px (1280x720 plate-06): the open palm and the hologram box (centre, half size) beside/above it
+const HA={palm:{x:752,y:287}, d:{cx:690,cy:186,hs:100}, m:{cx:738,cy:188,hs:74}};
+const HO={step:0, man:null, manStep:-1, item:-1, vis:0, lastT:-1, pts:[], icons:[], N:0, cx:0, cy:0, hs:0, px:0, py:0, sz:2,
+  fx:null, fy:null, fUntil:0, pet:[], burstT:-9, key:'', dirty:false, glowC:null, glowG:null};
+window.__HO=HO;
+window.__HOLO=()=>HO.hs?{x:HO.cx,y:HO.cy,r:HO.hs}:null;
+function holoIcon(k){
+  const S=256, c=document.createElement('canvas'); c.width=c.height=S; const g=c.getContext('2d');
+  const WH='#ffffff', LI='#c6ff3d'; g.lineCap='round'; g.lineJoin='round';
+  const rr=(x,y,w,h,r)=>{g.beginPath();g.moveTo(x+r,y);g.arcTo(x+w,y,x+w,y+h,r);g.arcTo(x+w,y+h,x,y+h,r);g.arcTo(x,y+h,x,y,r);g.arcTo(x,y,x+w,y,r);g.closePath()};
+  if(k===0){ // browser window
+    g.strokeStyle=WH; g.lineWidth=12; rr(22,40,212,176,18); g.stroke();
+    g.beginPath(); g.moveTo(22,82); g.lineTo(234,82); g.lineWidth=9; g.stroke();
+    g.fillStyle=LI; [50,72,94].forEach(x=>{g.beginPath();g.arc(x,61,7,0,7);g.fill()});
+    g.fillRect(48,104,82,56); g.fillStyle=WH; g.fillRect(146,106,66,11); g.fillRect(146,128,48,11); g.fillRect(146,150,58,11);
+    g.fillRect(48,178,164,11);
+  }else if(k===1){ // agent: a node graph
+    const O=[[52,58],[204,58],[52,198],[204,198]];
+    g.strokeStyle=WH; g.lineWidth=9;
+    O.forEach(([x,y])=>{const dx=x-128,dy=y-128,d=Math.hypot(dx,dy);g.beginPath();g.moveTo(128+dx/d*36,128+dy/d*36);g.lineTo(x-dx/d*26,y-dy/d*26);g.stroke()});
+    g.lineWidth=10; O.forEach(([x,y])=>{g.beginPath();g.arc(x,y,20,0,7);g.stroke()});
+    g.strokeStyle=LI; g.lineWidth=12; g.beginPath(); g.arc(128,128,32,0,7); g.stroke();
+    g.fillStyle=LI; g.beginPath(); g.arc(128,128,13,0,7); g.fill(); O.forEach(([x,y])=>{g.beginPath();g.arc(x,y,7,0,7);g.fill()});
+  }else if(k===2){ // music video: film frame + play
+    g.strokeStyle=WH; g.lineWidth=12; rr(20,50,216,156,16); g.stroke();
+    g.fillStyle=WH; for(let x=40;x<=208;x+=28){g.fillRect(x,64,12,12);g.fillRect(x,180,12,12)}
+    g.fillStyle=LI; g.beginPath(); g.moveTo(104,94); g.lineTo(104,162); g.lineTo(164,128); g.closePath(); g.fill();
+  }else if(k===3){ // open book
+    g.strokeStyle=WH; g.lineWidth=11;
+    g.beginPath(); g.moveTo(128,76); g.quadraticCurveTo(84,56,30,66); g.lineTo(30,190); g.quadraticCurveTo(84,180,128,202); g.stroke();
+    g.beginPath(); g.moveTo(128,76); g.quadraticCurveTo(172,56,226,66); g.lineTo(226,190); g.quadraticCurveTo(172,180,128,202); g.stroke();
+    g.strokeStyle=LI; g.lineWidth=10; g.beginPath(); g.moveTo(128,80); g.lineTo(128,198); g.stroke();
+    g.lineWidth=7; [104,128,152].forEach(y=>{g.beginPath();g.moveTo(52,y-4);g.lineTo(106,y+2);g.stroke();g.beginPath();g.moveTo(150,y+2);g.lineTo(204,y-4);g.stroke()});
+  }else{ // '?'
+    g.fillStyle=LI; g.font='700 230px "Space Grotesk",system-ui,sans-serif'; g.textAlign='center'; g.textBaseline='middle'; g.fillText('?',128,140);
+  }
+  return g.getImageData(0,0,S,S).data;
+}
+function holoSample(data,N){ // grid sample, step chosen so the cell count is just under N
+  const S=256; let st=2, out=[];
+  for(;st<12;st+=.5){ out=[];
+    for(let y=st/2;y<S;y+=st) for(let x=st/2;x<S;x+=st){const o=((y|0)*S+(x|0))*4; if(data[o+3]>110) out.push({x:(x-128)/128,y:(y-128)/128,l:data[o+2]<150})}
+    if(out.length<=N) break; }
+  return out;
+}
+function holoBuild(){
+  const HC=navigator.hardwareConcurrency||4, small=MOB||W<760;
+  const N=small?(HC>=8?1300:950):(HC<=4?1700:2600);
+  if(HO.N===N&&HO.icons.length) return;
+  HO.N=N; const R=rng(23);
+  HO.icons=[0,1,2,3,4].map(k=>{const p=holoSample(holoIcon(k),N); for(let i=p.length-1;i>0;i--){const j=(R()*(i+1))|0;[p[i],p[j]]=[p[j],p[i]]} return p});
+  HO.pts=[...Array(N)].map(()=>{const q=R(); return {x:0,y:0,vx:0,vy:0,col:q<.03?2:(q<.045?3:-1),ph:R()*6.283,f:.6+R()*1.4,s:.85+R()*.4,a:.55+R()*.45,o:R()*6.283,orr:1.06+R()*.3}});
+}
+function holoResize(){
+  const d=Math.min(REC?1:2,devicePixelRatio||1);
+  holoC.width=Math.round(W*d); holoC.height=Math.round(H*d); HO.dpr=d; HO.dirty=true; HO.key='';
+  if(W) holoBuild(); holoAnchor(); fitEnc();
+}
+function holoAnchor(){
+  const pl=plates[5]; if(!pl||!W) return false;
+  const [x0,y0,w]=cover(pl), s=w/1280, A=(W/H<1)?HA.m:HA.d;
+  HO.cx=x0+A.cx*s; HO.cy=y0+A.cy*s; HO.hs=A.hs*s; HO.px=x0+HA.palm.x*s; HO.py=y0+HA.palm.y*s; HO.sz=Math.max(1.5,HO.hs*.021);
+  return true;
+}
+// desktop: keep the copy column left of the hologram
+function fitEnc(){
+  encBox.style.maxWidth='';
+  if(W/H<1||!HO.hs) return;
+  encBox.style.maxWidth=Math.max(300,HO.cx-HO.hs*1.05-encBox.getBoundingClientRect().left-24)+'px';
+}
+function holoItem(){ return HO.man!=null&&HO.manStep===HO.step?HO.man:HO.step }
+function holoSet(k,from){ // manual pick from a chip
+  HO.man=k; HO.manStep=HO.step;
+}
+function holoSpawnPetals(x,y,n,sp){ const R=Math.random;
+  for(let i=0;i<n;i++){const a=R()*6.283, v=(160+R()*420)*sp; HO.pet.push({x,y,vx:Math.cos(a)*v,vy:Math.sin(a)*v-180*sp,r:R()*6.28,vr:(R()-.5)*9,s:5+R()*7,l:1.1+R()*.9,t:0,ph:R()*6.28})} }
+function holoBurst(btn){
+  holoSet(4); HO.burstT=TT;
+  if(!RM){ btn.classList.remove('pop'); void btn.offsetWidth; btn.classList.add('pop');
+    const b=btn.getBoundingClientRect(); holoSpawnPetals(b.left+b.width*.5,b.top+b.height*.5,MOB?22:36,1); holoSpawnPetals(HO.cx,HO.cy,MOB?12:22,.8);
+    for(const p of HO.pts){const dx=p.x-HO.cx,dy=p.y-HO.cy,d=Math.hypot(dx,dy)||1,k=(300+Math.random()*700);p.vx+=dx/d*k;p.vy+=dy/d*k} }
+  const s=SEG.find(s=>s.h===6);
+  setTimeout(()=>{ scrollToP(s.p0+.42*(s.p1-s.p0));
+    if(matchMedia('(hover:hover) and (pointer:fine)').matches) setTimeout(()=>{const ta=$('#s7 textarea'); if(ta) try{ta.focus({preventScroll:true})}catch(e){}},RM?80:1300);
+  }, RM?0:700);
+}
+echs.forEach(c=>{ const k=+c.dataset.k;
+  if(k<4){ c.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse')holoSet(k)});
+    c.addEventListener('focus',()=>holoSet(k)); c.addEventListener('click',()=>holoSet(k)); }
+  else c.addEventListener('click',()=>holoBurst(c));
+});
+// pointer / finger position for the scatter (finger works while it drags the page too)
+let HMX=null,HMY=null,HMT=0;
+addEventListener('pointermove',e=>{if(e.pointerType==='mouse'){HMX=e.clientX;HMY=e.clientY;HMT=performance.now()}},{passive:true});
+document.addEventListener('pointerleave',()=>{HMX=null});
+const tpos=e=>{const t=e.touches&&e.touches[0]; if(t){HMX=t.clientX;HMY=t.clientY;HMT=performance.now()}};
+addEventListener('touchstart',tpos,{passive:true}); addEventListener('touchmove',tpos,{passive:true});
+addEventListener('touchend',()=>{HMX=null},{passive:true});
+const HCOL=['#c6ff3d','#f2f3f7','#7cf5ff','#7c5cff'], HNB=6;
+function holoPetal(g,s){ g.beginPath();g.moveTo(-s,0);g.bezierCurveTo(-s*.4,-s*.75,s*.6,-s*.7,s,-s*.08);g.lineTo(s*.72,0);g.lineTo(s,s*.08);g.bezierCurveTo(s*.6,s*.7,-s*.4,s*.75,-s,0);g.fill() }
+function holo(seg,u,t,o){
+  const g=hgx, D=HO.dpr||1;
+  if(o<=.001&&!HO.pet.length){ if(HO.dirty){g.setTransform(1,0,0,1,0,0);g.clearRect(0,0,holoC.width,holoC.height);HO.dirty=false} HO.vis=0; HO.lastT=-1;
+    if(seg.h!==5&&!(seg.c===4||seg.c===5)) {HO.man=null;} return; }
+  if(!HO.pts.length) holoBuild();
+  if(!holoAnchor()) return;
+  const item=holoItem(), N=HO.N, P=HO.pts, cx=HO.cx, cy=HO.cy, hs=HO.hs;
+  // board status + hint (placeholder copy)
+  const lk=LANG+item; if(ledE.dataset.k!==lk){ ledE.dataset.k=lk; ledE.textContent=T['led.f'][item]; hintE.textContent=T[MOB?'enc.hintt':'enc.hint'];
+    echs.forEach(c=>{const on=+c.dataset.k===item; c.classList.toggle('act',on); if(+c.dataset.k<4) c.setAttribute('aria-pressed',on)}); }
+  const tgt=HO.icons[item];
+  // entering the scene: the cells stream out of the open palm
+  if(HO.vis===0&&o>0){ const R=rng(5); for(const p of P){p.x=HO.px+(R()-.5)*hs*.25;p.y=HO.py+(R()-.5)*hs*.1;p.vx=(R()-.5)*hs*2.2;p.vy=-(R()*hs*3.2+hs*.6)} HO.item=item; }
+  if(item!==HO.item&&HO.item>=0&&!RM){ const R=rng(item*31+7); // re-forge: a swirl kick
+    for(const p of P){const dx=p.x-cx,dy=p.y-cy; p.vx+=-dy*2.6+(R()-.5)*hs*2; p.vy+=dx*2.6+(R()-.5)*hs*2} }
+  HO.item=item; HO.vis=o;
+  // cursor / finger
+  let mx=null,my=null;
+  const fc=REC?fakeCursor(seg,u):null;
+  if(REC){ if(fc&&fc.o>.3){mx=fc.x;my=fc.y} }
+  else if(HMX!=null&&performance.now()-HMT<2500){mx=HMX;my=HMY}
+  const yaw=RM?0:.22*Math.sin(t*.7), cyaw=Math.cos(yaw);
+  const tx=i=>{const q=tgt[i%tgt.length]; return q};
+  // physics (fixed 60 Hz sub-steps, deterministic in t)
+  let dt=HO.lastT<0?1/60:Math.min(.1,Math.max(0,t-HO.lastT)); HO.lastT=t;
+  if(RM){ for(let i=0;i<N;i++){const p=P[i]; if(i<tgt.length){const q=tgt[i];p.x=cx+q.x*hs;p.y=cy+q.y*hs}else{p.x=cx+Math.cos(p.o)*hs*p.orr;p.y=cy+Math.sin(p.o)*hs*p.orr*.9}} }
+  else{ const n=Math.max(1,Math.round(dt*60)), h=dt/n, RS=hs*.5;
+    for(let k=0;k<n;k++) for(let i=0;i<N;i++){ const p=P[i]; let X,Y;
+      if(i<tgt.length){const q=tgt[i]; X=cx+q.x*hs*cyaw+Math.sin(t*1.7+p.ph)*.5; Y=cy+q.y*hs+Math.cos(t*1.3+p.ph)*.5}
+      else{const a=p.o+t*.35*(p.f-.4); X=cx+Math.cos(a)*hs*p.orr; Y=cy+Math.sin(a)*hs*p.orr*.92}
+      let ax=(X-p.x)*46, ay=(Y-p.y)*46;
+      if(mx!=null){const dx=p.x-mx,dy=p.y-my,d2=dx*dx+dy*dy; if(d2<RS*RS){const d=Math.sqrt(d2)||1,f=(1-d/RS);const F=f*f*hs*260; ax+=dx/d*F; ay+=dy/d*F}}
+      p.vx=(p.vx+ax*h)*Math.exp(-h*7.5); p.vy=(p.vy+ay*h)*Math.exp(-h*7.5); p.x+=p.vx*h; p.y+=p.vy*h; } }
+  // draw
+  g.setTransform(1,0,0,1,0,0); g.clearRect(0,0,holoC.width,holoC.height); HO.dirty=true;
+  g.setTransform(D,0,0,D,0,0); g.globalAlpha=o;
+  // projection: light cone from the palm up to the icon, a soft disc on the palm, a faint halo
+  g.globalCompositeOperation='lighter';
+  { const fl=RM?1:.85+.15*Math.sin(t*9.3)*Math.sin(t*3.1);
+    const gr=g.createLinearGradient(HO.px,HO.py,cx,cy+hs*.4); gr.addColorStop(0,`rgba(198,255,61,${.26*fl})`); gr.addColorStop(1,'rgba(124,245,255,0)');
+    g.fillStyle=gr; g.beginPath(); g.moveTo(HO.px-hs*.06,HO.py); g.lineTo(cx-hs*.78,cy+hs*.55); g.lineTo(cx+hs*.62,cy+hs*.8); g.lineTo(HO.px+hs*.06,HO.py+2); g.closePath(); g.fill();
+    const rg=g.createRadialGradient(HO.px,HO.py-2,0,HO.px,HO.py-2,hs*.22); rg.addColorStop(0,`rgba(214,255,140,${.5*fl})`); rg.addColorStop(1,'rgba(198,255,61,0)');
+    g.fillStyle=rg; g.fillRect(HO.px-hs*.3,HO.py-hs*.3,hs*.6,hs*.6);
+    const hg=g.createRadialGradient(cx,cy,0,cx,cy,hs*1.35); hg.addColorStop(0,'rgba(124,245,255,.10)'); hg.addColorStop(.6,'rgba(124,92,255,.05)'); hg.addColorStop(1,'rgba(124,92,255,0)');
+    g.fillStyle=hg; g.fillRect(cx-hs*1.4,cy-hs*1.4,hs*2.8,hs*2.8); }
+  const paths=[...Array(4*HNB)].map(()=>new Path2D()), sz=HO.sz, scan=cy-hs*1.1+((t*.42)%1)*hs*2.4;
+  for(let i=0;i<N;i++){ const p=P[i], q=i<tgt.length?tgt[i]:null;
+    const col=p.col>=0?p.col:(q?(q.l?0:1):(i%3?2:0));
+    let a=p.a*(q?1:.32)*(RM?1:(.8+.2*Math.sin(t*(6+p.f*5)+p.ph)));
+    const sd=(p.y-scan)/(hs*.05); a*=1+.9*Math.exp(-sd*sd);
+    const s=sz*p.s*(p.col>=0?1.25:1);
+    paths[col*HNB+Math.min(HNB-1,(Math.min(1,a)*HNB)|0)].rect(p.x-s/2,p.y-s/2,s,s);
+  }
+  for(let b=0;b<4;b++){ g.fillStyle=HCOL[b]; const k=b===1?.8:1; for(let i=0;i<HNB;i++){g.globalAlpha=o*k*(i+.5)/HNB; g.fill(paths[b*HNB+i])} }
+  // glow: blurred quarter-res copy of the box, added back (as the hero wordmark does)
+  { const bx=Math.max(0,(cx-hs*1.5)*D)|0, by=Math.max(0,(cy-hs*1.5)*D)|0, bw=Math.min(holoC.width-bx,hs*3*D)|0, bh=Math.min(holoC.height-by,hs*3*D)|0;
+    if(bw>4&&bh>4){ if(!HO.glowC){HO.glowC=document.createElement('canvas');HO.glowG=HO.glowC.getContext('2d')}
+      const gc=HO.glowC, gg=HO.glowG, w4=Math.ceil(bw/4), h4=Math.ceil(bh/4); if(gc.width!==w4||gc.height!==h4){gc.width=w4;gc.height=h4}
+      gg.globalCompositeOperation='copy'; gg.filter=`blur(${Math.max(1.5,hs*.018*D)}px)`; gg.drawImage(holoC,bx,by,bw,bh,0,0,w4,h4); gg.filter='none';
+      g.setTransform(1,0,0,1,0,0); g.globalAlpha=.75*o; g.drawImage(gc,0,0,w4,h4,bx,by,bw,bh); g.setTransform(D,0,0,D,0,0); } }
+  g.globalCompositeOperation='source-over'; g.globalAlpha=1;
+  // cherry-petal burst (the '?' chip)
+  if(HO.pet.length){ const h=dt;
+    HO.pet=HO.pet.filter(q=>{q.t+=h; if(q.t>q.l) return false; q.vy+=260*h; q.vx*=Math.exp(-h*1.6); q.vy*=Math.exp(-h*1.2); q.x+=q.vx*h; q.y+=q.vy*h; q.r+=q.vr*h;
+      g.save(); g.translate(q.x,q.y); g.rotate(q.r); g.scale(1,.55+.45*Math.abs(Math.sin(q.t*7+q.ph))); g.globalAlpha=Math.min(1,(1-q.t/q.l)*1.6)*.95;
+      const gr=g.createLinearGradient(-q.s,0,q.s,0); gr.addColorStop(0,'#ffd6e2'); gr.addColorStop(1,'#f39bb6'); g.fillStyle=gr; holoPetal(g,q.s); g.restore(); return true; });
+    g.globalAlpha=1; }
+}
 let P=0,TT=0;
 function update(p,t,force){
   P=p; TT=t;
@@ -806,7 +1044,7 @@ function update(p,t,force){
   // scene overlays: visible only while the character holds still
   scenes.forEach((sc,i)=>{
     let o=0, lp=-1;
-    if(seg.h===i){ lp=u; o = i===0?1:(i===5?r(u,0,.1):Math.min(r(u,0,.1),1-r(u,.9,1))); }
+    if(seg.h===i){ lp=u; o = i===0?1:(i===6?r(u,0,.1):Math.min(r(u,0,.1),1-r(u,.9,1))); }
     else if(i===0&&seg.c===0) o=0;
     sc.style.opacity=o; sc.style.visibility=o>0.001?'visible':'hidden'; sc.classList.toggle('on',o>.5); if(sc.id==='s2'&&o<=.5) bubClose();
     if(lp>=0||force) SC[i](lp>=0?lp:(SEG.findIndex(s=>s.h===i)<SEG.indexOf(seg)?1:0));
@@ -817,10 +1055,11 @@ function update(p,t,force){
   // goggles glow during the hero hold
   if(plates[0]){const [x,y,w,h]=cover(plates[0]); goggle.style.left=(x+w*.505)+'px'; goggle.style.top=(y+h*.232)+'px';}
   goggle.style.opacity = seg.h===0 ? (1-r(u,.8,1))*(.7+.3*Math.sin(t*2.2)) : 0;
-  const k=Math.min(5,Math.floor(p*0+ (seg.h!=null?seg.h:(u<.5?seg.c:seg.c+1))));
+  const k=Math.min(6,Math.floor(p*0+ (seg.h!=null?seg.h:(u<.5?seg.c:seg.c+1))));
   sn.textContent='0'+(k+1); sname.textContent=T.names[k];
   prog.style.transform=`scaleX(${p})`;
   petals(t,p, seg.h!=null?1:.35);
+  holo(seg,u,t,seg.h===5?parseFloat(scenes[5].style.opacity)||0:0);
 }
 
 // tabs jump the scroll to their step
@@ -853,7 +1092,7 @@ function resize(){
   DPR=d; W=w; H=h;
   for(const c of [seq,ecv,pcv,dust]){c.width=Math.round(W*DPR);c.height=Math.round(H*DPR)}
   const R=rng(7),n=RM?0:(W<760?8:14);PET=[];for(let i=0;i<n;i++)PET.push({x:R(),y:R(),z:.35+R()*.65,ph:R()*6.28,f:.4+R()*.8,rot:R()*6.28,vr:(R()-.5)*1.6,fall:.025+R()*.04,wind:.01+R()*.025});
-  buildWord(); lastKey=''; lastDust=-1; fitCards(); return true;
+  buildWord(); lastKey=''; lastDust=-1; fitCards(); holoResize(); return true;
 }
 // scene 4: keep the whole card row left of the character (his left edge is at 72.5% of the hold frame)
 function fitCards(){
