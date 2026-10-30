@@ -1,0 +1,58 @@
+---
+// Detail page for a bot shown on the landing cards (src/data/landing-bots.json).
+// Shows exactly what the card's front and back used to show, readable on a phone.
+import Base from '../layouts/Base.astro';
+import { type Lang, localize } from '../i18n/utils';
+interface LBot { slug: string; name: string; number: string; tag: Record<Lang, string>; image: string;
+  oneLiner: Record<Lang, string>; features: Record<Lang, string[]>; templateUrl: string; }
+interface Props { lang: Lang; bot: LBot; }
+const { lang, bot } = Astro.props;
+const c = {
+  en: { back: '← Back to my bots', add: 'Open bot', what: 'What it does',
+    safety: 'Adding a template creates a copy in your own account. Check the connectors and access level before you add it.' },
+  es: { back: '← Volver a mis bots', add: 'Abrir bot', what: 'Qué hace',
+    safety: 'Al añadir una plantilla se crea una copia en tu propia cuenta. Revisa los conectores y el nivel de acceso antes de añadirla.' },
+}[lang];
+---
+<Base title={bot.name} description={bot.oneLiner[lang]}>
+  <article class="wrap page">
+    <a class="back" href={localize('/', lang)}>{c.back}</a>
+    <div class="hero">
+      <div class="art" aria-hidden="true"><img src={bot.image} alt="" width="1024" height="1024" /></div>
+      <div class="txt">
+        <p class="tag mono">{bot.tag[lang]}</p>
+        <h1>{bot.name}</h1>
+        <p class="one">{bot.oneLiner[lang]}</p>
+        <div class="actions">
+          <a class="btn btn-p" href={bot.templateUrl} rel="noopener" target="_blank">{c.add} ↗</a>
+        </div>
+      </div>
+    </div>
+    <section class="card feats">
+      <h2 class="eyebrow">{c.what}</h2>
+      <ul>{bot.features[lang].map((f) => <li>{f}</li>)}</ul>
+      <p class="muted small">{c.safety}</p>
+    </section>
+  </article>
+</Base>
+<style>
+  .page { padding-top: 32px; padding-bottom: 40px; --scout: #3D8BFF; }
+  .back { color: var(--muted); text-decoration: none; font-size: 15px; }
+  .hero { display: grid; grid-template-columns: 260px 1fr; gap: 32px; align-items: end; margin: 24px 0 28px; }
+  .art { aspect-ratio: 3 / 4; border-radius: 18px; overflow: hidden; border: 1px solid var(--scout);
+    background: linear-gradient(180deg, #000 0%, #000 46%, #173a80 64%, var(--scout) 100%); box-shadow: 0 30px 80px rgba(61,139,255,.35); }
+  .art img { width: 112%; height: auto; max-width: none; margin: -6% 0 0 -6%;
+    -webkit-mask-image: linear-gradient(180deg, #000 66%, transparent 84%); mask-image: linear-gradient(180deg, #000 66%, transparent 84%); }
+  .tag { display: inline-block; background: var(--lime); color: #0A0B0F; padding: 5px 9px; border-radius: 6px; font-size: 13px; letter-spacing: .08em; text-transform: uppercase; font-weight: 500; }
+  h1 { font-size: clamp(42px, 7vw, 72px); margin: 14px 0 12px; letter-spacing: -0.045em; }
+  .one { font-size: 19px; max-width: 620px; }
+  .actions { margin-top: 24px; }
+  .btn-p { font-family: var(--mono); text-transform: uppercase; letter-spacing: .06em; box-shadow: 0 10px 30px rgba(198,255,61,.22); }
+  .feats { max-width: 720px; }
+  .feats h2 { font-size: 12px; font-weight: 400; margin: 0 0 8px; }
+  .feats ul { list-style: none; padding: 0; margin: 0 0 16px; font-size: 17px; }
+  .feats li { padding: 11px 0; border-bottom: 1px solid var(--line); }
+  .feats li::before { content: '→ '; color: var(--lime); }
+  .small { font-size: 14px; }
+  @media (max-width: 700px) { .hero { grid-template-columns: 1fr; gap: 20px; } .art { width: min(240px, 70vw); } .one { font-size: 17px; } }
+</style>

@@ -89,7 +89,13 @@ form .fine a{color:var(--lime)}
 #s4 .grid{left:var(--pad);top:37vh;display:flex;gap:clamp(10px,1.4vw,26px)}
 .flip{width:clamp(150px,16.5vw,310px);aspect-ratio:3/4;perspective:1200px;cursor:pointer}
 .flip .in{position:relative;width:100%;height:100%;transition:transform .7s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}
-.flip:hover .in,.flip:focus-within .in,.flip.flipped .in{transform:rotateY(180deg)}
+.flip.show .in{transform:rotateY(180deg)}
+.flip:focus-visible{outline:2px solid var(--lime);outline-offset:4px;border-radius:18px}
+.flip{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.flip:not(.show) .back,.flip.show .front{pointer-events:none}
+.back h3{margin-top:.35em}
+.back .btn.see{width:100%;font-size:clamp(14px,.95vw,17px);padding:.95em .8em;box-shadow:0 0 0 1px rgba(198,255,61,.35),0 10px 30px rgba(198,255,61,.22)}
+.back .btn.see:focus-visible{outline:2px solid var(--text);outline-offset:3px}
 .face{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;padding:clamp(12px,1.2vw,22px);display:flex;flex-direction:column;justify-content:flex-end}
 .face.back{transform:rotateY(180deg);justify-content:space-between}
 .scout .front{background:linear-gradient(180deg,#000 0%,#000 46%,#173a80 64%,var(--scout) 100%);border:1px solid var(--scout);box-shadow:0 30px 80px rgba(61,139,255,.35)}
@@ -98,9 +104,6 @@ form .fine a{color:var(--lime)}
 .face h3{position:relative;font-family:var(--sans);font-weight:700;font-size:clamp(22px,2.1vw,40px);letter-spacing:-.045em;line-height:1}
 .face p{position:relative;font-size:clamp(12px,.9vw,16px);line-height:1.3;margin-top:.5em;color:rgba(242,243,247,.92)}
 .scout .back{background:var(--panel-2);border:1px solid var(--scout)}
-.back ul{list-style:none;font-size:clamp(12px,.9vw,16px);line-height:1.32;color:var(--text)}
-.back li{padding:.42em 0;border-bottom:1px solid var(--line)}
-.back li::before{content:"→ ";color:var(--lime)}
 .btn{display:inline-flex;justify-content:center;align-items:center;gap:.5em;background:var(--lime);color:#0a0b0f;border:0;border-radius:10px;padding:.9em 1.1em;font-family:var(--mono);font-weight:500;font-size:clamp(11px,.85vw,15px);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;cursor:pointer}
 .soon .face{border:1.5px dashed #3a3f4e;background:rgba(18,20,27,.74);justify-content:center;align-items:center;text-align:center;color:var(--muted)}
 .soon .num{position:absolute;top:clamp(12px,1.2vw,22px);left:clamp(12px,1.2vw,22px);color:#5a6070}
@@ -141,7 +144,7 @@ form input:focus,form textarea:focus{outline:none;border-color:var(--lime)}
   #s2 .cards{bottom:6vh}.lc{width:28vw}
   #s3 p{top:20vh;font-size:6.6vw}
   #s4 .h{font-size:15vw}#s4 .grid{top:32vh;gap:8px}.flip{width:29vw}
-  .face h3{font-size:5vw}.face p,.back ul{font-size:2.6vw}.back .btn{font-size:2.3vw;padding:.6em}
+  .face h3{font-size:5vw}.face p{font-size:2.6vw}.flip .back{padding:10px 8px}.back .btn.see{font-size:14px;letter-spacing:0;gap:.3em;white-space:nowrap;padding:.85em .2em;border-radius:9px}
   #s5 .h{font-size:10vw}#s5 .card{top:28vh}
   #s6 .h{font-size:10vw}#s6 form{top:34vh}
   .led{font-size:5.6vw}
@@ -234,17 +237,16 @@ html.rec *{transition:none!important}
     <div class="lab mono" data-t="s4.lab" id="s4lab"></div>
     <h2 class="h" data-t="s4.h"></h2>
     <div class="grid">
-      <div class="flip scout" tabindex="0"><div class="in">
+      <div class="flip scout" tabindex="0" role="button" aria-pressed="false" aria-label="TCG Scout"><div class="in">
         <div class="face front"><img src="/landing/assets/tcg-scout.jpg" alt="TCG Scout"><span class="tag mono" data-t="s4.live"></span><h3>TCG Scout</h3><p data-t="s4.desc"></p></div>
-        <div class="face back"><div><span class="mono" style="color:var(--scout)">01 · TCG Scout</span>
-          <ul style="margin-top:.8em" id="scoutList"></ul></div>
-          <a class="btn" href="https://x.ai/bot/Br40lqBhQhQov-4pWlMXI" target="_blank" rel="noopener" data-t="s4.open"></a></div>
+        <div class="face back"><div><span class="mono" style="color:var(--scout)">01 · TCG Scout</span><h3>TCG Scout</h3></div>
+          <a class="btn see" id="seeScout" data-p="/bots/tcg-scout/" href="/bots/tcg-scout/" data-t="s4.see"></a></div>
       </div></div>
-      <div class="flip soon" tabindex="0"><div class="in">
+      <div class="flip soon" tabindex="0" role="button" aria-pressed="false"><div class="in">
         <div class="face front"><span class="num mono">02</span><div><b data-t="s4.soon"></b><span class="mono" data-t="s4.next"></span></div></div>
         <div class="face back"><span class="num mono">02</span><div><b data-t="s4.testing"></b><span class="mono" data-t="s4.colour"></span></div></div>
       </div></div>
-      <div class="flip soon" tabindex="0"><div class="in">
+      <div class="flip soon" tabindex="0" role="button" aria-pressed="false"><div class="in">
         <div class="face front"><span class="num mono">03</span><div><b data-t="s4.soon"></b><span class="mono" data-t="s4.next"></span></div></div>
         <div class="face back"><span class="num mono">03</span><div><b data-t="s4.testing"></b><span class="mono" data-t="s4.colour"></span></div></div>
       </div></div>
@@ -291,8 +293,7 @@ const DICT={
   mani:['I build bots that do','one real job.','Every bot is tested on','a real task, dated,','versioned, and honest','about what it can\'t do.'],
   's4.lab':'The lab · hover a card','s4.labt':'The lab · tap a card','s4.h':'My bots','s4.live':'01 · Live',
   's4.desc':'Buyer and analyst of collectible trading cards: Magic, One Piece, Lorcana and more.',
-  scout:['Magic · One Piece · Lorcana & more','Best final price, shipping included','Tracks the market and your wishlist','Buys with your OK, tracks the order'],
-  's4.open':'Open bot ↗','s4.soon':'Coming soon','s4.next':'Next bot in the lab','s4.testing':'In testing','s4.colour':'Gets its own colour',
+  's4.see':'See bot →','s4.soon':'Coming soon','s4.next':'Next bot in the lab','s4.testing':'In testing','s4.colour':'Gets its own colour',
   's5.lab':'How I test','s5.h':'Every bot gets<br>a test card.',
   rows:['One real task','A clear result','Date and version','Import check · preview [n] → arrived [n]'],
   'note.fill':'Filling the test card…',
@@ -320,8 +321,7 @@ const DICT={
   mani:['Creo bots que hacen','un trabajo real.','Cada bot se prueba','en una tarea real,','con fecha y versión,','y dice sin rodeos','lo que no sabe hacer.'],
   's4.lab':'El laboratorio · pasa el cursor por una carta','s4.labt':'El laboratorio · toca una carta','s4.h':'Mis bots','s4.live':'01 · Activo',
   's4.desc':'Comprador y analista de cartas coleccionables: Magic, One Piece, Lorcana y más.',
-  scout:['Magic · One Piece · Lorcana y más','El mejor precio final, envío incluido','Sigue el mercado y tu lista de deseos','Compra con tu OK y sigue el pedido'],
-  's4.open':'Abrir bot ↗','s4.soon':'Próximamente','s4.next':'Próximo bot del laboratorio','s4.testing':'En pruebas','s4.colour':'Tendrá su propio color',
+  's4.see':'Ver bot →','s4.soon':'Próximamente','s4.next':'Próximo bot del laboratorio','s4.testing':'En pruebas','s4.colour':'Tendrá su propio color',
   's5.lab':'Cómo pruebo','s5.h':'Cada bot tiene<br>su ficha de prueba.',
   rows:['Una tarea real','Un resultado claro','Fecha y versión','Control de importación · vista previa [n] → recibido [n]'],
   'note.fill':'Rellenando la ficha de prueba…',
@@ -359,7 +359,7 @@ function locate(p){for(const s of SEG){if(p<=s.p1)return [s,clamp((p-s.p0)/(s.p1
 
 /* ---------- i18n ---------- */
 let LANG='en', T=DICT.en;
-const mani=$('#mani'), rowsEl=$('#rows'), list=$('#scoutList');
+const mani=$('#mani'), rowsEl=$('#rows');
 /* portrait phones: scenes 2, 4, 5 stack the heading (and its label) just above the bottom cards/panel, 14px gap */
 const PORT=matchMedia('(max-aspect-ratio:1/1)');
 function stack(){
@@ -380,10 +380,9 @@ function setLang(l,save){
   if(!matchMedia('(hover:hover)').matches) $('#s4lab').textContent=T['s4.labt'];
   mani.innerHTML=T.mani.map(s=>`<span>${s}</span>`).join('');
   rowsEl.innerHTML=T.rows.map((s,j)=>`<div><span class="ck">✓</span><span class="n">0${j+1}</span>${s}</div>`).join('');
-  list.innerHTML=T.scout.map(s=>`<li>${s}</li>`).join('');
   $$('#lang button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.l===LANG));
   $('#lang').setAttribute('aria-label',LANG==='es'?'Idioma':'Language');
-  $$('#links a').forEach(a=>a.href=(LANG==='es'?'/es':'')+a.dataset.p);
+  $$('#links a,#seeScout').forEach(a=>a.href=(LANG==='es'?'/es':'')+a.dataset.p);
   $('#links').setAttribute('aria-label',LANG==='es'?'Principal':'Main');
   requestAnimationFrame(stack);
   const want=LANG==='es'?'/es/':'/'; if(location.protocol!=='file:'&&location.pathname!==want) try{history.replaceState(null,'',want+location.search.replace(/[?&]lang=(en|es)/,'').replace(/^&/,'?')+location.hash)}catch(e){}
@@ -739,7 +738,18 @@ function update(p,t,force){
 const maxScroll=()=>document.documentElement.scrollHeight-innerHeight;
 function scrollToP(p){scrollTo({top:p*maxScroll(),behavior:RM?'auto':'smooth'})}
 tabs.forEach((b,j)=>b.addEventListener('click',()=>{const s=SEG.find(s=>s.h===4);scrollToP(s.p0+(.12+(j+.5)/4*.74)*(s.p1-s.p0))}));
-flips.forEach(f=>f.addEventListener('click',e=>{if(e.target.closest('a'))return;f.classList.toggle('flipped')}));
+// cards: one state per card. Tap/click/Enter/Space toggles front<->back; a mouse hover previews the back.
+// (The old CSS flipped on :hover/:focus-within too; on touch both stick after a tap, so a 2nd tap removed the class but the card stayed turned.)
+flips.forEach(f=>{
+  let pinned=false, hov=false, mute=false;
+  const sync=()=>{const on=pinned||(hov&&!mute); f.classList.toggle('show',on); f.setAttribute('aria-pressed',on)};
+  const toggle=()=>{pinned=!f.classList.contains('show'); mute=hov; sync()};
+  f.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'){hov=true;sync()}});
+  f.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'){hov=false;mute=false;sync()}});
+  f.addEventListener('click',e=>{if(e.target.closest('a'))return; toggle()});
+  f.addEventListener('keydown',e=>{if(e.target!==f)return; if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle()}});
+  f.addEventListener('focusin',e=>{if(e.target!==f&&e.target.closest('.back')&&!f.classList.contains('show')){pinned=true;sync()}});
+});
 form.addEventListener('submit',e=>{e.preventDefault();const f=new FormData(form),nm=(f.get('name')||'').trim(),em=(f.get('email')||'').trim(),tk=(f.get('task')||'').trim();const subject=T['mail.subject']+(nm?' · '+nm:''),body=T['mail.name']+': '+nm+'\n'+T['mail.email']+': '+em+'\n\n'+T['mail.task']+':\n'+tk+'\n';location.href='mailto:raw2top@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);$('#send').textContent=T['s6.sent']});
 $('#back').addEventListener('click',()=>scrollTo({top:0,behavior:RM?'auto':'smooth'}));
 $('#logo').addEventListener('click',e=>{e.preventDefault();scrollTo({top:0,behavior:RM?'auto':'smooth'})});

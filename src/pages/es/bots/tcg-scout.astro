@@ -1,0 +1,6 @@
+---
+import View from '../../../views/LandingBotDetail.astro';
+import data from '../../../data/landing-bots.json';
+const bot = data.bots.find((b) => b.slug === 'tcg-scout')!;
+---
+<View lang="es" bot={bot} />
