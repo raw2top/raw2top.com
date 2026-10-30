@@ -159,22 +159,26 @@ form input:focus,form textarea:focus{outline:none;border-color:var(--lime)}
   #idx{display:none}
   #links a{padding:.35em .45em}
 }
-/* portrait phones: texts centred and kept out of the face band (~15-40% of the height in every hold) */
+/* portrait phones: texts left-aligned, moved below the face band (~15-40% of the height in every hold) */
 @media (max-aspect-ratio:1/1){
-  #s2 .h,#s4 .h,#s4 .lab,#s5 .h,#s5 .lab,#s6 .h{left:16px;right:16px;width:auto;max-width:none;text-align:center}
+  #s2 .h,#s4 .h,#s4 .lab,#s5 .h,#s5 .lab,#s6 .h{left:16px;right:16px;width:auto;max-width:none;text-align:left}
   #s2 .h{top:42vh;font-size:10vw}
-  #s2 .meter{left:20vw;right:auto;width:60vw;bottom:calc(6vh + 25vw + 14px)}
-  #s2 .cards{left:50%;transform:translateX(-50%)}
+  #s2 .meter{left:16px;right:auto;width:60vw;bottom:calc(6vh + 25vw + 14px)}
   #s4 .lab{top:51vh}
   #s4 .h{top:55vh}
-  #s4 .grid{left:50%;transform:translateX(-50%)}
   #s5 .lab{top:40vh}
   #s5 .h{top:44vh}
   #s5 .card{left:16px}
   #s6 .h{top:9vh}
-  #s1 .pill{left:50%;transform:translateX(-50%);top:clamp(64px,9.5vh,128px);white-space:nowrap;font-size:min(11px,2.75vw);padding:.6em .9em}
+  #s1 .pill{left:16px;top:clamp(64px,9.5vh,128px);white-space:nowrap;font-size:min(11px,2.4vw);letter-spacing:.03em;padding:.6em .8em;max-width:calc(100vw - 32px)}
   #s6 form{gap:7px;padding:12px 14px;bottom:calc(clamp(64px,11vh,120px) + 1.2vh)}
-  #s6 form textarea{height:3.4em}
+  #s6 form{grid-template-columns:1fr 1fr;gap:6px 8px;padding:10px 12px}
+  #s6 form>*{grid-column:1/-1}
+  #s6 form>label:nth-of-type(1),#s6 form>label:nth-of-type(2){grid-column:auto;min-width:0}
+  #s6 form label{gap:3px}
+  #s6 form input,#s6 form textarea{padding:.45em .6em;font-size:13px;min-width:0;width:100%}
+  #s6 form textarea{height:3.2em}
+  #s6 form .fine{font-size:10px;line-height:1.35}
 }
 html.rec *{transition:none!important}
 @media (prefers-reduced-motion:reduce){.flip .in,#s3 p span,.rows div,.rows div .ck{transition:none}}
