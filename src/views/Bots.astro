@@ -17,7 +17,7 @@ const fmtDate = (iso: string) => { const [y, m, d] = iso.split('-').map(Number);
 const total = Math.max(SLOTS, landing.bots.length);
 const bots = landing.bots.map((b: any) => {
   const features: string[] = b.features[lang] ?? b.features.en;
-  // features[0] is the games line ("Magic · One Piece · Lorcana & more"); the rest are the card's moves.
+  // features[0] is the games line ("Pokémon · Magic · One Piece · Lorcana & more"); the rest are the card's moves.
   const games = features[0].split(' · ').flatMap((g) => g.split(/ (?=(?:& more|y más)$)/));
   const tst = b.tested;
   // Stale = dated test older than STALE_DAYS, computed at build time (same rule as src/lib/bots.ts).

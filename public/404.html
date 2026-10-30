@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Not found · raw2top</title>
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#0A0B0F">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preload" href="/404/fonts/space-grotesk.woff2" as="font" type="font/woff2" crossorigin>
+<script>
+/* language: same key the live site writes ("raw2top-lang"), then URL, then browser */
+(function(){var l;try{l=localStorage.getItem('raw2top-lang')}catch(e){}
+var q=new URLSearchParams(location.search).get('lang');if(q)l=q;
+if(l!=='es'&&l!=='en'){l=/^\/es(\/|$)/.test(location.pathname)?'es':((navigator.language||'').toLowerCase().indexOf('es')===0?'es':'en')}
+document.documentElement.lang=l;document.documentElement.className+=' js';})();
+</script>
+<style>
+@font-face{font-family:"Space Grotesk";src:url(/404/fonts/space-grotesk.woff2) format("woff2");font-weight:300 700;font-display:swap}
+@font-face{font-family:"Geist Mono";src:url(/404/fonts/geist-mono.woff2) format("woff2");font-weight:100 900;font-display:swap}
+:root{--bg:#0a0b0f;--panel:#12141b;--line:#262a36;--text:#f2f3f7;--muted:#a0a6b6;--lime:#c6ff3d;--violet:#7c5cff;--cyan:#7cf5ff;--petal:#ffb7d0;
+--sans:"Space Grotesk",system-ui,sans-serif;--mono:"Geist Mono",ui-monospace,monospace;--r:14px}
+*{box-sizing:border-box;margin:0}
+html,body{height:100%}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden;min-height:100svh;display:flex;flex-direction:column}
+a{color:inherit}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+[data-l]{display:none}
+html[lang=en] [data-l=en],html[lang=es] [data-l=es]{display:revert}
+/* background, like the site's .bg */
+.bg{position:fixed;inset:0;pointer-events:none;z-index:0;overflow:hidden}
+.bg .g1{position:absolute;width:900px;height:900px;right:-160px;top:-120px;border-radius:50%;background:radial-gradient(circle,#7c5cff2e,transparent 62%)}
+.bg .g2{position:absolute;width:760px;height:760px;left:-260px;bottom:-320px;border-radius:50%;background:radial-gradient(circle,#c6ff3d14,transparent 64%)}
+#petals{position:fixed;inset:0;width:100%;height:100%;pointer-events:none;z-index:3}
+/* header */
+.nav{position:relative;z-index:6;display:flex;justify-content:space-between;align-items:center;width:min(1120px,100% - 40px);margin:0 auto;padding:22px 0}
+.logo,.wm{font-family:var(--sans);font-weight:700;letter-spacing:-.045em;text-decoration:none;color:var(--text);white-space:nowrap}
+.logo{font-size:22px}
+.logo b,.wm b{color:var(--lime);font-weight:700}
+.lang{display:flex;gap:4px;padding:4px;border:1px solid var(--line);border-radius:999px;background:#12141bcc}
+.lang button{all:unset;cursor:pointer;display:flex;align-items:center;gap:7px;padding:6px 10px;border-radius:999px;font:500 11px/1 var(--mono);letter-spacing:.08em;color:var(--muted)}
+.lang button svg{width:18px;height:12px;border-radius:2px;display:block}
+.lang button[aria-pressed=true]{background:var(--line);color:var(--text)}
+.lang button:focus-visible{outline:2px solid var(--lime);outline-offset:2px}
+/* layout */
+main{position:relative;flex:1;display:grid;grid-template-columns:minmax(0,.9fr) minmax(0,1.25fr);align-items:center;gap:24px;width:min(1120px,100% - 40px);margin:0 auto;padding:8px 0 40px}
+.copy{max-width:520px}
+.lab{display:inline-flex;align-items:center;gap:9px;font:500 12px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lab i{width:7px;height:7px;border-radius:50%;background:var(--lime);box-shadow:0 0 10px var(--lime)}
+.num{position:relative;width:100%;max-width:520px;aspect-ratio:2.35;margin:18px 0 6px}
+.num canvas{position:absolute;inset:0;width:100%;height:100%}
+.num .fb{position:absolute;left:0;bottom:0;font:700 clamp(96px,14vw,180px)/.8 var(--sans);letter-spacing:-.045em;color:var(--text)}
+.num .fb b{color:var(--lime)}
+.js .num .fb{display:none}
+html:not(.js) .lang{visibility:hidden}
+h1{font-weight:700;text-transform:uppercase;letter-spacing:-.045em;line-height:.92;font-size:clamp(36px,4vw,58px)}
+h1 em{font-style:normal;color:var(--lime)}
+.copy p{color:var(--muted);font-size:17px;line-height:1.55;margin-top:18px;max-width:440px}
+.btns{display:flex;flex-wrap:wrap;gap:12px;margin-top:28px}
+.btn{display:inline-flex;align-items:center;gap:10px;height:48px;padding:0 20px;border-radius:var(--r);font:600 15px/1 var(--sans);text-decoration:none;border:1px solid var(--line);background:var(--panel);color:var(--text);transition:transform .2s,border-color .2s,background .2s}
+.btn.pri{background:var(--lime);border-color:var(--lime);color:#0a0b0f}
+.btn:hover{transform:translateY(-2px);border-color:#3a3f4e}
+.btn.pri:hover{border-color:var(--lime);background:#d4ff6a}
+.btn:focus-visible{outline:2px solid var(--lime);outline-offset:3px}
+.small{margin-top:22px;font:400 12px/1.4 var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#6c7285}
+.small a{color:var(--muted);text-underline-offset:3px}
+/* stage */
+.stage{position:relative;height:min(640px,72vh);min-height:480px}
+.char{position:absolute;right:-2%;bottom:0;height:92%;aspect-ratio:560/720;mix-blend-mode:lighten;
+ -webkit-mask:radial-gradient(75% 62% at 52% 50%,#000 60%,transparent 100%);mask:radial-gradient(75% 62% at 52% 50%,#000 60%,transparent 100%);transform-origin:50% 100%;will-change:transform}
+.char img{width:100%;height:100%;display:block}
+.char .eye{position:absolute;left:30%;top:20.5%;width:42%;height:6%;border-radius:50%;background:radial-gradient(closest-side,#7cf5ff80,transparent);mix-blend-mode:screen;opacity:var(--eye,.4)}
+.slot{position:absolute;left:7%;top:calc(44% - min(154px,11.5vw));width:min(220px,16.4vw);aspect-ratio:5/7;perspective:1200px;z-index:2}
+.slot .shadow{position:absolute;left:10%;right:10%;bottom:-9%;height:9%;border-radius:50%;background:#000000bf;filter:blur(16px);transform:scale(var(--ss,1));opacity:.8}
+.card3d{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform;container-type:inline-size}
+.face{position:absolute;inset:0;border-radius:var(--r);backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;text-align:center;border:1px solid var(--line);
+ background:radial-gradient(70% 50% at 50% 50%,#12141b00,#0a0b0f8c),repeating-linear-gradient(60deg,transparent 0 11px,#262a36e6 11px 12px),repeating-linear-gradient(-60deg,transparent 0 11px,#262a36e6 11px 12px),repeating-linear-gradient(0deg,transparent 0 19.5px,#262a368c 19.5px 20.5px),var(--panel);
+ box-shadow:0 30px 60px -20px #000c,inset 0 0 0 1px #ffffff08;display:grid;place-items:center}
+.face.b{transform:rotateY(180deg)}
+.face .n,.face .s{position:absolute;top:6cqw;font:500 max(9px,3.6cqw)/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:#6c7285}
+.face .n{left:6.5cqw}.face .s{right:6.5cqw}
+.emb{width:62cqw;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;box-shadow:0 0 0 1px var(--line);
+ background:radial-gradient(circle,var(--bg) 58%,transparent 59%),conic-gradient(from var(--spin,0deg),var(--line),#3a3f4e,var(--line),#3a3f4e,var(--line))}
+.emb .wm{font-size:11cqw}
+.emb .q{font:700 30cqw/1 var(--sans);color:var(--lime);letter-spacing:-.04em;text-shadow:0 0 24px #c6ff3d55}
+.stamp{position:absolute;top:50%;left:50%;margin-top:22cqw;transform:translate(-50%,-50%) rotate(-11deg);border:.7cqw solid var(--lime);color:var(--lime);background:#0a0b0fb8;border-radius:1.6cqw;padding:1.6cqw 3.4cqw;font:600 max(10px,5.4cqw)/1.2 var(--mono);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;box-shadow:0 0 0 .5cqw #0a0b0fb8}
+.ll{position:absolute;left:0;right:0;bottom:8cqw;font:500 max(9px,3.6cqw)/1.3 var(--mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);padding:0 6cqw}
+.ll i{display:inline-block;width:.6em;height:.6em;border-radius:50%;background:var(--violet);box-shadow:0 0 8px var(--violet);margin-right:.6em;vertical-align:.05em}
+.glint{position:absolute;inset:0;border-radius:var(--r);background:linear-gradient(105deg,transparent 35%,#ffffff1f 47%,#c6ff3d26 50%,transparent 62%);background-size:260% 100%;background-position:var(--gp,160%) 0;mix-blend-mode:screen;pointer-events:none}
+.ring{position:absolute;left:50%;top:50%;width:150%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle,#7c5cff26,transparent 60%);z-index:-1}
+/* footer */
+.foot{position:relative;width:min(1120px,100% - 40px);margin:0 auto;padding:18px 0 26px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:16px;font:400 11px/1.4 var(--mono);letter-spacing:.06em;color:#6c7285;text-transform:uppercase}
+/* mobile / portrait */
+@media (max-width:860px){
+ .nav{padding:16px 0}
+ main{grid-template-columns:1fr;gap:0;padding:0 0 28px}
+ .stage{order:-1;height:300px;min-height:0;margin:0 -20px}
+ .char{right:-6%;height:106%;bottom:-3%}
+ .slot{left:9%;top:12%;width:150px}
+ .num{max-width:300px;margin:2px 0 4px}
+ h1{font-size:clamp(32px,9.4vw,44px)}
+ .copy p{font-size:15.5px;margin-top:14px}
+ .btns{margin-top:22px}.btn{flex:1 1 auto;justify-content:center}
+ .foot{flex-direction:column;gap:6px}
+}
+@media (max-height:700px) and (min-width:861px){.stage{min-height:400px}}
+@media (prefers-reduced-motion:reduce){.btn{transition:none}}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><div class="g1"></div><div class="g2"></div></div>
+<canvas id="petals" aria-hidden="true"></canvas>
+
+<header class="nav">
+ <a class="logo" href="/" data-home aria-label="raw2top">raw<b>2</b>top</a>
+ <div class="lang" role="group" aria-label="Language / Idioma">
+  <button type="button" data-set="en" aria-pressed="false" title="English"><svg viewBox="0 0 38 20" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path fill="#B22234" d="M0 0h38v20H0z"/><path fill="#fff" d="M0 1.54h38v1.54H0zM0 4.62h38v1.54H0zM0 7.69h38v1.54H0zM0 10.77h38v1.54H0zM0 13.85h38v1.54H0zM0 16.92h38v1.54H0z"/><path fill="#3C3B6E" d="M0 0h15.2v10.77H0z"/></svg>EN</button>
+  <button type="button" data-set="es" aria-pressed="false" title="Español"><svg viewBox="0 0 30 20" preserveAspectRatio="xMidYMid slice" aria-hidden="true"><path fill="#AA151B" d="M0 0h30v20H0z"/><path fill="#F1BF00" d="M0 5h30v10H0z"/></svg>ES</button>
+ </div>
+</header>
+
+<main id="main">
+ <section class="copy">
+  <div class="lab"><i></i><span data-l="en">Error 404 · Drop not found</span><span data-l="es">Error 404 · Drop no encontrado</span></div>
+  <div class="num" aria-hidden="true"><span class="fb">4<b>0</b>4</span><canvas id="n404"></canvas></div>
+  <h1><span class="sr">404. </span><span data-l="en">This drop doesn’t exist <em>(yet).</em></span><span data-l="es">Este drop no existe <em>(todavía).</em></span></h1>
+  <p data-l="en">The link may be old or mistyped. The drops that are live are one click away, and the next one is still in the lab.</p>
+  <p data-l="es">Puede que el enlace sea antiguo o tenga una errata. Los drops activos están a un clic, y el siguiente sigue en el laboratorio.</p>
+  <div class="btns">
+   <a class="btn pri" data-drops href="/drops/"><span data-l="en">See the drops</span><span data-l="es">Ver los drops</span> <span aria-hidden="true">→</span></a>
+   <a class="btn" data-home href="/"><span data-l="en">Back to home</span><span data-l="es">Volver al inicio</span></a>
+  </div>
+  <div class="small"><span data-l="en">Think something’s broken? <a data-report href="/report/">Report a problem</a></span><span data-l="es">¿Crees que algo falla? <a data-report href="/es/report/">Avisar de un problema</a></span></div>
+ </section>
+
+ <div class="stage" aria-hidden="true">
+  <div class="slot" id="slot">
+   <div class="ring"></div>
+   <div class="shadow" id="shadow"></div>
+   <div class="card3d" id="card">
+    <div class="face a">
+     <span class="n"><span data-l="en">Slot 404</span><span data-l="es">Hueco 404</span></span><span class="s">RAW-404</span>
+     <div class="emb"><span class="wm">raw<b>2</b>top</span></div>
+     <span class="stamp"><span data-l="en">Not found</span><span data-l="es">No encontrado</span></span>
+     <span class="ll"><i></i><span data-l="en">Not in the lab either</span><span data-l="es">Tampoco está en el laboratorio</span></span>
+     <div class="glint"></div>
+    </div>
+    <div class="face b">
+     <span class="n">RAW-404</span><span class="s">?/??</span>
+     <div class="emb"><span class="q">?</span></div>
+     <span class="ll"><i></i><span data-l="en">Face-down on both sides</span><span data-l="es">Boca abajo por las dos caras</span></span>
+     <div class="glint"></div>
+    </div>
+   </div>
+  </div>
+  <div class="char" id="char"><img src="/404/character.webp" width="560" height="720" alt=""><div class="eye"></div></div>
+ </div>
+</main>
+
+<footer class="foot">
+ <span><span class="wm">raw<b>2</b>top</span> · <span data-l="en">AI drops, tested and dated</span><span data-l="es">Drops de IA, probados y fechados</span></span>
+ <span>© 2026 raw2top</span>
+</footer>
+
+<script>
+(function(){
+var H=document.documentElement, RM=matchMedia('(prefers-reduced-motion: reduce)');
+var REC=/[?&]rec=1/.test(location.search);
+var LINKS={en:{home:'/',drops:'/drops/',report:'/report/'},es:{home:'/es/',drops:'/es/drops/',report:'/es/report/'}};
+var TITLE={en:'Not found · raw2top',es:'No encontrado · raw2top'};
+function setLang(l,save){H.lang=l;document.title=TITLE[l];
+ document.querySelectorAll('[data-set]').forEach(function(b){b.setAttribute('aria-pressed',b.dataset.set===l)});
+ document.querySelectorAll('[data-home]').forEach(function(a){a.href=LINKS[l].home});
+ document.querySelectorAll('[data-drops]').forEach(function(a){a.href=LINKS[l].drops});
+ if(save){try{localStorage.setItem('raw2top-lang',l)}catch(e){}}}
+document.querySelectorAll('[data-set]').forEach(function(b){b.addEventListener('click',function(){setLang(b.dataset.set,true)})});
+setLang(H.lang==='es'?'es':'en',false);
+
+/* ---------- loop clock: everything is a pure function of T (8 s loop) ---------- */
+var L=8, T=0;
+function cl(x){return x<0?0:x>1?1:x}
+function eio(x){x=cl(x);return x<.5?4*x*x*x:1-Math.pow(-2*x+2,3)/2}
+function eo(x){x=cl(x);return 1-Math.pow(1-x,3)}
+function rnd(s){var x=Math.sin(s*127.1+311.7)*43758.5453;return x-Math.floor(x)}
+
+/* ---------- 404 particles (like the hero wordmark) ---------- */
+var nc=document.getElementById('n404'), nx=nc.getContext('2d'), P=[], NW=0, NH=0, DPR=1;
+function buildNum(){var r=nc.getBoundingClientRect();DPR=Math.min(2,window.devicePixelRatio||1);NW=r.width;NH=r.height;
+ nc.width=Math.round(NW*DPR);nc.height=Math.round(NH*DPR);
+ var o=document.createElement('canvas'),ow=Math.round(NW),oh=Math.round(NH);o.width=ow;o.height=oh;var ox=o.getContext('2d');
+ var fs=oh*1.12;ox.font='700 '+fs+'px "Space Grotesk",sans-serif';ox.textBaseline='alphabetic';
+ var gl=['4','0','4'],ws=gl.map(function(g){return ox.measureText(g).width}),tr=-.045*fs,tot=ws[0]+ws[1]+ws[2]+2*tr,x=0,y=oh*.86;
+ var d=ox.getImageData?null:null; P=[];
+ var step=Math.max(3,Math.round(NW/150));
+ for(var k=0;k<3;k++){ox.clearRect(0,0,ow,oh);ox.fillStyle='#fff';ox.fillText(gl[k],x,y);
+  var id=ox.getImageData(0,0,ow,oh).data,i=0;
+  for(var yy=0;yy<oh;yy+=step)for(var xx=0;xx<ow;xx+=step){if(id[(yy*ow+xx)*4+3]>140){var s=P.length+1;
+   var col=k===1?(rnd(s*3)<.86?'#c6ff3d':'#f2f3f7'):(rnd(s*3)<.12?(rnd(s*5)<.5?'#7cf5ff':'#7c5cff'):'#f2f3f7');
+   P.push({hx:xx,hy:yy,a:rnd(s)*6.283,r:.35+rnd(s*7)*.9,d:rnd(s*11),c:col,sz:step*(.62+rnd(s*13)*.38)})}}
+  x+=ws[k]+tr;}
+}
+function drawNum(){nx.setTransform(DPR,0,0,DPR,0,0);nx.clearRect(0,0,NW,NH);
+ var t=T%L, still=RM.matches&&!REC;
+ for(var i=0;i<P.length;i++){var p=P[i],x=p.hx,y=p.hy,al=1;
+  if(!still){
+   /* in: 0-1.5 s gather from a drifting cloud; hold; out: 5.4-7.4 s blow away up-right like petals; gap 7.4-8 */
+   var tin=eo((t-p.d*.5)/1.0), tout=eio((t-5.4-p.d*.9)/1.1);
+   var sx=p.hx-60-p.r*140+Math.cos(p.a)*80, sy=p.hy+Math.sin(p.a)*70+40;
+   var ex=p.hx+120+p.r*220, ey=p.hy-90-p.r*120+Math.sin(p.a)*40;
+   if(tout>0){x=p.hx+(ex-p.hx)*tout;y=p.hy+(ey-p.hy)*tout;al=1-tout}
+   else{x=sx+(p.hx-sx)*tin;y=sy+(p.hy-sy)*tin;al=tin}
+   x+=Math.sin(t*2.1+p.a)*.6;y+=Math.cos(t*1.7+p.a)*.6;
+  }
+  if(al<=0.01)continue;
+  var tw=still?1:.78+.22*Math.sin(t*6.283/2+p.a*3);
+  nx.globalAlpha=al*tw;nx.fillStyle=p.c;nx.fillRect(x,y,p.sz,p.sz);}
+ nx.globalAlpha=1;}
+
+/* ---------- petals ---------- */
+var pc=document.getElementById('petals'),px=pc.getContext('2d'),PW=0,PH=0,PET=[];
+function buildPet(){PW=innerWidth;PH=innerHeight;var d=Math.min(2,devicePixelRatio||1);pc.width=PW*d;pc.height=PH*d;px.setTransform(d,0,0,d,0,0);
+ var n=Math.round(Math.min(34,10+PW/60));PET=[];for(var i=0;i<n;i++){var s=i+1;PET.push({x:rnd(s*17),y:rnd(s*19),s:5+rnd(s*23)*8,sp:1+Math.floor(rnd(s*29)*2),sw:rnd(s*31)*6.283,dr:.04+rnd(s*37)*.08,o:.35+rnd(s*41)*.5})}}
+function drawPet(){px.clearRect(0,0,PW,PH);var t=T%L,still=RM.matches&&!REC;
+ for(var i=0;i<PET.length;i++){var p=PET[i],f=still?0:t/L*p.sp;
+  var y=((p.y+f)%1)*(PH+60)-30, x=((p.x+(still?0:f*p.dr*3))%1)*PW+Math.sin(p.sw+f*6.283*2)*26;
+  var rot=p.sw+f*6.283*(i%2?1:-1), fl=Math.abs(Math.cos(p.sw*2+f*6.283*3));
+  px.save();px.translate(x,y);px.rotate(rot);px.scale(1,.35+.65*fl);px.globalAlpha=p.o;
+  var g=px.createLinearGradient(0,-p.s,0,p.s);g.addColorStop(0,'#ffd3e2');g.addColorStop(1,'#f58fb4');px.fillStyle=g;
+  px.beginPath();px.moveTo(0,-p.s);px.bezierCurveTo(p.s*.9,-p.s*.5,p.s*.7,p.s*.7,0,p.s);px.bezierCurveTo(-p.s*.7,p.s*.7,-p.s*.9,-p.s*.5,0,-p.s);px.fill();px.restore();}
+ px.globalAlpha=1;}
+
+/* ---------- card + character ---------- */
+var card=document.getElementById('card'),slot=document.getElementById('slot'),sh=document.getElementById('shadow'),ch=document.getElementById('char');
+function drawScene(){var t=T%L,still=RM.matches&&!REC;
+ if(still){card.style.transform='rotateY(-12deg) rotateX(4deg)';slot.style.setProperty('--gp','160%');return}
+ var w=t/L*6.283;
+ var fy=Math.sin(w)*10, rz=Math.sin(w+1)*2.2;
+ /* flip to the back at 3.4-4.2 s, hold, flip back (to 360) at 5.6-6.4 s */
+ var flip=180*eio((t-3.4)/.8)+180*eio((t-5.6)/.8);
+ var tilt=-12+Math.sin(w*2)*4;
+ card.style.transform='translateY('+fy.toFixed(2)+'px) rotateZ('+rz.toFixed(2)+'deg) rotateY('+(tilt+flip).toFixed(2)+'deg) rotateX('+(4+Math.cos(w)*3).toFixed(2)+'deg)';
+ sh.style.setProperty('--ss',(1-fy/60).toFixed(3));
+ var g=cl((t-.6)/1.2); slot.style.setProperty('--gp',(160-200*eio(g)).toFixed(1)+'%');
+ slot.style.setProperty('--spin',(t/L*360).toFixed(1)+'deg');
+ ch.style.transform='scale(1,'+(1+Math.sin(w*2)*.006).toFixed(4)+') rotate('+(Math.sin(w)*.5).toFixed(3)+'deg)';
+ ch.style.setProperty('--eye',(.35+.35*Math.pow(Math.max(0,Math.sin(w*2+.6)),3)).toFixed(3));}
+
+function frame(){drawPet();drawNum();drawScene()}
+var t0=performance.now(),raf=0;
+function loop(now){T=(now-t0)/1000;frame();raf=requestAnimationFrame(loop)}
+function start(){cancelAnimationFrame(raf);if(REC){T=0;frame();return}if(RM.matches){T=2.5;frame();return}raf=requestAnimationFrame(loop)}
+document.addEventListener('visibilitychange',function(){if(document.hidden)cancelAnimationFrame(raf);else start()});
+RM.addEventListener&&RM.addEventListener('change',start);
+var rt;addEventListener('resize',function(){clearTimeout(rt);rt=setTimeout(function(){buildNum();buildPet();frame()},120)});
+window.__render=function(t){T=t;frame()};
+(document.fonts&&document.fonts.load?document.fonts.load('700 100px "Space Grotesk"'):Promise.resolve()).then(function(){buildNum();buildPet();start();window.__ready=true});
+})();
+</script>
+</body>
+</html>
