@@ -2,7 +2,7 @@ import type { Lang } from './utils';
 
 export const ui = {
   en: {
-    'meta.desc': 'Bot templates for Grok Bot by raw2top. Each one comes with a dated, public test card.',
+    'meta.desc': 'AI drops by raw2top: bots, prompts, tools, content and courses, with a dated, public test card.',
     'meta.home': 'raw2top · Tested bot templates',
     'skip': 'Skip to content',
     'nav.main': 'Main',
@@ -26,7 +26,7 @@ export const ui = {
     'test.note': 'A test is valid for {days} days or until the template is updated. After that it shows as “stale” until I test it again. A test describes one run on one date; it is not a guarantee.',
   },
   es: {
-    'meta.desc': 'Plantillas de bots para Grok Bot, de raw2top. Cada una lleva una ficha de prueba pública y con fecha.',
+    'meta.desc': 'Drops de IA de raw2top: bots, prompts, utilidades, contenido y cursos, con ficha de prueba pública y fechada.',
     'meta.home': 'raw2top · Plantillas de bots probadas',
     'skip': 'Saltar al contenido',
     'nav.main': 'Principal',
