@@ -790,11 +790,17 @@ form.addEventListener('submit',e=>{e.preventDefault();const f=new FormData(form)
 $('#back').addEventListener('click',()=>scrollTo({top:0,behavior:RM?'auto':'smooth'}));
 $('#logo').addEventListener('click',e=>{e.preventDefault();scrollTo({top:0,behavior:RM?'auto':'smooth'})});
 
+// size from the sticky stage (100svh), not innerWidth/innerHeight: on iOS the first scroll collapses the toolbar and
+// grows innerHeight while the stage keeps its height, so the canvases got a taller buffer squeezed into the same box
+// (character stretched ~13% wide, glow off the goggles). Same size -> nothing to rebuild.
+const stage=$('#stage');
 function resize(){
-  DPR=Math.min(REC?1:2,devicePixelRatio||1); W=innerWidth; H=innerHeight;
+  const w=stage.clientWidth||innerWidth, h=stage.clientHeight||innerHeight, d=Math.min(REC?1:2,devicePixelRatio||1);
+  if(w===W&&h===H&&d===DPR) return false;
+  DPR=d; W=w; H=h;
   for(const c of [seq,ecv,pcv,dust]){c.width=Math.round(W*DPR);c.height=Math.round(H*DPR)}
   const R=rng(7),n=RM?0:(W<760?8:14);PET=[];for(let i=0;i<n;i++)PET.push({x:R(),y:R(),z:.35+R()*.65,ph:R()*6.28,f:.4+R()*.8,rot:R()*6.28,vr:(R()-.5)*1.6,fall:.025+R()*.04,wind:.01+R()*.025});
-  buildWord(); lastKey=''; lastDust=-1; fitCards();
+  buildWord(); lastKey=''; lastDust=-1; fitCards(); return true;
 }
 // scene 4: keep the whole card row left of the character (his left edge is at 72.5% of the hold frame)
 function fitCards(){
@@ -805,7 +811,7 @@ function fitCards(){
   const gap=parseFloat(getComputedStyle(grid).columnGap)||16, cw=flips[0].getBoundingClientRect().width;
   const room=(edge-left-2*gap)/3; if(room<cw) flips.forEach(f=>f.style.width=Math.max(120,room)+'px');
 }
-addEventListener('resize',()=>{resize();update(P,TT,true)});
+addEventListener('resize',()=>{if(resize())update(P,TT,true)});
 addEventListener('resize',stack); if(document.fonts) document.fonts.ready.then(stack);
 
 // language: saved choice > ?lang= > browser default is English
