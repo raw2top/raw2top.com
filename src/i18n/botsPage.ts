@@ -1,0 +1,56 @@
+// All copy for the /bots/ collection page (EN + ES). Bot facts come from src/data/landing-bots.json, never from here.
+import type { Lang } from './utils';
+
+export const botsPage = {
+  en: {
+    title: 'Bots',
+    desc: 'Bot templates for Grok Bot by raw2top. Each one comes with a dated, public test card.',
+    lab: 'The collection · {n} / {total}',
+    h1: 'Bots',
+    intro: 'My own templates for Grok Bot. Open one to see its test card and add it to your app.',
+    count: '<em>{n}</em> of {total} collected',
+    hintPointer: 'Hover to tilt · click or press Enter to flip',
+    hintTouch: 'Press and drag to tilt · tap to flip',
+    cardAl: '{name}. Status: {status}. Press Enter to flip to its test card.',
+    cardAlBack: '{name} test card. Press Enter to flip back.',
+    imgAlt: '{name}, an electric-blue fur ball with a monocle magnifier, holding holo cards',
+    gamesL: 'Card games',
+    'st.Tested': 'Tested', 'st.Tested-stale': 'Stale', 'st.Listed': 'Listed',
+    'back.lab': 'Test card', 'back.result': 'Result', 'back.tested': 'Tested', 'back.app': 'App', 'back.skills': 'Skills', 'back.access': 'Access',
+    pending: '— pending',
+    'back.note': 'No test run yet. These fields fill in after the first dated test.',
+    'back.open': 'Open bot ↗', 'back.card': 'Test card', 'back.flip': '↺ Flip back',
+    slot: 'Slot {n}', soon: 'Coming soon', labNow: 'In the lab now',
+    slotAl: 'Slot {n}: Coming soon. In the lab now.',
+    'leg.status': 'Status', 'leg.tested': 'test card under 30 days old', 'leg.stale': 'older, waiting for a re-test', 'leg.listed': 'published, not tested yet',
+  },
+  es: {
+    title: 'Bots',
+    desc: 'Plantillas de bots para Grok Bot de raw2top. Cada una viene con una ficha de prueba pública y fechada.',
+    lab: 'La colección · {n} / {total}',
+    h1: 'Bots',
+    intro: 'Mis propias plantillas para Grok Bot. Abre una para ver su ficha de prueba y añadirla a tu app.',
+    count: '<em>{n}</em> de {total} en la colección',
+    hintPointer: 'Pasa el cursor para inclinar · haz clic o pulsa Intro para girar',
+    hintTouch: 'Mantén y arrastra para inclinar · toca para girar',
+    cardAl: '{name}. Estado: {status}. Pulsa Intro para ver su ficha de prueba.',
+    cardAlBack: 'Ficha de prueba de {name}. Pulsa Intro para volver.',
+    imgAlt: '{name}, una bola de pelo azul eléctrico con una lupa de monóculo y cartas holo',
+    gamesL: 'Juegos de cartas',
+    'st.Tested': 'Probado', 'st.Tested-stale': 'Caducado', 'st.Listed': 'En la lista',
+    'back.lab': 'Ficha de prueba', 'back.result': 'Resultado', 'back.tested': 'Probado', 'back.app': 'App', 'back.skills': 'Skills', 'back.access': 'Acceso',
+    pending: '— pendiente',
+    'back.note': 'Aún sin prueba. Estos campos se rellenan tras la primera prueba fechada.',
+    'back.open': 'Abrir bot ↗', 'back.card': 'Ficha de prueba', 'back.flip': '↺ Darle la vuelta',
+    slot: 'Hueco {n}', soon: 'Próximamente', labNow: 'Ahora en el laboratorio',
+    slotAl: 'Hueco {n}: Próximamente. Ahora en el laboratorio.',
+    'leg.status': 'Estado', 'leg.tested': 'ficha de menos de 30 días', 'leg.stale': 'más antigua, pendiente de repetir', 'leg.listed': 'publicado, aún sin probar',
+  },
+} as const;
+
+export type BotsPageKey = keyof typeof botsPage.en;
+export function bp(lang: Lang) {
+  const d = botsPage[lang] as Record<string, string>;
+  return (k: BotsPageKey, vars: Record<string, string | number> = {}) =>
+    d[k].replace(/\{(\w+)\}/g, (_, v) => String(vars[v] ?? `{${v}}`));
+}

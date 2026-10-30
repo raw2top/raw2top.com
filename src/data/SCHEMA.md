@@ -1,8 +1,10 @@
 # bots.json schema
 
-- `showExample` (boolean): show the placeholder "Example bot" card and page. Set to `false` once real bots exist.
+- `showExample` (boolean): show the placeholder "Example bot" card and page. Now `false` and the `example` object was removed (2026-10-30); add both back only if a layout placeholder is needed again.
 - `bots` (array of Bot): Sergio's own templates only.
-- `example` (Bot): placeholder, never listed as real.
+- `example` (Bot, optional): placeholder, never listed as real. Currently absent.
+
+The /bots/ collection page reads `src/data/landing-bots.json` (TCG Scout: no dated test yet, so its test sheet shows "pending").
 
 ## Bot
 | field | type | notes |

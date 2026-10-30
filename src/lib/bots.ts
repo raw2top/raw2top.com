@@ -50,8 +50,10 @@ function validate(b: Bot) {
 }
 
 export const realBots: Bot[] = (data.bots as Bot[]).map(validate);
-export const exampleBot: Bot | null = data.showExample
-  ? { ...(data.example as unknown as Bot), isExample: true }
+// The filler "Example bot" was removed on 2026-10-30 (Sergio's call). Re-add an `example` object + showExample:true to bring it back.
+const raw = data as { showExample?: boolean; example?: unknown };
+export const exampleBot: Bot | null = raw.showExample && raw.example
+  ? { ...(raw.example as Bot), isExample: true }
   : null;
 
 /** What the grid shows: real bots, then the example (if enabled). */

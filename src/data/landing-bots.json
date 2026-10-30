@@ -1,21 +1,48 @@
 {
-  "_note": "Bots shown on the landing 'My bots' cards. Copied as-is from the landing card (front + back). Not in bots.json because it has no test card data yet.",
+  "_note": "Bots shown on the landing 'My bots' cards and on /bots/. Copied as-is from the landing card. access = Sergio's wording (2026-10-30). tested = null: no dated test yet, so the /bots/ test sheet shows '— pending'. Not in bots.json because it has no test card data yet.",
   "bots": [
     {
       "slug": "tcg-scout",
       "name": "TCG Scout",
       "number": "01",
-      "tag": { "en": "01 · Live", "es": "01 · Activo" },
+      "tag": {
+        "en": "01 · Live",
+        "es": "01 · Activo"
+      },
       "image": "/landing/assets/tcg-scout.jpg",
       "oneLiner": {
         "en": "Buyer and analyst of collectible trading cards: Magic, One Piece, Lorcana and more.",
         "es": "Comprador y analista de cartas coleccionables: Magic, One Piece, Lorcana y más."
       },
-      "features": {
-        "en": ["Magic · One Piece · Lorcana & more", "Best final price, shipping included", "Tracks the market and your wishlist", "Buys with your OK, tracks the order"],
-        "es": ["Magic · One Piece · Lorcana y más", "El mejor precio final, envío incluido", "Sigue el mercado y tu lista de deseos", "Compra con tu OK y sigue el pedido"]
+      "type": {
+        "en": "Buyer · Analyst",
+        "es": "Comprador · Analista"
       },
-      "templateUrl": "https://x.ai/bot/Br40lqBhQhQov-4pWlMXI"
+      "kind": {
+        "en": "Collectible cards",
+        "es": "Cartas coleccionables"
+      },
+      "features": {
+        "en": [
+          "Magic · One Piece · Lorcana & more",
+          "Best final price, shipping included",
+          "Tracks the market and your wishlist",
+          "Buys with your OK, tracks the order"
+        ],
+        "es": [
+          "Magic · One Piece · Lorcana y más",
+          "El mejor precio final, envío incluido",
+          "Sigue el mercado y tu lista de deseos",
+          "Compra con tu OK y sigue el pedido"
+        ]
+      },
+      "templateUrl": "https://x.ai/bot/Br40lqBhQhQov-4pWlMXI",
+      "cardImage": "/bots/tcg-scout-720.jpg",
+      "access": {
+        "en": "Buys with your OK",
+        "es": "Compra con tu OK"
+      },
+      "tested": null
     }
   ]
 }

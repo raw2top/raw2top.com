@@ -1,34 +1,433 @@
 ---
+// /bots/ and /es/bots/: the collection page. One holo card per real bot (63:88), face-down cards for the empty slots.
+// Copy: src/i18n/botsPage.ts. Bot facts: src/data/landing-bots.json (nothing invented here).
 import Base from '../layouts/Base.astro';
-import BotsGrid from '../components/BotsGrid.astro';
-import { realBots } from '../lib/bots';
-import type { Lang } from '../i18n/utils';
+import landing from '../data/landing-bots.json';
+import { SLOTS } from '../lib/bots';
+import { bp } from '../i18n/botsPage';
+import { localize, type Lang } from '../i18n/utils';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
-const c = {
-  en: { title: 'Bots', eyebrow: 'The lab', h: 'Bots', sub: 'My own templates for Grok Bot. Open one to see its test card and add it to your app.',
-    empty: 'No bots published yet. The first ones are in the lab. The example card shows the format.',
-    legend: 'Status: Tested = test card under 30 days old · Stale = older, waiting for a re-test · Listed = published, not tested yet.' },
-  es: { title: 'Bots', eyebrow: 'El laboratorio', h: 'Bots', sub: 'Mis propias plantillas para Grok Bot. Abre una para ver su ficha de prueba y añadirla a tu app.',
-    empty: 'Todavía no hay bots publicados. Los primeros están en el laboratorio. La tarjeta de ejemplo enseña el formato.',
-    legend: 'Estado: Probado = ficha de menos de 30 días · Caducado = más antigua, pendiente de repetir · En la lista = publicado, aún sin probar.' },
-}[lang];
+const t = bp(lang);
+const pad = (n: number) => String(n).padStart(2, '0');
+const total = Math.max(SLOTS, landing.bots.length);
+const bots = landing.bots.map((b: any) => {
+  const features: string[] = b.features[lang] ?? b.features.en;
+  // features[0] is the games line ("Magic · One Piece · Lorcana & more"); the rest are the card's moves.
+  const games = features[0].split(' · ').flatMap((g) => g.split(/ (?=(?:& more|y más)$)/));
+  const status = b.tested ? (b.tested.stale ? 'Tested-stale' : 'Tested') : 'Listed';
+  return {
+    ...b, games, moves: features.slice(1), status,
+    statusLabel: t(`st.${status}` as any),
+    fn: b.oneLiner[lang] ?? b.oneLiner.en,
+    type: b.type?.[lang] ?? b.type?.en, kind: b.kind?.[lang] ?? b.kind?.en,
+    access: b.access?.[lang] ?? b.access?.en,
+    serial: `RAW-0${b.number}`,
+    detail: localize(`/bots/${b.slug}/`, lang),
+  };
+});
+const empty = Array.from({ length: Math.max(0, total - bots.length) }, (_, i) => pad(bots.length + i + 1));
+const dot = (s: string) => (s === 'Tested' ? 'd-tested' : s === 'Tested-stale' ? 'd-stale' : 'd-listed');
 ---
-<Base title={c.title}>
-  <section class="wrap page">
-    <p class="eyebrow">{c.eyebrow}</p>
-    <h1>{c.h}</h1>
-    <p class="muted sub">{c.sub}</p>
-    {realBots.length === 0 && <p class="empty mono">{c.empty}</p>}
-    <h2 class="sr-only">{c.h}</h2>
-    <BotsGrid lang={lang} />
-    <p class="legend mono muted">{c.legend}</p>
-  </section>
+<Base title={t('title')} description={t('desc')}>
+  <script is:inline>if(!matchMedia('(prefers-reduced-motion: reduce)').matches)document.documentElement.classList.add('bp-intro');setTimeout(function(){document.documentElement.classList.remove('bp-intro')},4000)</script>
+  <div class="bp" data-hint-pointer={t('hintPointer')} data-hint-touch={t('hintTouch')}>
+    <section class="head bp-in">
+      <div>
+        <div class="lab m"><i></i><span>{t('lab', { n: pad(bots.length), total: pad(total) })}</span></div>
+        <h1>{t('h1')}</h1>
+        <p class="intro">{t('intro')}</p>
+      </div>
+      <div class="count m">
+        <div class="pips" aria-hidden="true">{Array.from({ length: total }, (_, i) => <span class={i < bots.length ? 'on' : undefined}></span>)}</div>
+        <span set:html={t('count', { n: bots.length, total })}></span>
+      </div>
+    </section>
+
+    <h2 class="sr-only">{t('h1')}</h2>
+    <div class="deck">
+      {bots.map((b) => (
+        <div class="slot holo" tabindex="0" role="button" aria-roledescription="card" aria-pressed="false"
+          aria-label={t('cardAl', { name: b.name, status: b.statusLabel })}
+          data-al-front={t('cardAl', { name: b.name, status: b.statusLabel })} data-al-back={t('cardAlBack', { name: b.name })}>
+          <div class="shadow"></div>
+          <div class="card3d">
+            <article class="face front" aria-hidden="false">
+              <div class="ttl"><h3>{b.name}</h3><span class="badge"><i class={dot(b.status)}></i><span>{b.statusLabel}</span></span></div>
+              <div class="art"><img src={b.cardImage ?? b.image} alt={t('imgAlt', { name: b.name })} width="720" height="720" decoding="async" /></div>
+              {b.type && <div class="type"><span>{b.type}</span><b>{b.kind}</b></div>}
+              <p class="fn">{b.fn}</p>
+              <ul class="moves">{b.moves.map((m: string) => <li>{m}</li>)}</ul>
+              <div class="cfoot"><span>{b.serial}</span><span class="wm">raw<b>2</b>top</span><span>{b.number} / {pad(total)} ↻</span></div>
+              <div class="foil"></div><div class="sparkle"></div><div class="glare"></div>
+            </article>
+            <article class="face back" aria-hidden="true">
+              <div class="bh"><div><div class="bl">{t('back.lab')}</div><h3>{b.name}</h3></div><span class="badge"><i class={dot(b.status)}></i><span>{b.statusLabel}</span></span></div>
+              <dl>
+                <dt>{t('back.result')}</dt><dd class="pend">{t('pending')}</dd>
+                <dt>{t('back.tested')}</dt><dd class="pend">{t('pending')}</dd>
+                <dt>{t('back.app')}</dt><dd class="pend">{t('pending')}</dd>
+                <dt>{t('back.skills')}</dt><dd class="pend">{t('pending')}</dd>
+                <dt>{t('back.access')}</dt>{b.access ? <dd>{b.access}</dd> : <dd class="pend">{t('pending')}</dd>}
+              </dl>
+              <p class="note">{t('back.note')}</p>
+              <div class="games"><span class="gl">{t('gamesL')}</span>{b.games.map((g: string) => <span>{g}</span>)}</div>
+              <div class="btns">
+                <a class="bbtn" href={b.templateUrl} target="_blank" rel="noopener" tabindex="-1">{t('back.open')}</a>
+                <a class="bbtn sec" href={b.detail} tabindex="-1">{t('back.card')}</a>
+              </div>
+              <div class="serial"><span>{b.serial}</span><span>{t('back.flip')}</span></div>
+            </article>
+          </div>
+        </div>
+      ))}
+      {empty.map((n) => (
+        <div class="slot soon" role="note" aria-label={t('slotAl', { n })}>
+          <div class="shadow"></div>
+          <div class="card3d"><div class="face" aria-hidden="true">
+            <span class="num">{t('slot', { n })}</span>
+            <div class="emb"><span class="wm">raw<b>2</b>top</span></div>
+            <span class="stamp">{t('soon')}</span>
+            <span class="lablab"><i></i><span>{t('labNow')}</span></span>
+            <span class="ser">RAW-0{n}</span>
+          </div></div>
+        </div>
+      ))}
+    </div>
+    <p class="hint m bp-in" aria-hidden="true">{t('hintPointer')}</p>
+
+    <div class="legend m bp-in" role="group" aria-label={t('leg.status')}>
+      <span>{t('leg.status')}</span>
+      <span class="chip"><i class="dot d-tested"></i><b>{t('st.Tested')}</b><span>{t('leg.tested')}</span></span>
+      <span class="chip"><i class="dot d-stale"></i><b>{t('st.Tested-stale')}</b><span>{t('leg.stale')}</span></span>
+      <span class="chip"><i class="dot d-listed"></i><b>{t('st.Listed')}</b><span>{t('leg.listed')}</span></span>
+    </div>
+  </div>
 </Base>
+
 <style>
-  .page { padding-top: 40px; padding-bottom: 40px; }
-  h1 { font-size: clamp(40px, 6vw, 64px); margin: 8px 0 12px; }
-  .sub { max-width: 620px; font-size: 18px; }
-  .empty { margin: 28px 0 18px; font-size: 13px; color: var(--muted); border-left: 2px solid var(--lime); padding-left: 12px; }
-  .legend { font-size: 12px; margin-top: 22px; }
+.bp{--scout:#3d8bff;--scout-deep:#1237b8;width:min(1240px,100% - 2*clamp(16px,4vw,56px));margin:0 auto;position:relative;z-index:1;padding-bottom:20px}
+.m{font-family:var(--mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+:global(html.bp-intro) .bp-in,:global(html.bp-intro) .slot{opacity:0}
+
+.head{margin:clamp(8px,2.4vh,36px) auto 0;display:flex;justify-content:space-between;align-items:flex-end;gap:24px}
+.lab{color:var(--muted);display:flex;align-items:center;gap:.7em}
+.lab i{width:.55em;height:.55em;border-radius:50%;background:var(--lime);box-shadow:0 0 10px var(--lime);display:inline-block}
+h1{font-family:var(--sans);font-weight:700;letter-spacing:-.045em;line-height:.9;font-size:clamp(56px,7.4vw,132px);margin:.12em 0 .14em}
+.intro{color:var(--muted);font-size:clamp(16px,1.2vw,21px);line-height:1.4;max-width:34em;margin:0}
+.count{display:flex;flex-direction:column;align-items:flex-end;gap:10px;color:var(--muted);flex:none}
+.count :global(em){font-style:normal;color:var(--text)}
+.pips{display:flex;gap:6px}
+.pips span{width:15px;height:21px;border-radius:3px;border:1px solid var(--line);background:var(--panel)}
+.pips span.on{border-color:var(--scout);background:linear-gradient(150deg,#6fb0ff,var(--scout) 45%,var(--scout-deep));box-shadow:0 0 12px rgba(61,139,255,.55)}
+.hint{color:#6c7285;text-align:center;margin:26px 0 0}
+
+.deck{margin:clamp(22px,3.4vh,48px) auto 0;display:grid;grid-template-columns:repeat(3,minmax(0,330px));justify-content:center;gap:clamp(20px,2.6vw,52px)}
+.slot{position:relative;aspect-ratio:63/88;perspective:1100px;container-type:inline-size;cursor:pointer;-webkit-tap-highlight-color:transparent;outline:none;touch-action:pan-y pinch-zoom;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
+.slot:focus-visible .card3d{outline:2px solid var(--lime);outline-offset:6px;border-radius:var(--r)}
+.shadow{position:absolute;left:8%;right:8%;bottom:-3%;height:12%;border-radius:50%;background:rgba(0,0,0,.75);filter:blur(18px);
+  transform:translate(var(--sx,0px),var(--sy,0px)) scale(var(--ss,1));opacity:.8;pointer-events:none}
+.card3d{position:absolute;inset:0;transform-style:preserve-3d;will-change:transform;
+  transform:translateZ(0) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg)) rotateY(var(--flip,0deg)) scale(var(--lift,1))}
+.face{position:absolute;inset:0;border-radius:var(--r);overflow:hidden;backface-visibility:hidden;-webkit-backface-visibility:hidden;transform:translateZ(.1px)}
+.face.back{transform:rotateY(180deg) translateZ(.1px)}
+
+.holo .front{padding:3.4cqw;display:flex;flex-direction:column;
+  background:linear-gradient(158deg,#7cb8ff 0%,#3d8bff 22%,#2a63f0 48%,#1840c8 74%,#0d2687 100%);
+  box-shadow:inset 0 0 0 1px rgba(255,255,255,.35),inset 0 0 0 .9cqw rgba(13,38,135,.55),0 1px 0 rgba(255,255,255,.2)}
+.holo .front::before{content:"";position:absolute;inset:1.6cqw;border-radius:calc(var(--r) - 5px);border:.5cqw solid var(--lime);opacity:.9;pointer-events:none;
+  -webkit-mask:linear-gradient(#000,#000) top left/22% 22% no-repeat,linear-gradient(#000,#000) top right/22% 22% no-repeat,linear-gradient(#000,#000) bottom left/22% 22% no-repeat,linear-gradient(#000,#000) bottom right/22% 22% no-repeat;
+          mask:linear-gradient(#000,#000) top left/22% 22% no-repeat,linear-gradient(#000,#000) top right/22% 22% no-repeat,linear-gradient(#000,#000) bottom left/22% 22% no-repeat,linear-gradient(#000,#000) bottom right/22% 22% no-repeat}
+.ttl{position:relative;display:flex;justify-content:space-between;align-items:center;gap:2cqw;padding:1.4cqw 1.6cqw 2.2cqw}
+.ttl h3{font-family:var(--sans);font-weight:700;letter-spacing:-.045em;font-size:9cqw;line-height:1;color:#fff;margin:0;text-shadow:0 .4cqw 1.6cqw rgba(5,14,60,.55)}
+.badge{display:inline-flex;align-items:center;gap:.55em;padding:.55em .8em;border-radius:999px;background:rgba(10,11,15,.82);border:1px solid rgba(124,245,255,.45);
+  font-family:var(--mono);font-size:max(9px,2.9cqw);letter-spacing:.08em;text-transform:uppercase;color:var(--text);white-space:nowrap}
+.badge i{width:.6em;height:.6em;border-radius:50%;display:inline-block}
+.art{position:relative;flex:none;height:64cqw;border-radius:2.4cqw;overflow:hidden;background:#000;box-shadow:0 0 0 .5cqw var(--lime),0 1.6cqw 4cqw rgba(5,14,60,.6)}
+.art img{position:absolute;left:-9%;top:-12%;width:118%;height:auto;max-width:none;display:block}
+.type{position:relative;flex:none;white-space:nowrap;gap:2cqw;margin-top:3cqw;display:flex;justify-content:space-between;align-items:center;padding:1.3cqw 2.2cqw;border-radius:1.4cqw;background:rgba(10,11,15,.55);
+  font-family:var(--mono);font-size:max(8.5px,2.75cqw);letter-spacing:.08em;text-transform:uppercase;color:#dfe9ff}
+.type b{color:var(--lime);font-weight:500}
+.fn{position:relative;margin:2.6cqw 0 0;padding:0 1cqw;font-size:max(11px,4.15cqw);line-height:1.28;color:#fff}
+.moves{position:relative;list-style:none;margin:2.2cqw 0 0;padding:0 1cqw;font-size:max(9.5px,3.35cqw);line-height:1.25;color:rgba(242,243,247,.92)}
+.moves li{padding:.75cqw 0;border-top:1px solid rgba(255,255,255,.16);display:flex;gap:1.6cqw}
+.moves li::before{content:"→";color:var(--lime)}
+.cfoot{position:relative;margin-top:auto;display:flex;justify-content:space-between;align-items:center;padding:1.4cqw 1.6cqw 0;
+  font-family:var(--mono);font-size:max(8.5px,2.75cqw);letter-spacing:.08em;text-transform:uppercase;color:#cfe0ff}
+.wm{font-family:var(--sans);font-weight:700;letter-spacing:-.045em;text-transform:none;color:var(--text);white-space:nowrap}
+.wm b{color:var(--lime)}
+.cfoot .wm{font-size:max(10px,3.4cqw)}
+
+.foil,.sparkle,.glare{position:absolute;inset:0;border-radius:inherit;pointer-events:none}
+.foil{mix-blend-mode:color-dodge;opacity:calc(.07 + var(--o,0)*.42);
+  -webkit-mask:linear-gradient(180deg,#000 0 9%,rgba(0,0,0,.4) 12% 54%,#000 58%);mask:linear-gradient(180deg,#000 0 9%,rgba(0,0,0,.4) 12% 54%,#000 58%);
+  background:
+    repeating-linear-gradient(118deg,rgba(255,95,109,.9) 0%,rgba(255,195,113,.9) 5%,rgba(198,255,61,.9) 10%,rgba(124,245,255,.9) 15%,rgba(124,92,255,.9) 20%,rgba(255,95,209,.9) 25%,rgba(255,95,109,.9) 30%),
+    repeating-linear-gradient(28deg,rgba(10,11,15,.9) 0%,rgba(80,80,90,.7) 2.4%,rgba(10,11,15,.9) 4.8%);
+  background-size:260% 260%,120% 120%;background-blend-mode:hard-light;
+  background-position:calc(var(--mx,50)*1%) calc(var(--my,50)*1%),calc(100% - var(--mx,50)*.4%) calc(var(--my,50)*.4%);
+  filter:brightness(.62) contrast(1.6) saturate(1.25)}
+.sparkle{mix-blend-mode:color-dodge;opacity:calc(.05 + var(--o,0)*.7);background-image:var(--spark);background-size:62% auto;
+  background-position:calc(50% + (var(--mx,50) - 50)*-.35%) calc(50% + (var(--my,50) - 50)*-.35%);
+  -webkit-mask:radial-gradient(circle at calc(var(--mx,50)*1%) calc(var(--my,50)*1%),#000 0%,rgba(0,0,0,.35) 45%,transparent 75%);
+          mask:radial-gradient(circle at calc(var(--mx,50)*1%) calc(var(--my,50)*1%),#000 0%,rgba(0,0,0,.35) 45%,transparent 75%)}
+.glare{mix-blend-mode:overlay;opacity:calc(.12 + var(--o,0)*.7);
+  background:radial-gradient(farthest-corner circle at calc(var(--mx,50)*1%) calc(var(--my,50)*1%),rgba(255,255,255,.95) 0%,rgba(255,255,255,.4) 16%,rgba(0,0,0,.35) 75%)}
+
+.holo .back{background:
+   radial-gradient(120% 70% at 50% 0%,rgba(61,139,255,.20),transparent 60%),
+   repeating-linear-gradient(45deg,rgba(38,42,54,.35) 0 1px,transparent 1px 9px),var(--panel-2);
+  border:1px solid var(--scout);box-shadow:inset 0 0 0 .9cqw rgba(61,139,255,.12);padding:6cqw 6cqw 5cqw;display:flex;flex-direction:column}
+.bh{display:flex;justify-content:space-between;align-items:flex-start;gap:2cqw}
+.bl{font-family:var(--mono);font-size:max(9px,3cqw);letter-spacing:.08em;text-transform:uppercase;color:var(--scout)}
+.back h3{font-family:var(--sans);font-weight:700;letter-spacing:-.045em;font-size:8.6cqw;line-height:1;margin:1.6cqw 0 0}
+.back dl{margin:4cqw 0 0;display:grid;grid-template-columns:auto 1fr;font-family:var(--mono);font-size:max(10px,3.5cqw);letter-spacing:.04em}
+.back dt,.back dd{margin:0;padding:2.35cqw 0;border-bottom:1px solid var(--line)}
+.back dt{color:var(--muted);text-transform:uppercase;padding-right:4cqw}
+.back dd{text-align:right}
+.pend{color:#6c7285}
+.note{margin:4cqw 0 0;color:var(--muted);font-size:max(10px,3.5cqw);line-height:1.4;border-left:2px solid var(--lime);padding-left:3cqw}
+.games{margin:4cqw 0 3.4cqw;display:flex;flex-wrap:wrap;gap:1.3cqw}
+.games .gl{width:100%;font-family:var(--mono);font-size:max(9px,2.9cqw);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:.4cqw}
+.games span:not(.gl){font-family:var(--mono);font-size:max(9px,3cqw);letter-spacing:.02em;padding:.4em .62em;border:1px solid var(--line);border-radius:999px;color:var(--text);background:rgba(10,11,15,.5)}
+.btns{margin-top:auto;display:grid;grid-template-columns:1fr 1fr;gap:2.4cqw}
+.bbtn{display:inline-flex;justify-content:center;align-items:center;gap:.5em;background:var(--lime);color:#0a0b0f;border:1px solid var(--lime);border-radius:10px;padding:.95em .6em;
+  font-family:var(--mono);font-weight:500;font-size:max(10px,3.2cqw);letter-spacing:.08em;text-transform:uppercase;text-decoration:none;cursor:pointer;white-space:nowrap}
+.bbtn:hover{color:#0a0b0f;filter:brightness(1.06)}
+.bbtn.sec{background:transparent;color:var(--text);border-color:var(--line)}
+.bbtn.sec:hover{border-color:var(--lime);color:var(--lime);filter:none}
+.serial{margin-top:3.4cqw;display:flex;justify-content:space-between;color:#6c7285;font-family:var(--mono);font-size:max(8.5px,2.75cqw);letter-spacing:.08em;text-transform:uppercase}
+
+.soon{cursor:default}
+.soon .card3d{opacity:var(--dim,.62);filter:saturate(var(--sat,.8))}
+.soon .face{background:
+   radial-gradient(70% 50% at 50% 50%,rgba(18,20,27,.0),rgba(10,11,15,.55)),
+   repeating-linear-gradient(60deg,transparent 0 11px,rgba(38,42,54,.9) 11px 12px),
+   repeating-linear-gradient(-60deg,transparent 0 11px,rgba(38,42,54,.9) 11px 12px),
+   repeating-linear-gradient(0deg,transparent 0 19.5px,rgba(38,42,54,.55) 19.5px 20.5px),
+   var(--panel);
+  border:1px solid var(--line);box-shadow:inset 0 0 0 3cqw var(--panel),inset 0 0 0 calc(3cqw + 1px) var(--line);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center}
+.num{position:absolute;top:6cqw;left:6.5cqw;color:#6c7285;font-family:var(--mono);font-size:max(9px,3cqw);letter-spacing:.08em;text-transform:uppercase}
+.ser{position:absolute;top:6cqw;right:6.5cqw;color:#6c7285;font-family:var(--mono);font-size:max(9px,3cqw);letter-spacing:.08em}
+.emb{width:62cqw;aspect-ratio:1;border-radius:50%;display:grid;place-items:center;background:radial-gradient(circle,var(--bg) 58%,transparent 59%),conic-gradient(from 0deg,var(--line),#3a3f4e,var(--line),#3a3f4e,var(--line));
+  box-shadow:0 0 0 1px var(--line)}
+.emb .wm{font-size:11cqw}
+.stamp{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-11deg);padding:1.6cqw 3.4cqw;border:.7cqw solid var(--lime);border-radius:1.6cqw;color:var(--lime);
+  font-family:var(--mono);font-weight:600;font-size:max(10px,4.6cqw);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap;background:rgba(10,11,15,.72);
+  box-shadow:0 0 0 .5cqw rgba(10,11,15,.72);opacity:.92;margin-top:22cqw}
+.lablab{position:absolute;bottom:9cqw;left:0;right:0;color:var(--muted);font-family:var(--mono);font-size:max(9px,3.1cqw);letter-spacing:.08em;text-transform:uppercase}
+.lablab i{display:inline-block;width:.6em;height:.6em;border-radius:50%;background:var(--violet);box-shadow:0 0 8px var(--violet);margin-right:.6em;vertical-align:.05em}
+
+.legend{margin:clamp(30px,4.6vh,60px) auto 0;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:10px;color:var(--muted)}
+.chip{display:inline-flex;align-items:center;gap:.5em;padding:.55em .9em;border:1px solid var(--line);border-radius:999px;background:rgba(18,20,27,.7);font-size:11.5px}
+.chip b{color:var(--text);font-weight:500}
+.dot{width:.62em;height:.62em;border-radius:50%;display:inline-block}
+.d-tested{background:var(--lime);box-shadow:0 0 8px var(--lime)}.d-stale{background:var(--warn);box-shadow:0 0 8px var(--warn)}.d-listed{background:var(--cyan);box-shadow:0 0 8px var(--cyan)}
+
+@media (max-width:980px){
+  .deck{grid-template-columns:1fr 1fr;gap:18px 14px;margin-top:24px;max-width:560px}
+  .deck .holo{grid-column:1/-1;width:min(100%,330px);justify-self:center}
+}
+@media (max-width:760px){
+  .head{flex-direction:column;align-items:flex-start;gap:14px;margin-top:6px}
+  .count{flex-direction:row;align-items:center}
+  h1{font-size:64px}
+  .intro{font-size:16px}
+  .deck{grid-template-columns:1fr 1fr;gap:18px 14px;margin-top:24px}
+  .deck .holo{grid-column:1/-1;width:min(100%,330px);justify-self:center}
+  .legend{justify-content:flex-start}
+}
+@media (max-width:340px){.deck{grid-template-columns:1fr}}
 </style>
+
+<script>
+// Holo cards: spring-driven tilt + foil that follows the pointer, click/Enter/tap flips to the test sheet.
+// Touch: hold ~170 ms or drag sideways to tilt (page stays still), vertical swipe scrolls, tap flips.
+const root = document.querySelector<HTMLElement>('.bp');
+if (root) {
+  const clamp = (x: number, a = 0, b = 1) => Math.min(b, Math.max(a, x));
+  const sm = (x: number) => { x = clamp(x); return x * x * (3 - 2 * x); };
+  const RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const FINE = matchMedia('(hover:hover) and (pointer:fine)').matches;
+  const AUTO = !FINE; // touch: device orientation if granted, else a slow automatic shimmer
+  const hint = root.querySelector<HTMLElement>('.hint');
+  if (hint) hint.textContent = (AUTO ? root.dataset.hintTouch : root.dataset.hintPointer) || '';
+
+  // sparkle texture (deterministic, generated once)
+  (() => {
+    const c = document.createElement('canvas'); c.width = c.height = 256; const g = c.getContext('2d'); if (!g) return;
+    let s = 7; const R = () => { s = (s * 16807) % 2147483647; return s / 2147483647; };
+    for (let i = 0; i < 150; i++) {
+      const x = R() * 256, y = R() * 256, r = .4 + R() * 1.3, a = .35 + R() * .65;
+      const gr = g.createRadialGradient(x, y, 0, x, y, r * 3); gr.addColorStop(0, `rgba(255,255,255,${a})`); gr.addColorStop(1, 'rgba(255,255,255,0)');
+      g.fillStyle = gr; g.fillRect(x - r * 3, y - r * 3, r * 6, r * 6);
+      if (R() < .12) { g.strokeStyle = `rgba(255,255,255,${a * .7})`; g.lineWidth = .6; g.beginPath(); g.moveTo(x - r * 5, y); g.lineTo(x + r * 5, y); g.moveTo(x, y - r * 5); g.lineTo(x, y + r * 5); g.stroke(); }
+    }
+    root.style.setProperty('--spark', `url(${c.toDataURL()})`);
+  })();
+
+  type Ch = 'rx' | 'ry' | 'mx' | 'my' | 'o' | 'lift' | 'flip' | 'dim';
+  type Slot = { el: HTMLElement; c3: HTMLElement; sh: HTMLElement; holo: boolean; idx: number; flipped: boolean; touch: boolean; relT: number | null;
+    s: Record<Ch, [number, number]>; tgt: Record<Ch, number> };
+  const slots: Slot[] = [...root.querySelectorAll<HTMLElement>('.slot')].map((el, idx) => ({
+    el, c3: el.querySelector('.card3d') as HTMLElement, sh: el.querySelector('.shadow') as HTMLElement, holo: el.classList.contains('holo'), idx,
+    flipped: false, touch: false, relT: null,
+    s: { rx: [0, 0], ry: [0, 0], mx: [50, 0], my: [50, 0], o: [0, 0], lift: [1, 0], flip: [0, 0], dim: [0, 0] },
+    tgt: { rx: 0, ry: 0, mx: 50, my: 50, o: 0, lift: 1, flip: 0, dim: 0 },
+  }));
+  const MAXT = [14, 5]; // degrees: foil card, face-down card
+  const K: Record<Ch, [number, number]> = { rx: [150, 15], ry: [150, 15], mx: [110, 18], my: [110, 18], o: [60, 14], lift: [170, 18], flip: [105, 13], dim: [60, 15] };
+  function setTarget(S: Slot, nx: number, ny: number, inside: boolean) {
+    const m = S.holo ? MAXT[0] : MAXT[1], T = S.tgt;
+    if (inside) { T.rx = (.5 - ny) * 2 * m * .8; T.ry = (nx - .5) * 2 * m; T.mx = nx * 100; T.my = ny * 100; T.o = 1; T.lift = S.holo ? 1.035 : 1.015; T.dim = 1; }
+    else { T.rx = 0; T.ry = 0; T.mx = 50; T.my = 50; T.o = 0; T.lift = 1; T.dim = 0; }
+  }
+  function stepSprings(dt: number) {
+    const n = Math.max(1, Math.ceil(dt / (1 / 240))), h = dt / n;
+    for (const S of slots) for (const k in S.s) {
+      const st = S.s[k as Ch], [ks, c] = K[k as Ch], tg = S.tgt[k as Ch];
+      for (let i = 0; i < n; i++) { const a = -ks * (st[0] - tg) - c * st[1]; st[1] += a * h; st[0] += st[1] * h; }
+    }
+  }
+  function paint() {
+    for (const S of slots) {
+      const v = (k: Ch) => S.s[k][0], st = S.c3.style;
+      st.setProperty('--rx', v('rx').toFixed(3) + 'deg'); st.setProperty('--ry', v('ry').toFixed(3) + 'deg'); st.setProperty('--lift', v('lift').toFixed(4));
+      if (S.holo) {
+        st.setProperty('--flip', v('flip').toFixed(2) + 'deg');
+        st.setProperty('--mx', v('mx').toFixed(2)); st.setProperty('--my', v('my').toFixed(2)); st.setProperty('--o', clamp(v('o'), 0, 1.2).toFixed(3));
+      } else { st.setProperty('--dim', (.62 + .26 * clamp(v('dim'))).toFixed(3)); st.setProperty('--sat', (.8 + .2 * clamp(v('dim'))).toFixed(3)); }
+      const ss = S.sh.style;
+      ss.setProperty('--sx', (-v('ry') * 1.4).toFixed(1) + 'px'); ss.setProperty('--sy', (v('rx') * .8 + (v('lift') - 1) * 260).toFixed(1) + 'px'); ss.setProperty('--ss', (1 + (v('lift') - 1) * 2.5).toFixed(3));
+    }
+  }
+  function syncA11y(S: Slot) {
+    const front = S.el.querySelector('.front'), back = S.el.querySelector('.back');
+    front?.setAttribute('aria-hidden', String(S.flipped)); back?.setAttribute('aria-hidden', String(!S.flipped));
+    back?.querySelectorAll('a').forEach((a) => (a.tabIndex = S.flipped ? 0 : -1));
+    S.el.setAttribute('aria-label', (S.flipped ? S.el.dataset.alBack : S.el.dataset.alFront) || '');
+    S.el.setAttribute('aria-pressed', String(S.flipped));
+  }
+  function flip(S: Slot) { S.flipped = !S.flipped; S.tgt.flip = S.flipped ? 180 : 0; if (RM) S.s.flip = [S.tgt.flip, 0]; syncA11y(S); }
+
+  // iOS 13+: motion access needs DeviceOrientationEvent.requestPermission() called synchronously inside a user gesture.
+  // Ask on the first tap on a card (a click event, which is a gesture even when the touch started a pan elsewhere);
+  // if WebKit rejects it as not-a-gesture, ask again on the next tap; stop once the user answers.
+  let ORI: { b: number; g: number } | null = null, oriAsked = false;
+  const onOri = (e: DeviceOrientationEvent) => { if (e.beta == null || e.gamma == null) return; ORI = { b: e.beta, g: e.gamma }; };
+  const DOE = (window as any).DeviceOrientationEvent;
+  const needsPerm = AUTO && !RM && DOE && typeof DOE.requestPermission === 'function';
+  function askMotion() {
+    if (!needsPerm || oriAsked) return;
+    DOE.requestPermission().then((p: string) => { oriAsked = true; if (p === 'granted') addEventListener('deviceorientation', onOri); }).catch(() => {});
+  }
+  if (AUTO && !RM && DOE && !needsPerm) addEventListener('deviceorientation', onOri);
+
+  let swallowClick = 0; // set after a touch drag so the release doesn't flip or follow a link
+  for (const S of slots) {
+    if (!S.holo) continue;
+    S.el.addEventListener('click', (e) => {
+      if (performance.now() < swallowClick) { e.preventDefault(); e.stopPropagation(); return; }
+      askMotion();
+      if ((e.target as Element).closest('a')) return;
+      flip(S);
+    }, true);
+    S.el.addEventListener('keydown', (e) => { if (e.target !== S.el) return; if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); flip(S); } });
+  }
+
+  // mouse / pen
+  function pointAt(x: number, y: number) {
+    for (const S of slots) {
+      const r = S.el.getBoundingClientRect(), inside = x >= r.left && x <= r.right && y >= r.top && y <= r.bottom;
+      setTarget(S, clamp((x - r.left) / r.width), clamp((y - r.top) / r.height), inside);
+    }
+  }
+  if (!RM) {
+    addEventListener('pointermove', (e) => { if (e.pointerType === 'touch') return; pointAt(e.clientX, e.clientY); }, { passive: true });
+    document.documentElement.addEventListener('pointerleave', () => pointAt(-1e4, -1e4));
+    addEventListener('blur', () => pointAt(-1e4, -1e4));
+  }
+
+  // touch
+  const HOLD = .17, MOVE_TOL = 10, RELEASE = .55, TAP_MAX = .6;
+  let nowT = 0;
+  const TD = { S: null as Slot | null, id: -1, x0: 0, y0: 0, t0: 0, x: 0, y: 0, moved: 0, drag: false, dead: false };
+  function touchDrag() {
+    const S = TD.S!; const r = S.el.getBoundingClientRect(); TD.drag = true; S.touch = true;
+    setTarget(S, clamp((TD.x - r.left) / r.width), clamp((TD.y - r.top) / r.height), true);
+  }
+  function touchMove(x: number, y: number) {
+    if (!TD.S || TD.dead) return;
+    TD.x = x; TD.y = y; const dx = x - TD.x0, dy = y - TD.y0; TD.moved = Math.max(TD.moved, Math.hypot(dx, dy));
+    if (TD.drag) { touchDrag(); return; }
+    if (TD.moved > MOVE_TOL) { if (Math.abs(dx) > Math.abs(dy) * 1.2) touchDrag(); else TD.dead = true; }
+  }
+  function touchCheckHold() { if (TD.S && !TD.drag && !TD.dead && nowT - TD.t0 >= HOLD && TD.moved <= MOVE_TOL) touchDrag(); }
+  function touchEnd(cancel: boolean) {
+    const S = TD.S; if (!S) return { tap: false };
+    const tap = !cancel && !TD.dead && TD.moved <= MOVE_TOL && nowT - TD.t0 < TAP_MAX;
+    if (TD.drag) { S.touch = false; S.relT = nowT; setTarget(S, .5, .5, false); }
+    TD.S = null; TD.id = -1; TD.drag = false; return { tap };
+  }
+  if (!RM) {
+    slots.forEach((S) => S.el.addEventListener('pointerdown', (e) => {
+      if (e.pointerType !== 'touch' || TD.S) return;
+      Object.assign(TD, { S, id: e.pointerId, x0: e.clientX, y0: e.clientY, x: e.clientX, y: e.clientY, t0: nowT, moved: 0, drag: false, dead: false });
+    }));
+    addEventListener('pointermove', (e) => { if (e.pointerId === TD.id) touchMove(e.clientX, e.clientY); }, { passive: true });
+    addEventListener('pointerup', (e) => { if (e.pointerId !== TD.id) return; const r = touchEnd(false); if (!r.tap) swallowClick = performance.now() + 450; });
+    addEventListener('pointercancel', (e) => { if (e.pointerId === TD.id) touchEnd(true); });
+    // once tilting, keep the page still under the finger (non-passive so it can cancel the scroll)
+    slots.forEach((S) => S.el.addEventListener('touchmove', (e) => { if (TD.S === S && TD.drag && e.cancelable) e.preventDefault(); }, { passive: false }));
+    slots.forEach((S) => S.el.addEventListener('contextmenu', (e) => { if (TD.S === S) e.preventDefault(); }));
+  }
+
+  let ori0: { b: number; g: number } | null = null;
+  function autoTargets(t: number) {
+    for (const S of slots) {
+      if (S.touch) continue;
+      if (S.relT != null && t - S.relT < RELEASE) { setTarget(S, .5, .5, false); continue; }
+      const T = S.tgt;
+      if (ORI) {
+        if (!ori0) ori0 = { ...ORI };
+        const nx = clamp(.5 + (ORI.g - ori0.g) / 40), ny = clamp(.5 + (ORI.b - ori0.b) / 40), m = S.holo ? 8 : 4;
+        T.rx = (.5 - ny) * 2 * m; T.ry = (nx - .5) * 2 * m; T.mx = nx * 100; T.my = ny * 100; T.o = S.holo ? .8 : 0; T.dim = 0; T.lift = 1;
+      } else {
+        const p = t * .42 + S.idx * 1.7;
+        T.mx = 50 + 38 * Math.sin(p); T.my = 50 + 28 * Math.sin(p * .73 + 1.1);
+        T.rx = (S.holo ? 3.2 : 1.6) * Math.sin(p * .73 + 1.1); T.ry = (S.holo ? 4.5 : 2) * Math.sin(p);
+        T.o = S.holo ? .55 + .15 * Math.sin(p * 1.3) : 0; T.dim = 0; T.lift = 1;
+      }
+    }
+  }
+
+  // page load: head, then the cards deal in
+  const intro = [...root.querySelectorAll<HTMLElement>('.bp-in')], deal = slots.map((S) => S.el);
+  let introDone = RM;
+  function introAt(t: number) {
+    if (introDone) return;
+    intro.forEach((el, i) => { const q = sm((t - .05 - i * .12) / .55); el.style.opacity = String(q); el.style.transform = `translateY(${(1 - q) * 14}px)`; });
+    deal.forEach((el, i) => { const q = (t - .35 - i * .16) / .75, e = q <= 0 ? 0 : q >= 1 ? 1 : 1 - Math.pow(1 - q, 3);
+      el.style.opacity = String(sm(q * 1.6)); el.style.transform = `translateY(${(1 - e) * 90}px) rotate(${(1 - e) * (i - 1) * 6}deg)`; });
+    if (t > .35 + deal.length * .16 + .8) {
+      introDone = true; [...intro, ...deal].forEach((el) => { el.style.opacity = ''; el.style.transform = ''; });
+      document.documentElement.classList.remove('bp-intro');
+    }
+  }
+
+  if (RM) { for (const S of slots) if (S.holo) { S.s.mx = [30, 0]; S.s.my = [22, 0]; S.s.o = [.3, 0]; S.tgt.mx = 30; S.tgt.my = 22; S.tgt.o = .3; } }
+
+  let lastT: number | null = null, t0 = performance.now();
+  function frame(now: number) {
+    const t = (now - t0) / 1000, dt = lastT == null ? 0 : Math.min(.05, Math.max(0, t - lastT)); lastT = t; nowT = t;
+    touchCheckHold(); if (TD.S && TD.drag) touchDrag();
+    if (AUTO && !RM) autoTargets(t);
+    if (RM) { for (const S of slots) for (const k in S.s) { S.s[k as Ch] = [S.tgt[k as Ch], 0]; } }
+    else stepSprings(dt);
+    paint(); introAt(t);
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+}
+</script>

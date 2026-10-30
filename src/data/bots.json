@@ -1,39 +1,4 @@
 {
-  "showExample": true,
-  "bots": [],
-  "example": {
-    "slug": "example-bot",
-    "name": "Example bot",
-    "oneLiner": {
-      "en": "Placeholder entry that shows how a real bot page will look. Not a real bot.",
-      "es": "Entrada de marcador que muestra cómo será la página de un bot real. No es un bot real."
-    },
-    "description": {
-      "en": "This page is a layout example. Every value in brackets is a placeholder and will be replaced by a real test once the first bot is published.",
-      "es": "Esta página es un ejemplo de diseño. Cada valor entre corchetes es un marcador y se cambiará por una prueba real cuando se publique el primer bot."
-    },
-    "templateUrl": null,
-    "access": "reads",
-    "connectors": [
-      "[connector]"
-    ],
-    "status": "Tested",
-    "tested": {
-      "date": "[YYYY-MM-DD]",
-      "appVersion": "[v0.xx]",
-      "platform": "[macOS / Windows / Linux / iOS / Android]",
-      "task": {
-        "en": "[The one task I asked the bot to do]",
-        "es": "[La tarea concreta que le pedí al bot]"
-      },
-      "result": "worked",
-      "evidence": {
-        "en": "[One line describing what happened]",
-        "es": "[Una línea que cuenta qué pasó]"
-      },
-      "skillsPreview": "[n]",
-      "skillsArrived": "[n]",
-      "routinesArrived": "[yes / no / paused]"
-    }
-  }
+  "showExample": false,
+  "bots": []
 }
