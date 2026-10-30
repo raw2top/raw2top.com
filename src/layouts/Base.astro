@@ -74,7 +74,7 @@ const other: Lang = lang === 'en' ? 'es' : 'en';
         <li><a href={localize('/about/', lang)}>{t('nav.about')}</a></li>
         <li><a href={localize('/report/', lang)}>{t('foot.report')}</a></li>
       </ul>
-      <p class="legal mono">© {new Date().getFullYear()} raw2top</p>
+      <p class="legal mono">© {new Date().getFullYear()} raw2top · <a href={localize('/privacy/', lang)}>{t('foot.privacy')}</a></p>
     </div>
   </footer>
   <script>
@@ -182,5 +182,7 @@ const other: Lang = lang === 'en' ? 'es' : 'en';
   .foot ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 22px; font-size: 14px; }
   .foot ul a { color: var(--muted); }
   .foot .legal { font-size: 12px; color: var(--muted); margin: 0; }
+  .foot .legal a { color: var(--muted); }
+  .foot .legal a:hover { color: var(--text); }
   @media (max-width: 600px) { nav ul { gap: 14px; } nav a { font-size: 14px; } .right { gap: 14px; } .foot { grid-template-columns: 1fr; gap: 18px; } .foot-r { align-items: flex-start; gap: 14px; } .foot ul { flex-wrap: wrap; } }
 </style>

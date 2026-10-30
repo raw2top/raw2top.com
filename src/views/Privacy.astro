@@ -1,0 +1,89 @@
+---
+import Base from '../layouts/Base.astro';
+import type { Lang } from '../i18n/utils';
+interface Props { lang: Lang; }
+const { lang } = Astro.props;
+const EMAIL = lang === 'es' ? 'hola@raw2top.com' : 'hello@raw2top.com';
+const L = {
+  w3f: 'https://web3forms.com/privacy',
+  google: lang === 'es' ? 'https://policies.google.com/privacy?hl=es' : 'https://policies.google.com/privacy',
+  ghPages: `https://docs.github.com/${lang}/pages/getting-started-with-github-pages/what-is-github-pages#data-collection`,
+  ghPriv: `https://docs.github.com/${lang}/site-policy/privacy-policies/github-general-privacy-statement`,
+  aepd: 'https://www.aepd.es/',
+};
+// Each section: heading + paragraphs. Paragraph strings may contain trusted inline HTML (links) written here.
+const a = (href: string, text: string) => `<a href="${href}" rel="noopener">${text} ↗</a>`;
+const mail = `<a class="mono" href="mailto:${EMAIL}">${EMAIL}</a>`;
+const c = {
+  en: { title: 'Privacy & legal notice', eyebrow: 'Legal', h: 'Privacy & legal notice',
+    lead: 'Who runs raw2top, what data we handle and why. Short and plain.',
+    s: [
+      { h: '1. Who’s behind raw2top', p: [
+        `raw2top.com is owned by <strong>Sergio Domínguez</strong> (Spain), who is responsible for this website and for the data described on this page. The site is run by the raw2top team.`,
+        `Contact: ${mail}` ] },
+      { h: '2. What data we collect', p: [
+        'Only what you send us through the request form on the home page (or by email): your name (optional), your email and your message. We use it only to reply to you and handle your request.',
+        'Legal basis: your consent when you send it and, if you ask us for a custom drop, steps taken at your request before a possible agreement (GDPR art. 6.1.a and 6.1.b).',
+        'We keep it only as long as needed to handle your request.' ] },
+      { h: '3. Who else processes it', p: [
+        `<strong>Web3Forms</strong> (Web3Creative) delivers the form to our inbox. According to its privacy policy, it operates from India with providers such as AWS, Cloudflare and Hetzner, keeps submissions for up to three years unless a shorter period applies, may pass your IP address and email to spam filters (CleanTalk, Akismet), and uses Standard Contractual Clauses for data leaving the EEA. ${a(L.w3f, 'Web3Forms privacy policy')}`,
+        `<strong>Email:</strong> form messages and emails reach our Gmail inbox (Google). ${a(L.google, 'Google privacy policy')}`,
+        `<strong>Hosting:</strong> the site is served by GitHub Pages (GitHub). GitHub says that when a GitHub Pages site is visited, the visitor’s IP address is logged and stored for security purposes. ${a(L.ghPages, 'GitHub Pages: data collection')} · ${a(L.ghPriv, 'GitHub privacy statement')}`,
+        'These services may process data outside the EU.' ] },
+      { h: '4. Your rights', p: [
+        `You can ask us for access to, rectification or erasure of your data, object to or restrict its processing, ask for portability, and withdraw your consent at any time, by writing to ${mail}.`,
+        `If you think we haven’t handled your data properly, you can complain to the Spanish Data Protection Agency (AEPD). ${a(L.aepd, 'aepd.es')}` ] },
+      { h: '5. Cookies', p: [
+        'We use no cookies, analytics or tracking.',
+        'The only thing we store in your browser is the localStorage key <code>raw2top-lang</code>, when you pick a language, so we remember it next time. You can delete it from your browser settings.' ] },
+    ],
+    updated: 'Last updated: 30 October 2026' },
+  es: { title: 'Privacidad y aviso legal', eyebrow: 'Legal', h: 'Privacidad y aviso legal',
+    lead: 'Quién está detrás de raw2top, qué datos tratamos y por qué. Corto y claro.',
+    s: [
+      { h: '1. Quién está detrás de raw2top', p: [
+        `El titular de raw2top.com es <strong>Sergio Domínguez</strong> (España), responsable de este sitio web y de los datos que se describen en esta página. El sitio lo gestiona el equipo de raw2top.`,
+        `Contacto: ${mail}` ] },
+      { h: '2. Qué datos recogemos', p: [
+        'Solo lo que nos envías con el formulario de encargos de la portada (o por email): tu nombre (opcional), tu email y tu mensaje. Lo usamos únicamente para responderte y gestionar tu petición.',
+        'Base legal: tu consentimiento al enviarlo y, si nos pides un drop a medida, la aplicación de medidas precontractuales a petición tuya (RGPD, art. 6.1.a y 6.1.b).',
+        'Lo conservamos solo el tiempo necesario para atender tu petición.' ] },
+      { h: '3. Quién más los trata', p: [
+        `<strong>Web3Forms</strong> (Web3Creative) entrega el formulario en nuestro buzón. Según su política de privacidad, opera desde la India con proveedores como AWS, Cloudflare y Hetzner, guarda los envíos un máximo de tres años salvo que se aplique un plazo más corto, puede pasar tu dirección IP y tu email a filtros antispam (CleanTalk, Akismet) y usa cláusulas contractuales tipo para los datos que salen del EEE. ${a(L.w3f, 'Política de privacidad de Web3Forms (en inglés)')}`,
+        `<strong>Correo:</strong> los mensajes del formulario y los emails llegan a nuestro buzón de Gmail (Google). ${a(L.google, 'Política de privacidad de Google')}`,
+        `<strong>Alojamiento:</strong> el sitio se sirve desde GitHub Pages (GitHub). Según GitHub, cuando se visita un sitio de GitHub Pages, la dirección IP del visitante se registra y se guarda por motivos de seguridad. ${a(L.ghPages, 'GitHub Pages: recopilación de datos')} · ${a(L.ghPriv, 'Declaración de privacidad de GitHub')}`,
+        'Estos servicios pueden tratar datos fuera de la UE.' ] },
+      { h: '4. Tus derechos', p: [
+        `Puedes pedirnos el acceso, la rectificación o la supresión de tus datos, oponerte a su tratamiento o pedir que lo limitemos, solicitar la portabilidad y retirar tu consentimiento cuando quieras, escribiendo a ${mail}.`,
+        `Si crees que no hemos tratado bien tus datos, puedes reclamar ante la Agencia Española de Protección de Datos (AEPD). ${a(L.aepd, 'aepd.es')}` ] },
+      { h: '5. Cookies', p: [
+        'No usamos cookies, ni analítica, ni seguimiento.',
+        'Lo único que guardamos en tu navegador es la clave <code>raw2top-lang</code> de localStorage, cuando eliges un idioma, para recordarlo la próxima vez. Puedes borrarla desde los ajustes de tu navegador.' ] },
+    ],
+    updated: 'Última actualización: 30 de octubre de 2026' },
+}[lang];
+---
+<Base title={c.title}>
+  <section class="wrap page">
+    <p class="eyebrow">{c.eyebrow}</p>
+    <h1>{c.h}</h1>
+    <p class="muted sub">{c.lead}</p>
+    {c.s.map((sec) => (
+      <div class="card sec"><h2>{sec.h}</h2>{sec.p.map((x) => <p class="muted" set:html={x} />)}</div>
+    ))}
+    <p class="upd mono muted">{c.updated}</p>
+  </section>
+</Base>
+<style>
+  .page { padding-top: 40px; padding-bottom: 40px; max-width: 900px; }
+  h1 { font-size: clamp(36px, 5.4vw, 58px); margin: 8px 0 14px; }
+  .sub { font-size: 18px; max-width: 640px; margin-bottom: 28px; }
+  h2 { font-size: 20px; margin-bottom: 10px; }
+  .sec { margin-top: 16px; }
+  .sec p { font-size: 15px; line-height: 1.6; overflow-wrap: anywhere; }
+  .sec p + p { margin-top: 10px; }
+  .sec :global(strong) { color: var(--text); font-weight: 600; }
+  .sec :global(a) { color: var(--lime); }
+  .sec :global(code) { font-family: var(--mono); font-size: 13px; color: var(--text); }
+  .upd { font-size: 12.5px; margin-top: 24px; }
+</style>

@@ -56,4 +56,18 @@
     <xhtml:link rel="alternate" hreflang="es" href="https://raw2top.com/es/report/"/>
     <xhtml:link rel="alternate" hreflang="x-default" href="https://raw2top.com/report/"/>
   </url>
+  <url>
+    <loc>https://raw2top.com/privacy/</loc>
+    <lastmod>2026-10-30</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://raw2top.com/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://raw2top.com/es/privacidad/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://raw2top.com/privacy/"/>
+  </url>
+  <url>
+    <loc>https://raw2top.com/es/privacidad/</loc>
+    <lastmod>2026-10-30</lastmod>
+    <xhtml:link rel="alternate" hreflang="en" href="https://raw2top.com/privacy/"/>
+    <xhtml:link rel="alternate" hreflang="es" href="https://raw2top.com/es/privacidad/"/>
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://raw2top.com/privacy/"/>
+  </url>
 </urlset>

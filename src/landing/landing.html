@@ -56,6 +56,7 @@ html.rec #fakecur{display:block}
 #links a+a::before{content:"";position:absolute;left:0;top:28%;bottom:28%;width:1px;background:#353a48;pointer-events:none}
 form .fine{color:var(--muted);font-size:11px;line-height:1.45;letter-spacing:.02em;text-transform:none}
 form .fine a{color:var(--lime)}
+#ffine a{color:inherit;text-decoration:underline;text-decoration-color:rgba(160,166,182,.45);text-underline-offset:2px}#ffine a:hover{color:var(--text)}
 #fstat.ok{color:var(--lime)}#fstat.err{color:#ff8a8a}
 /* inline field errors (replace the native validation bubble) */
 .ferr{color:#ff8a8a;font-size:11px;line-height:1.35;letter-spacing:.02em;text-transform:none}
@@ -418,7 +419,7 @@ const DICT={
   's6.p1':'Your name','s6.p2':'you@domain.com','s6.p3':'A bot, a prompt, a tool…',
   's6.send':'Send request →','s6.sending':'Sending…','s6.sent':'Sent ✓','s6.back':'Back to boot ↑',
   's6.ok':'Request received. We’ll reply to your email.','s6.err':'Couldn’t send it. Please email us at','s6.errTask':'Tell us what you need.','s6.errEmail':'Add a valid email so we can reply.',
-  's6.fine':'Sent through Web3Forms, which may process your data outside the EU. Or email us at',
+  's6.fine':'<a href="/privacy/">Sent through Web3Forms, which may process your data outside the EU.</a> Or email us at',
   'mail.to':'hello@raw2top.com','mail.subject':'Custom drop request','mail.name':'Name','mail.email':'Email','mail.task':'What I need',
   'ty.bot':'Bot','ty.prompt':'Prompt','ty.utility':'Tool','ty.content':'Content','ty.course':'Course',
   'nav.drops':'Drops','nav.about':'About us','nav.report':'Report',
@@ -456,7 +457,7 @@ const DICT={
   's6.p1':'Tu nombre','s6.p2':'tu@dominio.com','s6.p3':'Un bot, un prompt, una utilidad…',
   's6.send':'Enviar encargo →','s6.sending':'Enviando…','s6.sent':'Enviado ✓','s6.back':'Volver al inicio ↑',
   's6.ok':'Encargo recibido. Te responderemos a tu email.','s6.err':'No se ha podido enviar. Escríbenos a','s6.errTask':'Cuéntanos qué necesitas.','s6.errEmail':'Pon un email válido para poder responderte.',
-  's6.fine':'Se envía con Web3Forms, que puede tratar tus datos fuera de la UE. O escríbenos a',
+  's6.fine':'<a href="/es/privacidad/">Se envía con Web3Forms, que puede tratar tus datos fuera de la UE.</a> O escríbenos a',
   'mail.to':'hola@raw2top.com','mail.subject':'Encargo de drop a medida','mail.name':'Nombre','mail.email':'Email','mail.task':'Qué necesito',
   'ty.bot':'Bot','ty.prompt':'Prompt','ty.utility':'Utilidad','ty.content':'Contenido','ty.course':'Curso',
   'nav.drops':'Drops','nav.about':'Nosotros','nav.report':'Aviso',
