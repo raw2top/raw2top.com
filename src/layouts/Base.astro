@@ -68,12 +68,14 @@ const other: Lang = lang === 'en' ? 'es' : 'en';
       <span class="logo small">raw<b>2</b>top</span>
       <p class="muted">{t('foot.tag')}</p>
     </div>
-    <ul>
-      <li><a href={localize('/drops/', lang)}>{t('nav.drops')}</a></li>
-      <li><a href={localize('/about/', lang)}>{t('nav.about')}</a></li>
-      <li><a href={localize('/report/', lang)}>{t('foot.report')}</a></li>
-    </ul>
-    <p class="legal mono">{t('foot.legal')} © {new Date().getFullYear()} raw2top</p>
+    <div class="foot-r">
+      <ul>
+        <li><a href={localize('/drops/', lang)}>{t('nav.drops')}</a></li>
+        <li><a href={localize('/about/', lang)}>{t('nav.about')}</a></li>
+        <li><a href={localize('/report/', lang)}>{t('foot.report')}</a></li>
+      </ul>
+      <p class="legal mono">© {new Date().getFullYear()} raw2top</p>
+    </div>
   </footer>
   <script>
     // Language dropdown: one flag button; tap/click/Enter opens a vertical menu of languages.
@@ -173,10 +175,12 @@ const other: Lang = lang === 'en' ? 'es' : 'en';
   nav a { color: var(--muted); text-decoration: none; font-size: 15px; padding: 6px 0; }
   nav a:hover, nav a[aria-current='page'] { color: var(--text); }
   nav a[aria-current='page'] { box-shadow: inset 0 -2px 0 var(--lime); }
-  .foot { position: relative; z-index: 1; border-top: 1px solid var(--line); padding: 36px 0 44px; margin-top: 40px; display: grid; grid-template-columns: 1fr auto; gap: 20px 40px; }
+  /* two balanced columns: logo + tagline on the left; links with © underneath, right-aligned, bottoms level */
+  .foot { position: relative; z-index: 1; border-top: 1px solid var(--line); padding: 36px 0 44px; margin-top: 40px; display: grid; grid-template-columns: 1fr auto; gap: 20px 40px; align-items: stretch; }
+  .foot-r { display: flex; flex-direction: column; justify-content: space-between; align-items: flex-end; gap: 10px; }
   .foot p { font-size: 14px; margin-top: 6px; }
   .foot ul { list-style: none; margin: 0; padding: 0; display: flex; gap: 22px; font-size: 14px; }
   .foot ul a { color: var(--muted); }
-  .legal { grid-column: 1 / -1; font-size: 12px; color: var(--muted); }
-  @media (max-width: 600px) { nav ul { gap: 14px; } nav a { font-size: 14px; } .right { gap: 14px; } .foot { grid-template-columns: 1fr; } .foot ul { flex-wrap: wrap; } }
+  .foot .legal { font-size: 12px; color: var(--muted); margin: 0; }
+  @media (max-width: 600px) { nav ul { gap: 14px; } nav a { font-size: 14px; } .right { gap: 14px; } .foot { grid-template-columns: 1fr; gap: 18px; } .foot-r { align-items: flex-start; gap: 14px; } .foot ul { flex-wrap: wrap; } }
 </style>

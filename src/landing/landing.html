@@ -201,6 +201,8 @@ form .hd{display:flex;justify-content:space-between;color:var(--muted);padding-b
 form label{display:grid;gap:6px;color:var(--muted)}
 form input,form textarea{background:var(--bg);border:1px solid var(--line);border-radius:8px;color:var(--text);padding:.7em .8em;font-family:var(--mono);font-size:14px;resize:none}
 form input:focus,form textarea:focus{outline:none;border-color:var(--lime)}
+/* small © at the foot of the last-scene bar; absolutely placed so the LED/button row is unchanged */
+#s7 .copy7{position:absolute;left:0;right:0;bottom:5px;margin:0;text-align:center;font-size:10px;line-height:1;letter-spacing:.06em;text-transform:none;color:var(--muted);opacity:.6;pointer-events:none}
 #s6 .board,#s7 .board{left:0;right:0;bottom:0;height:clamp(64px,11vh,120px);border-top:1px solid var(--line);background:rgba(5,6,8,.92);display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 clamp(16px,3.2vw,56px)}
 .led{font-family:var(--mono);font-weight:700;font-size:clamp(20px,3.4vw,62px);letter-spacing:.06em;color:#2b3a12;text-transform:uppercase;white-space:nowrap;
   -webkit-mask-image:radial-gradient(circle,#000 58%,transparent 64%);mask-image:radial-gradient(circle,#000 58%,transparent 64%);-webkit-mask-size:4px 4px;mask-size:4px 4px}
@@ -375,7 +377,7 @@ html.rec *{transition:none!important}
       <button class="btn" type="submit" id="send" data-t="s6.send"></button>
       <p class="mono fine"><span id="fstat" role="status" aria-live="polite"></span><span id="ffine" data-t="s6.fine"></span> <a id="mailTo" href="mailto:%%MAIL%%">%%MAIL%%</a></p>
     </form>
-    <div class="board"><div class="led" id="led"></div><button class="btn" id="back" type="button" data-t="s6.back"></button></div>
+    <div class="board"><div class="led" id="led"></div><button class="btn" id="back" type="button" data-t="s6.back"></button><p class="mono copy7">© 2026 raw2top</p></div>
   </section>
 
   <div id="load"></div><div id="prog"></div>
