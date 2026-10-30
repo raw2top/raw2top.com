@@ -30,6 +30,7 @@ const html = raw
   .replace('%%LANG%%', lang)
   .replace('%%TITLE%%', esc(META.title))
   .replace('%%DESC%%', esc(META.desc))
-  .replace('%%HEADMETA%%', head);
+  .replace('%%HEADMETA%%', head)
+  .replaceAll('%%MAIL%%', lang === 'es' ? 'hola@raw2top.com' : 'hello@raw2top.com');
 ---
 <Fragment set:html={html} />

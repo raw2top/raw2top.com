@@ -358,13 +358,13 @@ html.rec *{transition:none!important}
 
   <section class="scene" id="s7">
     <h2 class="h" data-t="s6.h"></h2>
-    <form id="form" method="post" enctype="text/plain" action="mailto:raw2top@gmail.com">
+    <form id="form" method="post" enctype="text/plain" action="mailto:%%MAIL%%">
       <div class="hd mono"><span data-t="s6.hd"></span><span>v0.1</span></div>
       <label class="mono"><span data-t="s6.l1"></span><input name="name" data-ph="s6.p1"></label>
       <label class="mono"><span data-t="s6.l2"></span><input name="email" type="email" data-ph="s6.p2"></label>
       <label class="mono"><span data-t="s6.l3"></span><textarea name="task" rows="3" required data-ph="s6.p3"></textarea></label>
       <button class="btn" type="submit" id="send" data-t="s6.send"></button>
-      <p class="mono fine"><span data-t="s6.fine"></span> <a href="mailto:raw2top@gmail.com">raw2top@gmail.com</a><br><span data-t="s6.legal"></span></p>
+      <p class="mono fine"><span data-t="s6.fine"></span> <a id="mailTo" href="mailto:%%MAIL%%">%%MAIL%%</a><br><span data-t="s6.legal"></span></p>
     </form>
     <div class="board"><div class="led" id="led"></div><button class="btn" id="back" type="button" data-t="s6.back"></button></div>
   </section>
@@ -407,7 +407,7 @@ const DICT={
   's6.p1':'Your name','s6.p2':'you@domain.com','s6.p3':'A bot, a prompt, a tool…',
   's6.send':'Send request →','s6.sent':'Email ready ✓','s6.back':'Back to boot ↑',
   's6.fine':'Opens your email app, addressed to','s6.legal':'“Grok Bot” is mentioned only to describe compatibility. Not affiliated with SpaceXSI. © 2026 raw2top',
-  'mail.subject':'Custom drop request','mail.name':'Name','mail.email':'Email','mail.task':'What I need',
+  'mail.to':'hello@raw2top.com','mail.subject':'Custom drop request','mail.name':'Name','mail.email':'Email','mail.task':'What I need',
   'ty.bot':'Bot','ty.prompt':'Prompt','ty.utility':'Tool','ty.content':'Content','ty.course':'Course',
   'nav.drops':'Drops','nav.about':'About us','nav.report':'Report',
   'led.run':'Running tests…','led.pass':'All tests passed'
@@ -444,7 +444,7 @@ const DICT={
   's6.p1':'Tu nombre','s6.p2':'tu@dominio.com','s6.p3':'Un bot, un prompt, una utilidad…',
   's6.send':'Enviar encargo →','s6.sent':'Email listo ✓','s6.back':'Volver al inicio ↑',
   's6.fine':'Abre tu app de correo, con destino','s6.legal':'«Grok Bot» se menciona solo para indicar compatibilidad. Sin afiliación con SpaceXSI. © 2026 raw2top',
-  'mail.subject':'Encargo de drop a medida','mail.name':'Nombre','mail.email':'Email','mail.task':'Qué necesito',
+  'mail.to':'hola@raw2top.com','mail.subject':'Encargo de drop a medida','mail.name':'Nombre','mail.email':'Email','mail.task':'Qué necesito',
   'ty.bot':'Bot','ty.prompt':'Prompt','ty.utility':'Utilidad','ty.content':'Contenido','ty.course':'Curso',
   'nav.drops':'Drops','nav.about':'Nosotros','nav.report':'Aviso',
   'led.run':'Ejecutando pruebas…','led.pass':'Pruebas superadas'
@@ -488,6 +488,7 @@ function setLang(l,save){
   document.querySelector('meta[name=description]').content=T.desc;
   $$('[data-t]').forEach(e=>{const v=T[e.dataset.t]; if(v!=null) e.innerHTML=v});
   $$('[data-ph]').forEach(e=>e.placeholder=T[e.dataset.ph]);
+  $('#form').action='mailto:'+T['mail.to']; $('#mailTo').href='mailto:'+T['mail.to']; $('#mailTo').textContent=T['mail.to'];
   if(typeof bubFill==='function') bubFill();
   if(!matchMedia('(hover:hover)').matches) $('#s4lab').textContent=T['s4.labt'];
   mani.innerHTML=T.mani.map(s=>`<span>${s}</span>`).join('');
@@ -1080,7 +1081,7 @@ flips.forEach(f=>{
   f.addEventListener('keydown',e=>{if(e.target!==f)return; if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle()}});
   f.addEventListener('focusin',e=>{if(e.target!==f&&e.target.closest('.back')&&!f.classList.contains('show')){pinned=true;sync()}});
 });
-form.addEventListener('submit',e=>{e.preventDefault();const f=new FormData(form),nm=(f.get('name')||'').trim(),em=(f.get('email')||'').trim(),tk=(f.get('task')||'').trim();const subject=T['mail.subject']+(nm?' · '+nm:''),body=T['mail.name']+': '+nm+'\n'+T['mail.email']+': '+em+'\n\n'+T['mail.task']+':\n'+tk+'\n';location.href='mailto:raw2top@gmail.com?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);$('#send').textContent=T['s6.sent']});
+form.addEventListener('submit',e=>{e.preventDefault();const f=new FormData(form),nm=(f.get('name')||'').trim(),em=(f.get('email')||'').trim(),tk=(f.get('task')||'').trim();const subject=T['mail.subject']+(nm?' · '+nm:''),body=T['mail.name']+': '+nm+'\n'+T['mail.email']+': '+em+'\n\n'+T['mail.task']+':\n'+tk+'\n';location.href='mailto:'+T['mail.to']+'?subject='+encodeURIComponent(subject)+'&body='+encodeURIComponent(body);$('#send').textContent=T['s6.sent']});
 $('#back').addEventListener('click',()=>scrollTo({top:0,behavior:RM?'auto':'smooth'}));
 $('#logo').addEventListener('click',e=>{e.preventDefault();scrollTo({top:0,behavior:RM?'auto':'smooth'})});
 

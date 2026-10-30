@@ -4,7 +4,7 @@ import type { Lang } from '../i18n/utils';
 interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const DSA = 'https://eur-lex.europa.eu/eli/reg/2022/2065/oj';
-const EMAIL = 'raw2top@gmail.com';
+const EMAIL = lang === 'es' ? 'hola@raw2top.com' : 'hello@raw2top.com';
 const mail = (subject: string, body: string) =>
   `mailto:${EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
 const c = {
