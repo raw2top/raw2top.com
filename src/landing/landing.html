@@ -128,9 +128,9 @@ button.lc{border:0;font:inherit;text-align:left;cursor:pointer;-webkit-tap-highl
 #s4 .grid{left:var(--pad);top:37vh;display:flex;gap:clamp(10px,1.4vw,26px)}
 .flip{width:clamp(150px,16.5vw,310px);aspect-ratio:3/4;perspective:1200px;cursor:pointer}
 .flip .in{position:relative;width:100%;height:100%;transition:transform .7s cubic-bezier(.2,.7,.2,1);transform-style:preserve-3d}
-.flip.show .in{transform:rotateY(180deg)}
+.flip.show .in{transform:rotateY(180deg)}.flip.show.rev .in{transform:rotateY(-180deg)}
 .flip:focus-visible{outline:2px solid var(--lime);outline-offset:4px;border-radius:18px}
-.flip{-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+.flip{-webkit-tap-highlight-color:transparent;touch-action:manipulation}.flip.scout{touch-action:pan-y pinch-zoom}
 .flip:not(.show) .back,.flip.show .front{pointer-events:none}
 .back h3{margin-top:.35em}
 .back .btn.see{width:100%;font-size:clamp(14px,.95vw,17px);padding:.95em .8em;box-shadow:0 0 0 1px rgba(198,255,61,.35),0 10px 30px rgba(198,255,61,.22)}
@@ -299,6 +299,19 @@ form input:focus,form textarea:focus{outline:none;border-color:var(--lime)}
   #hint{display:none}
 }
 html.rec *{transition:none!important}
+/* first-visit hint: a faint watermark pill that fades in and out once (~2.4 s) after load; gone on the first scroll */
+.hintov{position:fixed;left:50%;top:56%;z-index:40;display:flex;align-items:center;gap:10px;padding:9px 16px 9px 13px;border-radius:999px;
+  background:rgba(10,11,15,.5);border:1px solid rgba(198,255,61,.2);color:rgba(242,243,247,.84);letter-spacing:.14em;white-space:nowrap;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);pointer-events:none;opacity:0;visibility:hidden;transform:translate(-50%,-50%)}
+.hintov.on{visibility:visible;animation:hintov 2.4s ease-in-out both}
+.hintov.off{visibility:hidden;animation:none;opacity:0}
+.hintov .chev{position:relative;width:12px;height:18px;flex:none}
+.hintov .chev i{position:absolute;left:2px;width:7px;height:7px;border-right:1.5px solid var(--lime);border-bottom:1.5px solid var(--lime);transform:rotate(45deg);animation:hintchev 1.2s ease-in-out infinite}
+.hintov .chev i:first-child{top:1px;opacity:.45}.hintov .chev i:last-child{top:7px;animation-delay:.12s}
+@keyframes hintov{0%{opacity:0;transform:translate(-50%,-50%) translateY(8px)}22%,68%{opacity:.8;transform:translate(-50%,-50%)}100%{opacity:0;transform:translate(-50%,-50%) translateY(-4px)}}
+@keyframes hintchev{0%,100%{translate:0 -2px}50%{translate:0 3px}}
+@keyframes hintovRM{0%,100%{opacity:0}25%,70%{opacity:.8}}
+@media (prefers-reduced-motion:reduce){.hintov.on{animation:hintovRM 1.6s linear both}.hintov .chev i{animation:none}}
 @media (prefers-reduced-motion:reduce){#s2 .bub.pop,.ech.pop{animation:none}.ech,.ech i{transition:none}.lc i,button.lc{transition:none}.flip .in,#s3 p span,.rows div,.rows div .ck{transition:none}}
 </style>
 </head>
@@ -333,6 +346,7 @@ html.rec *{transition:none!important}
     <div class="pill mono"><i></i><span data-t="s1.pill"></span></div>
     <div class="cue mono" data-t="s1.cue"></div>
   </section>
+  <div class="hintov mono" id="hintScroll" aria-hidden="true"><span class="chev"><i></i><i></i></span><span data-t="hint.scroll"></span></div>
 
   <section class="scene" id="s2">
     <h2 class="h" data-t="s2.h"></h2>
@@ -419,7 +433,7 @@ const DICT={
   title:'raw2top · Tested AI drops',
   desc:'raw2top is where the raw2top team publishes its AI drops: bots, prompts, tools, content, courses and more. Every drop is tested and kept up to date by the team itself.',
   names:['BOOT','BUILD','MANIFESTO','DROPS','HOW WE TEST','COMMISSIONS','CONTACT'],
-  's1.pill':'AI drops · bots, prompts, tools & courses','s1.cue':'Scroll to boot ↓',
+  's1.pill':'AI drops · bots, prompts, tools & courses','s1.cue':'Scroll to boot ↓','hint.scroll':'Scroll down',
   's2.h':'From raw idea to tested drop.','s2.run':'Test run','s2.running':'Running…','s2.pass':'Pass ✓',
   's2.c1':'Tested','s2.c2':'Dated','s2.c3':'Honest','s2.status':'Drop status',
   's2.b1':'Every drop is tested on a real task: something a real person would ask for. No demos.',
@@ -457,7 +471,7 @@ const DICT={
   title:'raw2top · Drops de IA probados',
   desc:'raw2top es donde el equipo de raw2top publica sus drops de IA: bots, prompts, utilidades, contenido, cursos y más. Cada drop lo prueba y lo actualiza el propio equipo.',
   names:['ARRANQUE','CREACIÓN','MANIFIESTO','DROPS','CÓMO PROBAMOS','ENCARGOS','CONTACTO'],
-  's1.pill':'Drops de IA · bots, prompts, utilidades y cursos','s1.cue':'Desliza para arrancar ↓',
+  's1.pill':'Drops de IA · bots, prompts, utilidades y cursos','s1.cue':'Desliza para arrancar ↓','hint.scroll':'Desliza hacia abajo',
   's2.h':'De idea en bruto a drop probado.','s2.run':'Prueba','s2.running':'En curso…','s2.pass':'Superada ✓',
   's2.c1':'Probado','s2.c2':'Fechado','s2.c3':'Honesto','s2.status':'Estado del drop',
   's2.b1':'Cada drop se prueba en una tarea real: algo que pediría una persona de verdad. Nada de demos.',
@@ -1117,10 +1131,21 @@ tabs.forEach((b,j)=>b.addEventListener('click',()=>{const s=SEG.find(s=>s.h===4)
 flips.forEach(f=>{
   let pinned=false, hov=false, mute=false;
   const sync=()=>{const on=pinned||(hov&&!mute); f.classList.toggle('show',on); f.setAttribute('aria-pressed',on)};
-  const toggle=()=>{pinned=!f.classList.contains('show'); mute=hov; sync()};
+  const toggle=()=>{pinned=!f.classList.contains('show'); if(pinned)f.classList.remove('rev'); mute=hov; sync()};
   f.addEventListener('pointerenter',e=>{if(e.pointerType==='mouse'){hov=true;sync()}});
   f.addEventListener('pointerleave',e=>{if(e.pointerType==='mouse'){hov=false;mute=false;sync()}});
-  f.addEventListener('click',e=>{if(e.target.closest('a'))return; toggle()});
+  let eat=0;
+  f.addEventListener('click',e=>{if(performance.now()<eat){eat=0;return} if(e.target.closest('a'))return; toggle()});
+  // touch/pen: a quick sideways swipe (>40 px, mostly horizontal, <700 ms) flips the scout card that way; vertical swipes keep scrolling the page
+  if(f.classList.contains('scout')){
+    let sw=null;
+    f.addEventListener('pointerdown',e=>{if(e.pointerType==='mouse'||e.target.closest('a'))return; sw={id:e.pointerId,x:e.clientX,y:e.clientY,t:performance.now()}});
+    f.addEventListener('pointerup',e=>{if(!sw||e.pointerId!==sw.id)return; const dx=e.clientX-sw.x,dy=e.clientY-sw.y,dt=performance.now()-sw.t; sw=null;
+      if(Math.abs(dx)<40||Math.abs(dx)<Math.abs(dy)*1.5||dt>700)return;
+      eat=performance.now()+450; const show=!f.classList.contains('show'); if(show) f.classList.toggle('rev',dx<0);
+      pinned=show; mute=hov&&!show; sync()});
+    f.addEventListener('pointercancel',()=>{sw=null});
+  }
   f.addEventListener('keydown',e=>{if(e.target!==f)return; if(e.key==='Enter'||e.key===' '){e.preventDefault();toggle()}});
   f.addEventListener('focusin',e=>{if(e.target!==f&&e.target.closest('.back')&&!f.classList.contains('show')){pinned=true;sync()}});
 });
@@ -1196,6 +1221,12 @@ document.fonts.load('700 100px "Space Grotesk"').catch(()=>{}).then(()=>{
     window.__render=(p,t)=>{scrollTo(0,p*maxScroll());lastDust=-1;update(p,t);return true};
     update(0,0,true);
   }else{
+    // first-visit scroll hint: only from the very top, once per load, killed by any scroll/wheel/touch/key
+    {const hv=$('#hintScroll'); if(hv&&scrollY<8){let done=false;
+      const kill=()=>{if(done)return;done=true;hv.classList.remove('on');hv.classList.add('off');['scroll','wheel','touchmove','keydown'].forEach(n=>removeEventListener(n,kill))};
+      ['scroll','wheel','touchmove','keydown'].forEach(n=>addEventListener(n,kill,{passive:true}));
+      hv.addEventListener('animationend',e=>{if(e.target===hv)kill()});
+      setTimeout(()=>{if(!done){if(scrollY>=8)kill();else hv.classList.add('on')}},650);}}
     let cur=scrollY/Math.max(1,maxScroll()); const t0=performance.now(); let last=t0, lastMove=0, lastT=-1;
     (function loop(now){
       const target=scrollY/Math.max(1,maxScroll()), dt=Math.min(.1,Math.max(0,(now-last)/1000)); last=now;

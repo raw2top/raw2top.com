@@ -92,6 +92,10 @@ const dot = (s: string) => (s === 'Tested' ? 'd-tested' : s === 'Tested-stale' ?
               {b.skills?.length && <div class="sbub" id={`sk-${b.slug}`} role="group" aria-labelledby={`skh-${b.slug}`} hidden><b id={`skh-${b.slug}`}>{t('back.skills')} · {b.skills.length}</b><ul>{b.skills.map((k: string) => <li>{k}</li>)}</ul></div>}
             </article>
           </div>
+          <div class="fliphint m" aria-hidden="true" data-touch={t('fhTouch')} data-pointer={t('fhPointer')}>
+            <svg class="sw" viewBox="0 0 48 16" focusable="false"><path class="trk" d="M6 8h36"/><path class="ah" d="M10 3.5 5 8l5 4.5M38 3.5 43 8l-5 4.5"/><circle class="dt" cx="24" cy="8" r="3.6"/></svg>
+            <span>{t('fhTouch')}</span>
+          </div>
         </div>
       ))}
       {empty.map((n) => (
@@ -264,6 +268,19 @@ h1{font-family:var(--sans);font-weight:700;letter-spacing:-.045em;line-height:.9
 .bbtn.sec:hover{border-color:var(--lime);color:var(--lime);filter:none}
 .serial{margin-top:3.4cqw;display:flex;justify-content:space-between;color:#6c7285;font-family:var(--mono);font-size:max(8.5px,2.75cqw);letter-spacing:.08em;text-transform:uppercase}
 
+/* first-load flip hint over the bot card: faint watermark pill, fades in and out once (~2.4 s), never blocks the card */
+.fliphint{position:absolute;left:50%;top:40%;z-index:5;display:flex;align-items:center;gap:10px;padding:9px 15px 9px 12px;border-radius:999px;
+  background:rgba(10,11,15,.52);border:1px solid rgba(198,255,61,.22);color:rgba(242,243,247,.86);font-size:11px;letter-spacing:.12em;white-space:nowrap;
+  -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);pointer-events:none;opacity:0;visibility:hidden;transform:translate(-50%,-50%)}
+.fliphint.on{visibility:visible;animation:fliphint 2.4s ease-in-out both}
+.fliphint.off{visibility:hidden;animation:none}
+.fliphint .sw{width:40px;height:14px;flex:none;overflow:visible}
+.fliphint .trk{stroke:rgba(198,255,61,.35);stroke-width:1.2;fill:none;stroke-dasharray:2 3}
+.fliphint .ah{stroke:var(--lime);stroke-width:1.6;fill:none;stroke-linecap:round;stroke-linejoin:round}
+.fliphint .dt{fill:var(--lime);transform-box:fill-box;transform-origin:center;animation:fhdot 1.2s ease-in-out infinite}
+@keyframes fliphint{0%{opacity:0;transform:translate(-50%,calc(-50% + 6px))}22%,68%{opacity:.82;transform:translate(-50%,-50%)}100%{opacity:0;transform:translate(-50%,calc(-50% - 4px))}}
+@keyframes fhdot{0%,100%{translate:-9px 0}50%{translate:9px 0}}
+
 .soon{cursor:default}
 .soon .face{opacity:var(--dim,.62);filter:saturate(var(--sat,.8)) brightness(.82)}
 /* caution tape: one strip wrapped round the card edges; rides the card3d tilt (base styles in the is:global block below) */
@@ -312,7 +329,8 @@ h1{font-family:var(--sans);font-weight:700;letter-spacing:-.045em;line-height:.9
 
 <script>
 // Holo cards: spring-driven tilt + foil that follows the pointer, click/Enter/tap flips to the test sheet.
-// Touch: hold ~170 ms or drag sideways to tilt (page stays still), vertical swipe scrolls, tap flips.
+// Touch: tap or a quick sideways swipe flips the foil card (in the swipe's direction); hold ~170 ms then drag tilts (page stays still);
+// vertical swipes scroll. Mouse/pen: click or a sideways drag flips, hover tilts. Face-down slots: sideways drag still tilts.
 const root = document.querySelector<HTMLElement>('.bp');
 if (root) {
   const clamp = (x: number, a = 0, b = 1) => Math.min(b, Math.max(a, x));
@@ -337,11 +355,11 @@ if (root) {
   })();
 
   type Ch = 'rx' | 'ry' | 'mx' | 'my' | 'o' | 'lift' | 'flip' | 'dim';
-  type Slot = { el: HTMLElement; c3: HTMLElement; sh: HTMLElement; holo: boolean; idx: number; flipped: boolean; touch: boolean; relT: number | null;
+  type Slot = { el: HTMLElement; c3: HTMLElement; sh: HTMLElement; holo: boolean; idx: number; flipped: boolean; fb: number; touch: boolean; relT: number | null;
     s: Record<Ch, [number, number]>; tgt: Record<Ch, number> };
   const slots: Slot[] = [...root.querySelectorAll<HTMLElement>('.slot')].map((el, idx) => ({
     el, c3: el.querySelector('.card3d') as HTMLElement, sh: el.querySelector('.shadow') as HTMLElement, holo: el.classList.contains('holo'), idx,
-    flipped: false, touch: false, relT: null,
+    flipped: false, fb: 0, touch: false, relT: null,
     s: { rx: [0, 0], ry: [0, 0], mx: [50, 0], my: [50, 0], o: [0, 0], lift: [1, 0], flip: [0, 0], dim: [0, 0] },
     tgt: { rx: 0, ry: 0, mx: 50, my: 50, o: 0, lift: 1, flip: 0, dim: 0 },
   }));
@@ -378,7 +396,28 @@ if (root) {
     S.el.setAttribute('aria-label', (S.flipped ? S.el.dataset.alBack : S.el.dataset.alFront) || '');
     S.el.setAttribute('aria-pressed', String(S.flipped));
   }
-  function flip(S: Slot) { skClose(); S.flipped = !S.flipped; S.tgt.flip = S.flipped ? 180 : 0; if (RM) S.s.flip = [S.tgt.flip, 0]; syncA11y(S); }
+  // dir 0 = tap/click/Enter (front→back turns +180°, back→front returns the same way); dir ±1 = swipe, turns that way
+  function flip(S: Slot, dir = 0) {
+    skClose(); hintOff(); S.flipped = !S.flipped; S.fb += dir ? 180 * dir : (S.flipped ? 180 : -180);
+    S.tgt.flip = S.fb; if (RM) S.s.flip = [S.fb, 0]; syncA11y(S);
+  }
+  // while a swipe is in progress the card leans a little toward the finger (a peek), then springs back or flips on release
+  function peek(S: Slot, dx: number) { if (!RM) S.tgt.flip = S.fb + clamp(dx * .45, -50, 50); }
+  // keep the flip angle in [-360, 360] once the card is at rest
+  function wrapFlip(S: Slot) {
+    if (Math.abs(S.fb) < 360 || Math.abs(S.s.flip[0] - S.fb) > .5 || Math.abs(S.s.flip[1]) > 1) return;
+    const k = 360 * Math.trunc(S.fb / 360); S.fb -= k; S.tgt.flip -= k; S.s.flip[0] -= k;
+  }
+  // first-load hint over the foil card (CSS does the fade); any touch, click or key on a card ends it
+  const fh = root.querySelector<HTMLElement>('.fliphint');
+  if (fh) { const sp = fh.querySelector('span'); if (sp) sp.textContent = (AUTO ? fh.dataset.touch : fh.dataset.pointer) || ''; }
+  let fhDone = !fh;
+  function hintOff() { if (fhDone || !fh) return; fhDone = true; fh.classList.remove('on'); fh.classList.add('off'); }
+  // reduced motion: skipped (the site-wide reduced-motion rule turns all CSS animation off on this page)
+  if (fh && !RM) {
+    fh.addEventListener('animationend', (e) => { if (e.target === fh) hintOff(); });
+    setTimeout(() => { if (!fhDone) fh.classList.add('on'); }, 1250);
+  }
 
   // iOS 13+: motion access needs DeviceOrientationEvent.requestPermission() called synchronously inside a user gesture.
   // Ask on the first tap on a card (a click event, which is a gesture even when the touch started a pan elsewhere);
@@ -453,10 +492,10 @@ if (root) {
     addEventListener('blur', () => pointAt(-1e4, -1e4));
   }
 
-  // touch
-  const HOLD = .17, MOVE_TOL = 10, RELEASE = .55, TAP_MAX = .6;
+  // touch (and mouse/pen drags on the foil card)
+  const HOLD = .17, MOVE_TOL = 10, RELEASE = .55, TAP_MAX = .6, SWIPE_MIN = 40, SWIPE_T = .7;
   let nowT = 0;
-  const TD = { S: null as Slot | null, id: -1, x0: 0, y0: 0, t0: 0, x: 0, y: 0, moved: 0, drag: false, dead: false };
+  const TD = { S: null as Slot | null, id: -1, x0: 0, y0: 0, t0: 0, x: 0, y: 0, moved: 0, drag: false, sw: false, dead: false, touch: true };
   function touchDrag() {
     const S = TD.S!; const r = S.el.getBoundingClientRect(); TD.drag = true; S.touch = true;
     setTarget(S, clamp((TD.x - r.left) / r.width), clamp((TD.y - r.top) / r.height), true);
@@ -465,27 +504,47 @@ if (root) {
     if (!TD.S || TD.dead) return;
     TD.x = x; TD.y = y; const dx = x - TD.x0, dy = y - TD.y0; TD.moved = Math.max(TD.moved, Math.hypot(dx, dy));
     if (TD.drag) { touchDrag(); return; }
-    if (TD.moved > MOVE_TOL) { if (Math.abs(dx) > Math.abs(dy) * 1.2) touchDrag(); else TD.dead = true; }
+    if (TD.sw) { peek(TD.S, dx); return; }
+    if (TD.moved > MOVE_TOL) {
+      const side = Math.abs(dx) > Math.abs(dy) * 1.2;
+      // before the hold: sideways on the foil card = swipe-to-flip; sideways on a face-down slot = tilt (as before); vertical = page scroll
+      if (side && TD.S.holo) { TD.sw = true; hintOff(); peek(TD.S, dx); }
+      else if (side && TD.touch && !RM) touchDrag();
+      else TD.dead = true;
+    }
   }
-  function touchCheckHold() { if (TD.S && !TD.drag && !TD.dead && nowT - TD.t0 >= HOLD && TD.moved <= MOVE_TOL) touchDrag(); }
+  function touchCheckHold() { if (TD.S && TD.touch && !RM && !TD.drag && !TD.sw && !TD.dead && nowT - TD.t0 >= HOLD && TD.moved <= MOVE_TOL) touchDrag(); }
   function touchEnd(cancel: boolean) {
     const S = TD.S; if (!S) return { tap: false };
     const tap = !cancel && !TD.dead && TD.moved <= MOVE_TOL && nowT - TD.t0 < TAP_MAX;
     if (TD.drag) { S.touch = false; S.relT = nowT; setTarget(S, .5, .5, false); }
-    TD.S = null; TD.id = -1; TD.drag = false; return { tap };
+    if (TD.sw) {
+      const dx = TD.x - TD.x0, dy = TD.y - TD.y0, w = S.el.getBoundingClientRect().width;
+      // a quick flick (>40 px in <0.7 s) or a slow drag past ~35% of the card width flips; otherwise it springs back
+      const go = !cancel && Math.abs(dx) >= SWIPE_MIN && Math.abs(dx) > Math.abs(dy) * 1.5 && (nowT - TD.t0 < SWIPE_T || Math.abs(dx) > w * .35);
+      if (go) flip(S, dx > 0 ? 1 : -1); else S.tgt.flip = S.fb;
+    }
+    TD.S = null; TD.id = -1; TD.drag = false; TD.sw = false; return { tap };
   }
-  if (!RM) {
-    slots.forEach((S) => S.el.addEventListener('pointerdown', (e) => {
-      if (e.pointerType !== 'touch' || TD.S || (e.target as Element).closest('.skb, .sbub')) return;
-      Object.assign(TD, { S, id: e.pointerId, x0: e.clientX, y0: e.clientY, x: e.clientX, y: e.clientY, t0: nowT, moved: 0, drag: false, dead: false });
-    }));
-    addEventListener('pointermove', (e) => { if (e.pointerId === TD.id) touchMove(e.clientX, e.clientY); }, { passive: true });
-    addEventListener('pointerup', (e) => { if (e.pointerId !== TD.id) return; const r = touchEnd(false); if (!r.tap) swallowClick = performance.now() + 450; });
-    addEventListener('pointercancel', (e) => { if (e.pointerId === TD.id) touchEnd(true); });
-    // once tilting, keep the page still under the finger (non-passive so it can cancel the scroll)
-    slots.forEach((S) => S.el.addEventListener('touchmove', (e) => { if (TD.S === S && TD.drag && e.cancelable) e.preventDefault(); }, { passive: false }));
-    slots.forEach((S) => S.el.addEventListener('contextmenu', (e) => { if (TD.S === S) e.preventDefault(); }));
-  }
+  slots.forEach((S) => S.el.addEventListener('pointerdown', (e) => {
+    if (TD.S || (e.target as Element).closest('.skb, .sbub, a')) return;
+    const touch = e.pointerType === 'touch';
+    if (!touch && (!S.holo || e.button !== 0)) return; // mouse/pen: only the foil card, only the main button (hover already tilts)
+    if (touch && RM && !S.holo) return;
+    Object.assign(TD, { S, id: e.pointerId, x0: e.clientX, y0: e.clientY, x: e.clientX, y: e.clientY, t0: nowT, moved: 0, drag: false, sw: false, dead: false, touch });
+    hintOff();
+  }));
+  addEventListener('pointermove', (e) => { if (e.pointerId === TD.id) touchMove(e.clientX, e.clientY); }, { passive: true });
+  addEventListener('pointerup', (e) => {
+    if (e.pointerId !== TD.id) return; const wasTouch = TD.touch, r = touchEnd(false);
+    if (wasTouch ? !r.tap : TD.moved > MOVE_TOL) swallowClick = performance.now() + 450; // a drag/swipe release never also counts as a click
+  });
+  addEventListener('pointercancel', (e) => { if (e.pointerId === TD.id) touchEnd(true); });
+  // once tilting or swiping, keep the page still under the finger (non-passive so it can cancel the scroll)
+  slots.forEach((S) => S.el.addEventListener('touchmove', (e) => { if (TD.S === S && (TD.drag || TD.sw) && e.cancelable) e.preventDefault(); }, { passive: false }));
+  slots.forEach((S) => S.el.addEventListener('contextmenu', (e) => { if (TD.S === S && TD.touch) e.preventDefault(); }));
+  slots.forEach((S) => S.el.addEventListener('dragstart', (e) => e.preventDefault())); // no ghost-image drag of the card art
+  root.addEventListener('keydown', () => hintOff());
 
   let ori0: { b: number; g: number } | null = null;
   function autoTargets(t: number) {
@@ -529,6 +588,7 @@ if (root) {
     if (AUTO && !RM) autoTargets(t);
     if (RM) { for (const S of slots) for (const k in S.s) { S.s[k as Ch] = [S.tgt[k as Ch], 0]; } }
     else stepSprings(dt);
+    for (const S of slots) if (S.holo) wrapFlip(S);
     paint(); introAt(t);
     requestAnimationFrame(frame);
   }
