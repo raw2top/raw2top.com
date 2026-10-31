@@ -303,15 +303,15 @@ html.rec *{transition:none!important}
 .hintov{position:fixed;left:50%;top:56%;z-index:40;display:flex;align-items:center;gap:10px;padding:9px 16px 9px 13px;border-radius:999px;
   background:rgba(10,11,15,.5);border:1px solid rgba(198,255,61,.2);color:rgba(242,243,247,.84);letter-spacing:.14em;white-space:nowrap;
   -webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);pointer-events:none;opacity:0;visibility:hidden;transform:translate(-50%,-50%)}
-.hintov.on{visibility:visible;animation:hintov 2.4s ease-in-out both}
+.hintov.on{visibility:visible;animation:hintov 5s ease-in-out both} /* 5 s total: ~0.6 s in, ~3.6 s hold, ~0.8 s out */
 .hintov.off{visibility:hidden;animation:none;opacity:0}
 .hintov .chev{position:relative;width:12px;height:18px;flex:none}
 .hintov .chev i{position:absolute;left:2px;width:7px;height:7px;border-right:1.5px solid var(--lime);border-bottom:1.5px solid var(--lime);transform:rotate(45deg);animation:hintchev 1.2s ease-in-out infinite}
 .hintov .chev i:first-child{top:1px;opacity:.45}.hintov .chev i:last-child{top:7px;animation-delay:.12s}
-@keyframes hintov{0%{opacity:0;transform:translate(-50%,-50%) translateY(8px)}22%,68%{opacity:.8;transform:translate(-50%,-50%)}100%{opacity:0;transform:translate(-50%,-50%) translateY(-4px)}}
+@keyframes hintov{0%{opacity:0;transform:translate(-50%,-50%) translateY(8px)}12%,84%{opacity:.8;transform:translate(-50%,-50%)}100%{opacity:0;transform:translate(-50%,-50%) translateY(-4px)}}
 @keyframes hintchev{0%,100%{translate:0 -2px}50%{translate:0 3px}}
-@keyframes hintovRM{0%,100%{opacity:0}25%,70%{opacity:.8}}
-@media (prefers-reduced-motion:reduce){.hintov.on{animation:hintovRM 1.6s linear both}.hintov .chev i{animation:none}}
+@keyframes hintovRM{0%,100%{opacity:0}10%,86%{opacity:.8}}
+@media (prefers-reduced-motion:reduce){.hintov.on{animation:hintovRM 5s linear both}.hintov .chev i{animation:none}}
 @media (prefers-reduced-motion:reduce){#s2 .bub.pop,.ech.pop{animation:none}.ech,.ech i{transition:none}.lc i,button.lc{transition:none}.flip .in,#s3 p span,.rows div,.rows div .ck{transition:none}}
 </style>
 </head>
