@@ -12,6 +12,11 @@ const META = {
 }[lang];
 const site = Astro.site!.href.replace(/\/$/, '');
 const url = { en: `${site}/`, es: `${site}/es/` };
+// Share card (X, WhatsApp, LinkedIn…): same 1280×720 plate as Base.astro uses for every other page.
+const img = `${site}/landing/assets/plate-01.jpg`;
+const imgAlt = lang === 'es'
+  ? 'Personaje de raw2top con capucha y gafas turquesa delante de un cerezo en flor'
+  : 'The raw2top character in a hoodie and teal goggles in front of a cherry blossom tree';
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
 const head = [
   `<link rel="canonical" href="${url[lang]}">`,
@@ -23,8 +28,17 @@ const head = [
   `<meta property="og:description" content="${esc(META.desc)}">`,
   `<meta property="og:type" content="website">`,
   `<meta property="og:url" content="${url[lang]}">`,
-  `<meta property="og:image" content="${site}/landing/assets/plate-01.jpg">`,
+  `<meta property="og:image" content="${img}">`,
+  `<meta property="og:image:type" content="image/jpeg">`,
+  `<meta property="og:image:width" content="1280">`,
+  `<meta property="og:image:height" content="720">`,
+  `<meta property="og:image:alt" content="${esc(imgAlt)}">`,
   `<meta property="og:locale" content="${lang === 'es' ? 'es_ES' : 'en_US'}">`,
+  `<meta name="twitter:card" content="summary_large_image">`,
+  `<meta name="twitter:title" content="${esc(META.title)}">`,
+  `<meta name="twitter:description" content="${esc(META.desc)}">`,
+  `<meta name="twitter:image" content="${img}">`,
+  `<meta name="twitter:image:alt" content="${esc(imgAlt)}">`,
 ].join('\n');
 const html = raw
   .replace('%%LANG%%', lang)
