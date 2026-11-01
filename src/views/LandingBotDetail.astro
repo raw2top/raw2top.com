@@ -8,9 +8,9 @@ interface LBot { slug: string; name: string; number: string; tag: Record<Lang, s
 interface Props { lang: Lang; bot: LBot; }
 const { lang, bot } = Astro.props;
 const c = {
-  en: { back: '← Back to our bots', add: 'Open bot', what: 'What it does',
+  en: { back: '← Back to our drops', add: 'Open bot', what: 'What it does',
     safety: 'Adding a template creates a copy in your own account. Check the connectors and access level before you add it.' },
-  es: { back: '← Volver a nuestros bots', add: 'Abrir bot', what: 'Qué hace',
+  es: { back: '← Volver a nuestros drops', add: 'Abrir bot', what: 'Qué hace',
     safety: 'Al añadir una plantilla se crea una copia en tu propia cuenta. Revisa los conectores y el nivel de acceso antes de añadirla.' },
 }[lang];
 ---

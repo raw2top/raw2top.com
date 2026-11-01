@@ -8,10 +8,10 @@ interface Props { lang: Lang; bot: Bot; }
 const { lang, bot } = Astro.props;
 const t = useT(lang);
 const c = {
-  en: { back: '← All bots', add: 'Add to Grok Bot', noLink: 'Example only · no template link', access: 'Access level', connectors: 'Connectors it asks for',
+  en: { back: '← All drops', add: 'Add to Grok Bot', noLink: 'Example only · no template link', access: 'Access level', connectors: 'Connectors it asks for',
     exampleNote: 'This is a placeholder page that shows the layout. It is not a real bot and has no template link.',
     safety: 'Adding a template creates a copy in your own account. Check the connectors and access level before you add it.' },
-  es: { back: '← Todos los bots', add: 'Añadir a Grok Bot', noLink: 'Solo ejemplo · sin enlace', access: 'Nivel de acceso', connectors: 'Conectores que pide',
+  es: { back: '← Todos los drops', add: 'Añadir a Grok Bot', noLink: 'Solo ejemplo · sin enlace', access: 'Nivel de acceso', connectors: 'Conectores que pide',
     exampleNote: 'Esta es una página de marcador para enseñar el diseño. No es un bot real y no tiene enlace a plantilla.',
     safety: 'Al añadir una plantilla se crea una copia en tu propia cuenta. Revisa los conectores y el nivel de acceso antes de añadirla.' },
 }[lang];
