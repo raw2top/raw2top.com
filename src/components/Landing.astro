@@ -5,9 +5,9 @@ import raw from '../landing/landing.html?raw';
 interface Props { lang: 'en' | 'es'; }
 const { lang } = Astro.props;
 const META = {
-  en: { title: 'raw2top · AI design studio',
+  en: { title: 'raw2top · AI design, new drops every month',
         desc: 'AI design studio. Scroll landings, brand videos, product videos and AI agents. Made frame by frame.' },
-  es: { title: 'raw2top · Estudio de diseño con IA',
+  es: { title: 'raw2top · Diseño con IA, nuevos drops todos los meses',
         desc: 'Estudio de diseño con IA. Landings con scroll, vídeos de marca, vídeos de producto y agentes de IA. Hechos fotograma a fotograma.' },
 }[lang];
 const site = Astro.site!.href.replace(/\/$/, '');

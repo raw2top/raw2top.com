@@ -3,10 +3,10 @@ import type { Lang } from './utils';
 export const ui = {
   en: {
     'meta.desc': 'Frame-by-frame scroll landings, brand and product videos, and AI agents.',
-    'meta.home': 'raw2top · AI design studio',
+    'meta.home': 'raw2top · AI design, new drops every month',
     'skip': 'Skip to content',
     'nav.main': 'Main',
-    'nav.drops': 'Work', 'nav.about': 'About us', 'nav.report': 'Report',
+    'nav.drops': 'Drops', 'nav.about': 'About us', 'nav.report': 'Report',
     'nav.home': 'raw2top home',
     'lang.switch': 'Language',
     'foot.tag': 'AI design, frame by frame.',
@@ -27,10 +27,10 @@ export const ui = {
   },
   es: {
     'meta.desc': 'Landings con scroll fotograma a fotograma, vídeos de marca y de producto, y agentes de IA.',
-    'meta.home': 'raw2top · Estudio de diseño con IA',
+    'meta.home': 'raw2top · Diseño con IA, nuevos drops todos los meses',
     'skip': 'Saltar al contenido',
     'nav.main': 'Principal',
-    'nav.drops': 'Trabajos', 'nav.about': 'Nosotros', 'nav.report': 'Aviso',
+    'nav.drops': 'Drops', 'nav.about': 'Nosotros', 'nav.report': 'Aviso',
     'nav.home': 'Inicio de raw2top',
     'lang.switch': 'Idioma',
     'foot.tag': 'Diseño con IA, fotograma a fotograma.',
