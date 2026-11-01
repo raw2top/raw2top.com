@@ -592,24 +592,43 @@ const plates=[];
 // blobs: compressed frames kept in memory; bmps: decoded frames, only in a window around the playhead
 const blobs=[...Array(NCL)].map(()=>new Array(NF).fill(null)), state=[...Array(NCL)].map(()=>new Uint8Array(NF));
 const bmps=[...Array(NCL)].map(()=>new Array(NF).fill(null)), dst=[...Array(NCL)].map(()=>new Uint8Array(NF));
-let nLoaded=0; const NTOTAL=RM?7:7+NCL*NF;
+let nLoaded=0;
+// bar tracks the plates plus the chapters fetched up front; later chapters fill in off this counter
+const conn=navigator.connection, SLOW=!!(conn&&(conn.saveData||conn.effectiveType==='2g'||conn.effectiveType==='slow-2g'));
+const NTOTAL=RM?7:7+(REC?NCL:(SLOW?1:2))*NF;
 const loadEl=$('#load');
 const STATS=window.__DRAW={draws:0,fades:0,miss:0,decoded:0,evicted:0};
 function loadImg(src){return new Promise(res=>{const im=new Image();im.decoding='async';im.onload=()=>{(im.decode?im.decode():Promise.resolve()).catch(()=>{}).then(()=>res(im))};im.onerror=()=>res(null);im.src=src})}
-function bump(){nLoaded++;loadEl.style.transform=`scaleX(${nLoaded/NTOTAL})`;if(nLoaded>=NTOTAL)loadEl.style.opacity=0}
+function bump(){nLoaded++;loadEl.style.transform=`scaleX(${Math.min(1,nLoaded/NTOTAL)})`;if(nLoaded>=NTOTAL)loadEl.style.opacity=0}
 const platesReady=Promise.all([1,2,3,4,5,6,7].map((i,k)=>loadImg(`/landing/assets/plate-0${i}.webp`).then(im=>{plates[k]=im;bump();lastKey='';if(k===3&&W)fitCards();if(k===5&&W)holoResize()})));
 let curClip=0, curF=0, atHold=0, MOVING=false; // playhead: clip + frame, or the hold index (atHold>=0)
-// download order: the chapter you are in, then the next one, then the previous, then the rest; coarse-to-fine inside a chapter
-function clipOrder(){const o=[curClip];for(let d=1;d<NCL;d++){if(curClip+d<NCL)o.push(curClip+d);if(curClip-d>=0)o.push(curClip-d)}return o}
+// current chapter, then the next, then the previous, then the rest; coarse-to-fine inside a chapter.
+// at start only the current chapter and the next one (current only on saveData / 2g). scroll opens the
+// chapter the playhead is approaching; once that pair is in, idle time pulls one further chapter at a time.
+let prefetchTo=REC?NCL-1:(SLOW?0:1), armed=false, live=0, frResolve=null, idleT=0;
+function horizon(){return REC?NCL-1:Math.min(NCL-1,SLOW?curClip:curClip+1)}
+function clipOrder(){const o=[];for(let d=0;d<NCL;d++){const a=curClip+d,b=curClip-d;if(a<NCL&&a<=prefetchTo)o.push(a);if(d&&b>=0&&b<=prefetchTo)o.push(b)}return o.length?o:[curClip]}
 function nextJob(){
   for(const c of clipOrder()) for(const st of [8,4,2,1]) for(let j=0;j<NF;j+=st) if(!state[c][j]) {state[c][j]=1;return [c,j]}
   return null;
 }
 const fsrc=(c,j)=>`/landing/${FDIR}/c${c+1}/${String(j).padStart(3,'0')}.webp`;
 function getBlob(c,j){return fetch(fsrc(c,j)).then(r=>r.ok?r.blob():null).catch(()=>null)}
-function pump(){const job=nextJob(); if(!job) return Promise.resolve(); const [c,j]=job;
-  return getBlob(c,j).then(b=>{blobs[c][j]=b;state[c][j]=b?2:3;bump();schedule();}).then(pump)}
-const framesReady=RM?platesReady:platesReady.then(()=>Promise.all([...Array(MOB?4:6)].map(pump)));
+function wake(){if(!armed)return;const n=MOB?4:6;while(live<n){live++;pump()}}
+function widen(to){to=Math.min(NCL-1,Math.max(prefetchTo,to));if(to===prefetchTo)return;prefetchTo=to;wake()}
+function onQuiet(){
+  if(frResolve){const r=frResolve;frResolve=null;r()}
+  if(REC||SLOW||prefetchTo>=NCL-1)return;
+  clearTimeout(idleT);
+  // past the post-load quiet window, so this does not compete with the first chapters
+  idleT=setTimeout(()=>{
+    const go=()=>{if(live||SLOW||prefetchTo>=NCL-1)return;widen(prefetchTo+1)};
+    if(window.requestIdleCallback)requestIdleCallback(go,{timeout:1500});else go();
+  },5000);
+}
+function pump(){const job=nextJob();if(!job){if(--live===0)onQuiet();return Promise.resolve()}const [c,j]=job;
+  return getBlob(c,j).then(b=>{blobs[c][j]=b;state[c][j]=b?2:3;bump();schedule()}).then(pump)}
+const framesReady=RM?platesReady:platesReady.then(()=>new Promise(res=>{armed=true;frResolve=res;wake()}));
 // decode window: frames near the playhead are decoded ahead (createImageBitmap), far ones are released
 // decode window, in frames along the whole sequence: more ahead in the scroll direction than behind
 const AH=MOB?12:24, BEH=MOB?4:8; let DIR=1;
@@ -628,6 +647,7 @@ function inWin(c,j){
 let decoding=0;
 function schedule(){
   if(RM) return;
+  widen(horizon()); // playhead moved: open the chapter it is in and, unless the link is slow, the next one
   for(let c=0;c<NCL;c++) for(let j=0;j<NF;j++) if(dst[c][j]===2&&!inWin(c,j)){const b=bmps[c][j]; if(b&&b.close)b.close(); bmps[c][j]=null; dst[c][j]=0; STATS.evicted++}
   while(decoding<(MOB?2:4)){ let best=null,bd=1e9;
     for(let c=0;c<NCL;c++) for(let j=0;j<NF;j++) if(blobs[c][j]&&!dst[c][j]&&inWin(c,j)){
