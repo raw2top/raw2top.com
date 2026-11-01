@@ -40,7 +40,13 @@ const head = [
   `<meta name="twitter:image" content="${img}">`,
   `<meta name="twitter:image:alt" content="${esc(imgAlt)}">`,
 ].join('\n');
+// first-scene pill text in the HTML for this page's language (it is the LCP text), taken from the landing's own DICT
+// so there is one source; the JS i18n later writes the same string (no visible change)
+const pill = (() => { const block = raw.slice(raw.indexOf(`\n ${lang}:{`)); const m = block.match(/'s1\.pill':'([^']*)'/);
+  if (raw.indexOf(`\n ${lang}:{`) < 0 || !m) throw new Error(`landing.html: s1.pill for ${lang} not found`);
+  return m[1].replace(/&(?![a-z]+;|#\d+;)/g, '&amp;'); })();
 const html = raw
+  .replace('%%S1PILL%%', pill)
   .replace('%%LANG%%', lang)
   .replace('%%TITLE%%', esc(META.title))
   .replace('%%DESC%%', esc(META.desc))

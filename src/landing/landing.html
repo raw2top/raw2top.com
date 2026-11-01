@@ -343,7 +343,7 @@ html.rec *{transition:none!important}
   </header>
 
   <section class="scene" id="s1">
-    <div class="pill mono"><i></i><span data-t="s1.pill"></span></div>
+    <div class="pill mono"><i></i><span data-t="s1.pill">%%S1PILL%%</span></div>
     <div class="cue mono" data-t="s1.cue"></div>
   </section>
   <div class="hintov mono" id="hintScroll" aria-hidden="true"><span class="chev"><i></i><i></i></span><span data-t="hint.scroll"></span></div>
@@ -600,7 +600,19 @@ const loadEl=$('#load');
 const STATS=window.__DRAW={draws:0,fades:0,miss:0,decoded:0,evicted:0};
 function loadImg(src){return new Promise(res=>{const im=new Image();im.decoding='async';im.onload=()=>{(im.decode?im.decode():Promise.resolve()).catch(()=>{}).then(()=>res(im))};im.onerror=()=>res(null);im.src=src})}
 function bump(){nLoaded++;loadEl.style.transform=`scaleX(${Math.min(1,nLoaded/NTOTAL)})`;if(nLoaded>=NTOTAL)loadEl.style.opacity=0}
-const platesReady=Promise.all([1,2,3,4,5,6,7].map((i,k)=>loadImg(`/landing/assets/plate-0${i}.webp`).then(im=>{plates[k]=im;bump();lastKey='';if(k===3&&W)fitCards();if(k===5&&W)holoResize()})));
+const loadPlate=(i,k)=>loadImg(`/landing/assets/plate-0${i}.webp`).then(im=>{plates[k]=im;bump();lastKey='';if(k===3&&W)fitCards();if(k===5&&W)holoResize()});
+// plate 1 (first scene, preloaded in <head>) right away; plates 2-7 and the eye crops once it is painted, at idle
+// (later on saveData / 2g). The first scroll, wheel, touch or key starts them at once, so a fast scroll never waits
+// on idle time; until a plate lands, its scene keeps the last frame drawn (never an empty canvas).
+let restGo, restOn=false; const restStarted=new Promise(r=>restGo=r);
+function loadRest(){if(restOn)return;restOn=true;['scroll','wheel','touchstart','keydown'].forEach(n=>removeEventListener(n,loadRest));restGo()}
+const plate1=loadPlate(1,0);
+if(REC) loadRest(); else {
+  ['scroll','wheel','touchstart','keydown'].forEach(n=>addEventListener(n,loadRest,{passive:true}));
+  plate1.then(()=>requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    if(window.requestIdleCallback) requestIdleCallback(loadRest,{timeout:SLOW?4000:800}); else setTimeout(loadRest,SLOW?1500:200)})));
+}
+const platesReady=Promise.all([plate1,restStarted.then(()=>Promise.all([2,3,4,5,6,7].map((i,k)=>loadPlate(i,k+1))))]);
 let curClip=0, curF=0, atHold=0, MOVING=false; // playhead: clip + frame, or the hold index (atHold>=0)
 // current chapter, then the next, then the previous, then the rest; coarse-to-fine inside a chapter.
 // at start only the current chapter and the next one (current only on saveData / 2g). scroll opens the
@@ -709,7 +721,8 @@ const EYES=[
   {k:4,x:894,y:146,w:112,h:32,pw:1280,eyes:[{cx:22.50,cy:17.50,r:5.00,sc:"#457a70"},{cx:89.50,cy:14.50,r:6.00,sc:"#4f8072"}]},
   {k:5,x:892,y:145,w:110,h:36,pw:1280,eyes:[{cx:21.50,cy:21.00,r:6.00,sc:"#6f7a72"},{cx:87.50,cy:14.50,r:6.00,sc:"#718078"}]},
   {k:6,x:880,y:205,w:175,h:43,pw:1280,eyes:[{cx:31.00,cy:16.00,r:8.50,sc:"#4c766d"},{cx:136.50,cy:23.50,r:9.00,sc:"#597c72"}]}];
-EYES.forEach(E=>{ if(E){ E.img=new Image(); E.img.src=`/landing/assets/eyes-h${E.k}.png`; } });
+EYES.forEach(E=>{ if(E) E.img=new Image(); });
+restStarted.then(()=>EYES.forEach(E=>{ if(E) E.img.src=`/landing/assets/eyes-h${E.k}.png`; })); // with plates 2-7, after first paint
 const ecv=$('#eyes'), ex=ecv.getContext('2d'), fakecur=$('#fakecur'), eoc=document.createElement('canvas'), eo=eoc.getContext('2d'), etc=document.createElement('canvas'), et=etc.getContext('2d');
 const EYE_ON=!RM && (REC || /[?&]eyes=1/.test(location.search) || matchMedia('(hover:hover) and (pointer:fine)').matches);   // ?eyes=1: dev override for headless tests
 let MX=null, MY=null, EO={x:0,y:0}, eyeLast=-1, eyeDirty=false;
