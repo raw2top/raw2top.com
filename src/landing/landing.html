@@ -65,6 +65,7 @@ form .fine a{color:var(--lime)}
 .ferr{color:#ff8a8a;font-size:11px;line-height:1.35;letter-spacing:.02em;text-transform:none}
 .ferr::before{content:"✕ "}
 #form label{align-content:start}
+#form input.hp{display:none!important}
 #form input[aria-invalid=true],#form textarea[aria-invalid=true]{border-color:#ff6b6b;box-shadow:0 0 0 1px rgba(255,107,107,.35)}
 /* language dropdown: current flag as the main button, vertical menu drops down */
 #lang{position:relative;z-index:60}
@@ -95,6 +96,7 @@ form .fine a{color:var(--lime)}
 #s2 .meter{right:clamp(16px,3.2vw,56px);top:clamp(76px,12vh,132px);width:clamp(180px,19vw,330px);padding:14px 16px;border:1px solid var(--line);background:rgba(18,20,27,.86);border-radius:12px}
 .meter .row{display:flex;justify-content:space-between;color:var(--muted)}
 .meter .row b{color:var(--lime);font-weight:500}
+.meter .row.mt8{margin-top:8px}
 .meter .trk{height:6px;border-radius:6px;background:var(--line);margin-top:10px;overflow:hidden}
 .meter .fill{height:100%;width:0;background:var(--lime);box-shadow:0 0 12px var(--lime)}
 #s2 .cards{left:var(--pad);bottom:9vh;display:flex;gap:clamp(8px,1vw,18px)}
@@ -133,6 +135,7 @@ button.lc{border:0;font:inherit;text-align:left;cursor:pointer;-webkit-tap-highl
 .flip{-webkit-tap-highlight-color:transparent;touch-action:manipulation}.flip.scout{touch-action:pan-y pinch-zoom}
 .flip:not(.show) .back,.flip.show .front{pointer-events:none}
 .back h3{margin-top:.35em}
+.face .mono.c-scout{color:var(--scout)}
 .back .btn.see{width:100%;font-size:clamp(14px,.95vw,17px);padding:.95em .8em;box-shadow:0 0 0 1px rgba(198,255,61,.35),0 10px 30px rgba(198,255,61,.22)}
 .back .btn.see:focus-visible{outline:2px solid var(--text);outline-offset:3px}
 .face{position:absolute;inset:0;border-radius:18px;backface-visibility:hidden;-webkit-backface-visibility:hidden;overflow:hidden;padding:clamp(12px,1.2vw,22px);display:flex;flex-direction:column;justify-content:flex-end}
@@ -350,7 +353,7 @@ html.rec *{transition:none!important}
 
   <section class="scene" id="s2">
     <h2 class="h" data-t="s2.h"></h2>
-    <div class="meter mono"><div class="row"><span data-t="s2.run"></span><b id="pct">0%</b></div><div class="trk"><div class="fill" id="fill"></div></div><div class="row" style="margin-top:8px"><span id="mstate"></span><span data-t="s2.status"></span></div></div>
+    <div class="meter mono"><div class="row"><span data-t="s2.run"></span><b id="pct">0%</b></div><div class="trk"><div class="fill" id="fill"></div></div><div class="row mt8"><span id="mstate"></span><span data-t="s2.status"></span></div></div>
     <div class="cards"><button type="button" class="lc" data-i="1" aria-expanded="false" aria-controls="bub"><span class="top"><span>#1</span><i aria-hidden="true">+</i></span><b data-t="s2.c1"></b></button><button type="button" class="lc" data-i="2" aria-expanded="false" aria-controls="bub"><span class="top"><span>#2</span><i aria-hidden="true">+</i></span><b data-t="s2.c2"></b></button><button type="button" class="lc" data-i="3" aria-expanded="false" aria-controls="bub"><span class="top"><span>#3</span><i aria-hidden="true">+</i></span><b data-t="s2.c3"></b></button><div class="bub" id="bub" role="status" hidden><b id="bubh"></b><span id="bubt"></span></div></div>
   </section>
 
@@ -365,7 +368,7 @@ html.rec *{transition:none!important}
     <div class="grid">
       <div class="flip scout" tabindex="0" role="button" aria-pressed="false" aria-label="TCG Scout"><div class="in">
         <div class="face front"><img src="/landing/assets/tcg-scout.webp" alt="TCG Scout" width="720" height="720" loading="lazy" decoding="async"><span class="tag mono" data-t="s4.live"></span><span class="tag ty mono" data-t="ty.bot"></span><h3>TCG Scout</h3><p data-t="s4.desc"></p></div>
-        <div class="face back"><div><span class="mono" style="color:var(--scout)">01 · TCG Scout</span><h3>TCG Scout</h3></div>
+        <div class="face back"><div><span class="mono c-scout">01 · TCG Scout</span><h3>TCG Scout</h3></div>
           <a class="btn see" id="seeScout" data-p="/drops/#tcg-scout" href="/drops/#tcg-scout" data-t="s4.see"></a></div>
       </div></div>
       <div class="flip soon" tabindex="0" role="button" aria-pressed="false"><div class="in">
@@ -416,7 +419,7 @@ html.rec *{transition:none!important}
       <label class="mono"><span data-t="s6.l1"></span><input name="name" aria-describedby="e-name" data-ph="s6.p1"><span class="ferr" id="e-name" role="alert" hidden></span></label>
       <label class="mono"><span data-t="s6.l2"></span><input name="email" type="email" required aria-describedby="e-email" data-ph="s6.p2"><span class="ferr" id="e-email" role="alert" hidden></span></label>
       <label class="mono"><span data-t="s6.l3"></span><textarea name="task" rows="3" required aria-describedby="e-task" data-ph="s6.p3"></textarea><span class="ferr" id="e-task" role="alert" hidden></span></label>
-      <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" style="display:none">
+      <input type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" class="hp">
       <button class="btn" type="submit" id="send" data-t="s6.send"></button>
       <p class="mono fine"><span id="fstat" role="status" aria-live="polite"></span><span id="ffine" data-t="s6.fine"></span> <a id="mailTo" href="mailto:%%MAIL%%">%%MAIL%%</a></p>
     </form>
