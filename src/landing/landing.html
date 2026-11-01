@@ -411,7 +411,7 @@ html.rec *{transition:none!important}
 
   <section class="scene" id="s7">
     <h2 class="h" data-t="s6.h"></h2>
-    <form id="form" method="post" enctype="text/plain" action="mailto:%%MAIL%%">
+    <form id="form" method="post" enctype="text/plain">
       <div class="hd mono"><span data-t="s6.hd"></span><span>v0.1</span></div>
       <label class="mono"><span data-t="s6.l1"></span><input name="name" aria-describedby="e-name" data-ph="s6.p1"><span class="ferr" id="e-name" role="alert" hidden></span></label>
       <label class="mono"><span data-t="s6.l2"></span><input name="email" type="email" required aria-describedby="e-email" data-ph="s6.p2"><span class="ferr" id="e-email" role="alert" hidden></span></label>
@@ -544,7 +544,7 @@ function setLang(l,save){
   document.querySelector('meta[name=description]').content=T.desc;
   $$('[data-t]').forEach(e=>{const v=T[e.dataset.t]; if(v!=null) e.innerHTML=v});
   $$('[data-ph]').forEach(e=>e.placeholder=T[e.dataset.ph]);
-  $('#form').action='mailto:'+T['mail.to']; $('#mailTo').href='mailto:'+T['mail.to']; $('#mailTo').textContent=T['mail.to'];
+  $('#mailTo').href='mailto:'+T['mail.to']; $('#mailTo').textContent=T['mail.to'];
   if(typeof fRender==='function') fRender();
   if(typeof bubFill==='function') bubFill();
   if(!matchMedia('(hover:hover)').matches) $('#s4lab').textContent=T['s4.labt'];
