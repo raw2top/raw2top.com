@@ -8,20 +8,20 @@ interface Props { lang: Lang; }
 const { lang } = Astro.props;
 const c = {
   en: { title: 'About us', eyebrow: 'About us', founderH: 'About the founder', h: 'Hi there.', alt: "Sergio's avatar: illustrated hooded figure with green goggles",
-    bio: "I'm Sergio, an AI dev based in Spain. I build bots, prompts, tools and content in the AI world. raw2top is where I publish my own work, each piece with a public test card so you know what it really does before you add it.", xLabel: 'Follow on X', 
+    bio: "I'm Sergio Domínguez, an AI dev based in Spain and the person behind raw2top. With AI, I design frame-by-frame scroll landings, brand videos, product videos and AI agents. Every AI agent we publish comes with a public test card, so you know what it really does before you use it.", xLabel: 'Follow on X', 
     whyH: 'What raw2top is',
-    why: 'raw2top is a portfolio of AI drops: bots, prompts, tools, content, courses and more. We only publish our own work, and the team tests and keeps every drop up to date. Today it’s called AI; tomorrow, SI (superintelligence). We’re already building for that leap.',
+    why: 'raw2top is an AI design studio: frame-by-frame scroll landings, brand videos, product videos and AI agents. Our portfolio shows only our own work. Today it’s called AI; tomorrow, SI (superintelligence). We’re already building for that leap.',
     rulesH: 'House rules',
-    rules: ['Only our own drops.', 'Every result is a real run, with its date and app version.', 'If a test fails, the card says so.', 'Not affiliated with SpaceXSI.'],
-    findH: 'Find us', report: 'Found a problem with a drop?', reportCta: 'Report it',
+    rules: ['Only our own work in the portfolio.', 'Every result is a real run, with its date and app version.', 'If a test fails, the card says so.', 'Not affiliated with SpaceXSI.'],
+    findH: 'Find us', report: 'Found a problem with one of our pieces?', reportCta: 'Report it',
     disc: '“Grok Bot” is mentioned only to describe compatibility. Not affiliated with SpaceXSI. © 2026 raw2top' },
   es: { title: 'Nosotros', eyebrow: 'Nosotros', founderH: 'Sobre el fundador', h: 'Hola.', alt: 'Avatar de Sergio: figura ilustrada con capucha y gafas verdes',
-    bio: 'Soy Sergio, un dev de IA con base en España. Creo bots, prompts, utilidades y contenido en el universo IA. raw2top es donde publico mis propios trabajos, cada uno con su ficha de prueba pública para que sepas lo que hace de verdad antes de añadirlo.', xLabel: 'Síguenos en X', 
+    bio: 'Soy Sergio Domínguez, dev de IA con base en España y la persona detrás de raw2top. Con IA diseño landings con scroll fotograma a fotograma, vídeos de marca, vídeos de producto y agentes de IA. Cada agente de IA que publicamos lleva su ficha de prueba pública, para que sepas lo que hace de verdad antes de usarlo.', xLabel: 'Síguenos en X', 
     whyH: 'Qué es raw2top',
-    why: 'raw2top es un portfolio de drops de IA: bots, prompts, utilidades, contenido, cursos y más. Solo publicamos trabajo propio, y el equipo prueba y mantiene al día cada drop. Hoy lo llamamos IA; mañana, SI (superinteligencia). Nosotros ya construimos para ese salto.',
+    why: 'raw2top es un estudio de diseño con IA: landings con scroll, vídeos de marca y de producto, y agentes de IA. En el portfolio solo enseñamos trabajo propio. Hoy lo llamamos IA; mañana, SI (superinteligencia). Nosotros ya construimos para ese salto.',
     rulesH: 'Reglas de la casa',
-    rules: ['Solo drops propios.', 'Cada resultado es una ejecución real, con fecha y versión de la app.', 'Si una prueba falla, la ficha lo dice.', 'Sin relación con SpaceXSI.'],
-    findH: 'Dónde encontrarnos', report: '¿Has encontrado un problema en un drop?', reportCta: 'Avísanos',
+    rules: ['Solo trabajo propio en el portfolio.', 'Cada resultado es una ejecución real, con fecha y versión de la app.', 'Si una prueba falla, la ficha lo dice.', 'Sin relación con SpaceXSI.'],
+    findH: 'Dónde encontrarnos', report: '¿Has encontrado un problema en una de nuestras piezas?', reportCta: 'Avísanos',
     disc: '«Grok Bot» se menciona solo para indicar compatibilidad. Sin afiliación con SpaceXSI. © 2026 raw2top' },
 }[lang];
 ---
