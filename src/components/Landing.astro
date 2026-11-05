@@ -6,9 +6,9 @@ interface Props { lang: 'en' | 'es'; }
 const { lang } = Astro.props;
 const META = {
   en: { title: 'raw2top · AI design, new drops every month',
-        desc: 'AI design studio. Scroll landings, brand videos, product videos and AI agents. Made frame by frame.' },
+        desc: 'AI drops by AI developers. One drop a month, of any kind. Every drop is tested.' },
   es: { title: 'raw2top · Diseño con IA, nuevos drops todos los meses',
-        desc: 'Estudio de diseño con IA. Landings con scroll, vídeos de marca, vídeos de producto y agentes de IA. Hechos fotograma a fotograma.' },
+        desc: 'Drops de IA, hechos por desarrolladores con IA. Un drop al mes, de cualquier cosa. Cada drop se prueba.' },
 }[lang];
 const site = Astro.site!.href.replace(/\/$/, '');
 const url = { en: `${site}/`, es: `${site}/es/` };

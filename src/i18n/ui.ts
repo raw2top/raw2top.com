@@ -2,14 +2,14 @@ import type { Lang } from './utils';
 
 export const ui = {
   en: {
-    'meta.desc': 'Frame-by-frame scroll landings, brand and product videos, and AI agents.',
+    'meta.desc': 'AI drops by AI developers. One drop a month, of any kind.',
     'meta.home': 'raw2top · AI design, new drops every month',
     'skip': 'Skip to content',
     'nav.main': 'Main',
     'nav.drops': 'Drops', 'nav.about': 'About us', 'nav.report': 'Report',
     'nav.home': 'raw2top home',
     'lang.switch': 'Language',
-    'foot.tag': 'AI design, frame by frame.',
+    'foot.tag': 'AI drops, one a month.',
     'foot.report': 'Report a problem',
     'foot.privacy': 'Privacy',
     'card.example': 'Example bot · placeholder',
@@ -26,14 +26,14 @@ export const ui = {
     'test.note': 'A test is valid for {days} days or until the template is updated. After that it shows as “stale” until we test it again. A test describes one run on one date; it is not a guarantee.',
   },
   es: {
-    'meta.desc': 'Landings con scroll fotograma a fotograma, vídeos de marca y de producto, y agentes de IA.',
+    'meta.desc': 'Drops de IA, hechos por desarrolladores con IA. Un drop al mes, de cualquier cosa.',
     'meta.home': 'raw2top · Diseño con IA, nuevos drops todos los meses',
     'skip': 'Saltar al contenido',
     'nav.main': 'Principal',
     'nav.drops': 'Drops', 'nav.about': 'Nosotros', 'nav.report': 'Aviso',
     'nav.home': 'Inicio de raw2top',
     'lang.switch': 'Idioma',
-    'foot.tag': 'Diseño con IA, fotograma a fotograma.',
+    'foot.tag': 'Drops de IA, uno al mes.',
     'foot.report': 'Avisar de un problema',
     'foot.privacy': 'Privacidad',
     'card.example': 'Bot de ejemplo · marcador',

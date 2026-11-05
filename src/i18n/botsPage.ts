@@ -4,10 +4,10 @@ import type { Lang } from './utils';
 export const botsPage = {
   en: {
     title: 'Drops',
-    desc: 'Drops by raw2top: scroll landings, brand videos, product videos and AI agents, designed with AI. Agents come with a dated, public test card.',
-    lab: 'Portfolio · {n} / {total}',
+    desc: 'AI drops by raw2top: one a month, of any kind. Testable drops come with a dated, public test card.',
+    lab: 'The lab · {n} / {total}',
     h1: 'Drops',
-    intro: 'Every drop we’ve designed, in one place. Flip a card to see its test card.',
+    intro: 'Every drop we’ve shipped, in one place. Flip a card to see its test card.',
     count: '<em>{n}</em> of {total} drops',
     hintPointer: 'Click, drag sideways or press Enter to flip · hover to tilt',
     fhPointer: 'Drag or click to flip', fhTouch: 'Swipe or tap to flip',
@@ -28,10 +28,10 @@ export const botsPage = {
   },
   es: {
     title: 'Drops',
-    desc: 'Drops de raw2top: landings con scroll, vídeos de marca, vídeos de producto y agentes de IA, diseñados con IA. Los agentes llevan una ficha de prueba pública y fechada.',
-    lab: 'Portfolio · {n} / {total}',
+    desc: 'Drops de IA de raw2top: uno al mes, de cualquier cosa. Los que se pueden probar llevan una ficha de prueba pública y fechada.',
+    lab: 'El laboratorio · {n} / {total}',
     h1: 'Drops',
-    intro: 'Cada drop que hemos diseñado, en un solo sitio. Gira una carta para ver su ficha.',
+    intro: 'Cada drop que hemos lanzado, en un solo sitio. Gira una carta para ver su ficha.',
     count: '<em>{n}</em> de {total} drops',
     hintPointer: 'Haz clic, arrastra a un lado o pulsa Intro para girar · pasa el cursor para inclinar',
     fhPointer: 'Arrastra o haz clic para girar', fhTouch: 'Desliza o toca para girar',
