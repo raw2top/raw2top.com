@@ -18,12 +18,10 @@ export const ui = {
     'soon.slot': 'Slot', 'soon.title': 'Coming soon', 'soon.sub': 'In the lab now.',
     'access.reads': 'Reads only', 'access.drafts': 'Drafts only', 'access.acts': 'Takes actions', 'access.moves-money': 'Moves money',
     'result.worked': '✓ Worked', 'result.partly': '◐ Partly worked', 'result.failed': '✕ Failed',
-    'status.Tested': '✓ Tested', 'status.Tested-stale': 'Tested · stale', 'status.Listed': 'Listed · not tested yet',
     'test.title': 'Test card', 'test.date': 'Date', 'test.app': 'App version', 'test.platform': 'Platform',
     'test.task': 'Task tested', 'test.result': 'Result', 'test.evidence': 'Evidence', 'test.import': 'Import check',
     'test.preview': 'Skills in preview', 'test.arrived': 'skills that arrived', 'test.routines': 'Routines arrived',
     'test.none': 'No test yet. This bot is listed, but we have not run it end to end.',
-    'test.note': 'A test is valid for {days} days or until the template is updated. After that it shows as “stale” until we test it again. A test describes one run on one date; it is not a guarantee.',
   },
   es: {
     'meta.desc': 'Drops de IA, hechos por desarrolladores con IA. Un drop al mes, de cualquier cosa.',
@@ -42,12 +40,10 @@ export const ui = {
     'soon.slot': 'Hueco', 'soon.title': 'Muy pronto', 'soon.sub': 'Ahora en el laboratorio.',
     'access.reads': 'Solo lee', 'access.drafts': 'Solo redacta', 'access.acts': 'Hace acciones', 'access.moves-money': 'Mueve dinero',
     'result.worked': '✓ Funcionó', 'result.partly': '◐ Funcionó en parte', 'result.failed': '✕ Falló',
-    'status.Tested': '✓ Probado', 'status.Tested-stale': 'Probado · caducado', 'status.Listed': 'En la lista · sin probar',
     'test.title': 'Ficha de prueba', 'test.date': 'Fecha', 'test.app': 'Versión de la app', 'test.platform': 'Plataforma',
     'test.task': 'Tarea probada', 'test.result': 'Resultado', 'test.evidence': 'Prueba', 'test.import': 'Comprobación de importación',
     'test.preview': 'Skills en la vista previa', 'test.arrived': 'skills que llegaron', 'test.routines': 'Llegaron las rutinas',
     'test.none': 'Todavía sin prueba. El bot está en la lista, pero aún no lo hemos probado de principio a fin.',
-    'test.note': 'Una prueba vale {days} días o hasta que se actualice la plantilla. Después aparece como «caducada» hasta que la repitamos. Una prueba describe una ejecución en una fecha; no es una garantía.',
   },
 } as const;
 

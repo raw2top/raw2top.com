@@ -1,15 +1,14 @@
 ---
-import { type Bot, statusOf } from '../lib/bots';
+import { type Bot } from '../lib/bots';
 import { type Lang, tx, localize } from '../i18n/utils';
 import { useT } from '../i18n/ui';
 interface Props { bot: Bot; lang: Lang; }
 const { bot, lang } = Astro.props;
 const t = useT(lang);
-const status = statusOf(bot);
 const run = bot.tested;
 ---
 <article class="card bot">
-  <p class="eyebrow">{bot.isExample ? t('card.example') : t(`status.${status}`)}</p>
+  {bot.isExample && <p class="eyebrow">{t('card.example')}</p>}
   <h3><a href={localize(`/drops/${bot.slug}/`, lang)} class="stretch">{bot.name}</a></h3>
   <p class="muted one">{tx(bot.oneLiner, lang)}</p>
   {run && (
